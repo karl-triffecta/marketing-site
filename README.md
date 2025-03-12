@@ -1,4 +1,3 @@
-
 Triffecta marketing site built using Astro for static site generation (SSG), Preact for behaviour and Tailwind for styling
 
 # Astro FAQ
@@ -68,6 +67,8 @@ npm run dev
 Access on http://localhost:4321/marketing-site/ until moved to domain
 After domain is setup, reset base
 
+Production accessible on: https://karl-triffecta.github.io/marketing-site/
+
 ### Build site for release
 
 ```bash
@@ -78,8 +79,18 @@ npm run build
 
 Commands used to setup this project or reference
 
-``` bash
+```bash
+# https://docs.astro.build/en/install-and-setup/
 npm create astro@latest
+# https://docs.astro.build/en/guides/integrations-guide/preact/
 npx astro add preact
+# https://docs.astro.build/en/guides/styling/#tailwind
 npx astro add tailwind
+
+# https://ota-meshi.github.io/eslint-plugin-astro/user-guide/
+npm install --save-dev eslint eslint-plugin-astro
+npm install --save-dev @typescript-eslint/parser
+
+# https://docs.astro.build/en/editor-setup/#prettier
+
 ```

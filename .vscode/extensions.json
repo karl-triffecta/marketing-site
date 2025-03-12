@@ -8,7 +8,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "rvest.vs-code-prettier-eslint",
-    "ionutvmi.path-autocomplete",
+    "ionutvmi.path-autocomplete"
   ],
   "unwantedRecommendations": []
 }
