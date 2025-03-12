@@ -65,6 +65,9 @@ npm install
 npm run dev
 ```
 
+Access on http://localhost:4321/marketing-site/ until moved to domain
+After domain is setup, reset base
+
 ### Build site for release
 
 ```bash
@@ -80,13 +83,3 @@ npm create astro@latest
 npx astro add preact
 npx astro add tailwind
 ```
-```
-   action required  You must import your Tailwind stylesheet, e.g. in a shared layout:
-
- ╭ src/layouts/Layout.astro ─────────╮
- │ ---                               │
- │ import './src/styles/global.css'  │
- │ ---                               │
- ╰───────
-
- ```
