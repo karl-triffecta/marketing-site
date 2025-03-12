@@ -1,1 +1,23 @@
 @import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/*
+  https://www.realtimecolors.com/?colors=131a1b-f0f0f0-fad899-009485-272339&fonts=Nunito%20Sans-Nunito%20Sans
+*/
+:root {
+  --color-primary: #fad899;
+  --color-secondary: #272339;
+  --color-accent: #009485;
+  --color-background: #f0f0f0;
+  --color-text: #131a1b;
+}
+
+/* Dark mode theme (optional)
+[data-theme="dark"] {
+  --color-primary: #f59e0b;
+  --color-secondary: #111827;
+  --color-accent: #ff4500;
+  --color-background: #1f2937;
+  --color-text: #f9fafb;
+}
+*/

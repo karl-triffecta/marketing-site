@@ -1,5 +1,5 @@
 
-Triffecta marketing site built using Astro, Preact and Tailwind
+Triffecta marketing site built using Astro for static site generation (SSG), Preact for behaviour and Tailwind for styling
 
 # Astro FAQ
 
