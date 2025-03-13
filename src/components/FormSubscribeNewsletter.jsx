@@ -8,8 +8,11 @@ export default function FormSubscribeNewsletter() {
   };
 
   return (
-    <div class="bg-white rounded-2xl w-md">
-      <form class="flex flex-col space-y-8" onSubmit={handleSubmit}>
+    <div class="bg-white rounded-2xl lg:w-md">
+      <form
+        class="flex flex-col lg:flex-col sm:flex-row space-y-8"
+        onSubmit={handleSubmit}
+      >
         <h3 class="text-xl font-bold">Subscribe to our Newsletter</h3>
         <input
           autocomplete="on"
