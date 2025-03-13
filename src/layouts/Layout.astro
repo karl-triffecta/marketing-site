@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import FormSubscribeNewsletter from "../components/FormSubscribeNewsletter.jsx";
 
 // TODO: When using Prod switch
 const base = "/marketing-site/";
@@ -41,57 +42,50 @@ const base = "/marketing-site/";
     <meta name="theme-color" content="#fad89a" />
     <link rel="manifest" href="site.webmanifest" />
   </head>
-  <body>
-    <header class="bg-primary p-4">
+  <body class="bg-background">
+    <header class="bg-primary-dark p-4">
       <div
         class="container mx-auto px-20 lg:px-20 md:px-12 sm:px-8 flex flex-col sm:flex-row sm:justify-between items-center"
       >
-        <a href="/" class="text-xl font-bold mb-4 sm:mb-0">Triffecta Logo</a>
+        <a href="/" class="text-xl font-bold mb-4 sm:mb-0">Triffecta</a>
         <nav
           class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0 items-center"
         >
           <a href="https://portal.triffecta.com/" class="hover:underline"
             >Login</a
           >
-          <button class="bg-secondary text-primary px-4 py-2 rounded-lg"
-            >Request a Demo</button
+          <a
+            href="#demo-signup"
+            class="bg-secondary text-primary px-4 py-2 rounded-lg pl-15 pr-15"
+            >Request a Demo</a
           >
         </nav>
       </div>
     </header>
 
-    <div class="container mx-auto px-20 lg:px-20 md:px-12 sm:px-8">
-      <section
-        class="grid grid-cols-6 sm:grid-cols-6 lg:grid-cols-12 gap-4 sm:gap-4 lg:gap-8"
-      >
-        <!-- Hero section (spans full width) -->
-        <div class="col-span-6 lg:col-span-12 bg-yellow-200 p-12 text-center">
-          <h1 class="text-4xl font-bold">Hero Section</h1>
-        </div>
-
-        <!-- Features (3 columns on desktop, 2 on tablet, 1 on mobile) -->
-        <div class="col-span-6 sm:col-span-3 lg:col-span-4 bg-gray-200 p-6">
-          Feature 1
-        </div>
-        <div class="col-span-6 sm:col-span-3 lg:col-span-4 bg-gray-300 p-6">
-          Feature 2
-        </div>
-        <div class="col-span-6 sm:col-span-3 lg:col-span-4 bg-gray-400 p-6">
-          Feature 3
-        </div>
-
-        <!-- Call to Action -->
-        <div class="col-span-6 lg:col-span-12 bg-yellow-400 p-12 text-center">
-          <button class="bg-gray-900 text-white px-6 py-3 rounded-lg"
-            >Request a Demo</button
-          >
-        </div>
-      </section>
-    </div>
-
-    <main class="container mx-auto p-6">
+    <main>
       <slot />
     </main>
+
+    <footer class="bg-white">
+      <section class="p-1.25 bg-primary-dark"></section>
+
+      <div
+        class="container mx-auto lg:px-20 md:px-12 sm:px-8 flex flex-col sm:flex-row sm:justify-between sm:items-stretch py-6"
+      >
+        <div class="flex-1"><FormSubscribeNewsletter client:visible /></div>
+        <div class="flex flex-col justify-between items-end flex-1 pl-10">
+          <div>Triffecta</div>
+          <div class="flex flex-col items-end space-y-2">
+            <div>Social Links</div>
+            <p>© 2025 Triffecta. All rights reserved.</p>
+            <a href="/privacy" class="hover:underline"
+              >Privacy Policy & Cookie Policy</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <!--
     <footer class="bg-gray-800 text-white p-6 mt-12 text-center">

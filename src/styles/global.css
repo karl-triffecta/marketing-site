@@ -3,13 +3,19 @@
 
 /*
   https://www.realtimecolors.com/?colors=131a1b-f0f0f0-fad899-009485-272339&fonts=Nunito%20Sans-Nunito%20Sans
+  Remember to validate:
+    https://webaim.org/resources/contrastchecker/
+    https://www.whocanuse.com/
+    https://coolors.co/contrast-checker
 */
 :root {
-  --color-primary: #fad899;
-  --color-secondary: #272339;
+  --color-primary: #fad89a;
+  --color-primary-dark: #f9ce88;
+  --color-secondary: #263238;
   --color-accent: #009485;
   --color-background: #f0f0f0;
   --color-text: #131a1b;
+  --color-text-light: #4f4f4f;
 }
 
 /* Dark mode theme (optional)

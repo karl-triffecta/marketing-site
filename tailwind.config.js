@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}"],
   theme: {
     extend: {
       spacing: {
@@ -19,13 +19,15 @@ export default {
       },
       colors: {
         primary: "var(--color-primary)",
+        primaryDark: "var(--color-primary-dark)",
         secondary: "var(--color-secondary)",
         accent: "var(--color-accent)",
         background: "var(--color-background)",
         text: "var(--color-text)",
+        textLight: "var(--color-text-light)",
       },
       fontFamily: {
-        sans: ["Nunito Sans", "sans-serif"]
+        sans: ["Nunito Sans", "sans-serif"],
       },
     },
   },
