@@ -72,6 +72,7 @@ Production accessible on: https://karl-triffecta.github.io/marketing-site/
 ### Build site for release
 
 ```bash
+npm run format
 npm run build
 ```
 
@@ -92,5 +93,5 @@ npm install --save-dev eslint eslint-plugin-astro
 npm install --save-dev @typescript-eslint/parser
 
 # https://docs.astro.build/en/editor-setup/#prettier
-
+npm i --save-dev prettier prettier-plugin-astro
 ```
