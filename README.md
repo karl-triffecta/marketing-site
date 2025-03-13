@@ -93,5 +93,6 @@ npm install --save-dev eslint eslint-plugin-astro
 npm install --save-dev @typescript-eslint/parser
 
 # https://docs.astro.build/en/editor-setup/#prettier
-npm i --save-dev prettier prettier-plugin-astro
+# https://github.com/tailwindlabs/prettier-plugin-tailwindcss
+npm install --save-dev prettier prettier-plugin-astro prettier-plugin-tailwindcss
 ```

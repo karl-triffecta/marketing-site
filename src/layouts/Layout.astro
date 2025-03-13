@@ -45,18 +45,18 @@ const base = "/marketing-site/";
   <body class="bg-background">
     <header class="bg-primary-dark p-4">
       <div
-        class="container mx-auto lg:px-20 md:px-12 sm:px-8 flex flex-col sm:flex-row sm:justify-between items-center"
+        class="container mx-auto flex flex-col items-center sm:flex-row sm:justify-between sm:px-8 md:px-12 lg:px-20"
       >
-        <a href="/" class="text-xl font-bold mb-4 sm:mb-0">Triffecta</a>
+        <a href="/" class="mb-4 text-xl font-bold sm:mb-0">Triffecta</a>
         <nav
-          class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0 items-center"
+          class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
         >
           <a href="https://portal.triffecta.com/" class="hover:underline"
             >Login</a
           >
           <a
             href="#demo-signup"
-            class="bg-secondary text-primary py-2 rounded-lg px-15"
+            class="bg-secondary text-primary rounded-lg px-15 py-2"
             >Request a Demo</a
           >
         </nav>
@@ -68,15 +68,15 @@ const base = "/marketing-site/";
     </main>
 
     <footer class="bg-white">
-      <section class="p-1.25 bg-primary-dark"></section>
+      <section class="bg-primary-dark p-1.25"></section>
 
       <div
-        class="container mx-auto lg:px-20 md:px-12 sm:px-8 flex flex-col sm:flex-row sm:justify-between sm:items-stretch py-6"
+        class="container mx-auto flex flex-col py-6 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"
       >
-        <div class="flex-1 mb-8 sm:mb-0">
+        <div class="mb-8 flex-1 sm:mb-0">
           <FormSubscribeNewsletter client:visible />
         </div>
-        <div class="flex flex-col justify-between items-end flex-1 pl-10">
+        <div class="flex flex-1 flex-col items-end justify-between pl-10">
           <div class="mb-8 sm:mb-0">Triffecta</div>
           <div class="flex flex-col items-end space-y-2">
             <div>Social Links</div>

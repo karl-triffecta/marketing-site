@@ -1,11 +1,19 @@
 /** @type {import("prettier").Config} */
 export default {
-  plugins: ['prettier-plugin-astro'],
+  // Note: tailwind must come last in the list apparently: https://github.com/tailwindlabs/prettier-plugin-tailwindcss?tab=readme-ov-file#compatibility-with-other-prettier-plugins
+  plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  tailwindConfig: "./tailwind.config.js",
   overrides: [
     {
-      files: '*.astro',
+      files: ["src/**/*.astro"],
       options: {
-        parser: 'astro',
+        parser: "astro",
+      },
+    },
+    {
+      files: ["src/**/*.jsx", "src/**/*.tsx"],
+      options: {
+        parser: "babel",
       },
     },
   ],

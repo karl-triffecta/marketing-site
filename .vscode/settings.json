@@ -4,5 +4,6 @@
   "[astro]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.enable": true
+  "prettier.enable": true,
+  "prettier.requireConfig": true
 }

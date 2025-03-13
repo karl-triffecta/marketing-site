@@ -8,9 +8,9 @@ export default function FormSubscribeNewsletter() {
   };
 
   return (
-    <div class="bg-white rounded-2xl lg:w-md">
+    <div class="rounded-2xl bg-white lg:w-md">
       <form
-        class="flex flex-col lg:flex-col sm:flex-row space-y-8"
+        class="flex flex-col space-y-8 sm:flex-row lg:flex-col"
         onSubmit={handleSubmit}
       >
         <h3 class="text-xl font-bold">Subscribe to our Newsletter</h3>
@@ -25,7 +25,7 @@ export default function FormSubscribeNewsletter() {
         />
         <button
           type="submit"
-          class="bg-primary-dark text-primary-dark text-text px-4 py-2 rounded-lg"
+          class="bg-primary-dark text-primary-dark text-text rounded-lg px-4 py-2"
         >
           Subscribe
         </button>
