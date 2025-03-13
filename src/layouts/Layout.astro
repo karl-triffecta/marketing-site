@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import FormSubscribeNewsletter from "../components/FormSubscribeNewsletter.jsx";
+import LogoTriffecta from "../components/LogoTriffecta.jsx";
 
 // TODO: When using Prod switch
 const base = "/marketing-site/";
@@ -47,7 +48,9 @@ const base = "/marketing-site/";
       <div
         class="container mx-auto flex flex-col items-center sm:flex-row sm:justify-between sm:px-8 md:px-12 lg:px-20"
       >
-        <a href="/" class="mb-4 text-xl font-bold sm:mb-0">Triffecta</a>
+        <a href="/" class="mb-4 text-center lg:mb-0">
+          <LogoTriffecta size={2} strokeColor="#FFFFFF" />
+        </a>
         <nav
           class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
         >
@@ -77,9 +80,10 @@ const base = "/marketing-site/";
           <FormSubscribeNewsletter client:visible />
         </div>
         <div class="flex flex-1 flex-col items-end justify-between pl-10">
-          <div class="mb-8 sm:mb-0">Triffecta</div>
+          <a href="/" class="mb-8 text-center lg:mb-0">
+            <LogoTriffecta />
+          </a>
           <div class="flex flex-col items-end space-y-2">
-            <div>Social Links</div>
             <p>© 2025 Triffecta. All rights reserved.</p>
             <a href="/privacy" class="hover:underline"
               >Privacy Policy & Cookie Policy</a
