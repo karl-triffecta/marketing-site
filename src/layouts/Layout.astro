@@ -3,6 +3,9 @@ import "../styles/global.css";
 import FormSubscribeNewsletter from "../components/FormSubscribeNewsletter.jsx";
 import LogoTriffecta from "../components/LogoTriffecta.jsx";
 
+import IconLinkedIn from "../components/IconLinkedIn.jsx";
+import IconTwitter from "../components/IconTwitter.jsx";
+
 // TODO: When using Prod switch
 const base = "/marketing-site/";
 //const base = "/";
@@ -48,19 +51,20 @@ const base = "/marketing-site/";
       <div
         class="container mx-auto flex flex-col items-center sm:flex-row sm:justify-between sm:px-8 md:px-12 lg:px-20"
       >
-        <a href="/" class="mb-4 text-center lg:mb-0">
+        <a href="#top" class="mb-4 text-center lg:mb-2" id="top">
           <LogoTriffecta size={2} strokeColor="#FFFFFF" />
         </a>
         <nav
           class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
         >
-          <a href="https://portal.triffecta.com/" class="hover:underline"
-            >Login</a
-          >
           <a
             href="#demo-signup"
-            class="bg-secondary text-primary rounded-lg px-15 py-2"
+            class="bg-secondary text-primary rounded-lg px-15 py-2 font-bold"
             >Request a Demo</a
+          >
+          <a
+            href="https://portal.triffecta.com/"
+            class="px-4 font-bold hover:underline">Sign In</a
           >
         </nav>
       </div>
@@ -74,20 +78,32 @@ const base = "/marketing-site/";
       <section class="bg-primary-dark p-1.25"></section>
 
       <div
-        class="container mx-auto flex flex-col py-6 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"
+        class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"
       >
         <div class="mb-8 flex-1 sm:mb-0">
           <FormSubscribeNewsletter client:visible />
         </div>
         <div class="flex flex-1 flex-col items-end justify-between pl-10">
-          <a href="/" class="mb-8 text-center lg:mb-0">
+          <a href="#top" class="mb-8 text-center lg:mb-0">
             <LogoTriffecta />
           </a>
           <div class="flex flex-col items-end space-y-2">
+            <div>
+              <div class="flex space-x-4">
+                <a href="https://linkedin.com" target="_blank">
+                  <IconLinkedIn />
+                </a>
+                <a href="https://x.com" target="_blank">
+                  <IconTwitter />
+                </a>
+              </div>
+            </div>
             <p>© 2025 Triffecta. All rights reserved.</p>
-            <a href="/privacy" class="hover:underline"
-              >Privacy Policy & Cookie Policy</a
-            >
+            <div>
+              <a href="privacy" class="hover:underline">Privacy Policy</a>
+              <span>|</span>
+              <a href="cookies" class="hover:underline">Cookie Policy</a>
+            </div>
           </div>
         </div>
       </div>

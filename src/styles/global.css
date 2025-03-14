@@ -27,3 +27,39 @@
   --color-text: #f9fafb;
 }
 */
+
+/* Undo https://tailwindcss.com/docs/preflight */
+.preflight-undo {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  a,
+  p {
+    font-size: revert;
+    font-weight: revert;
+  }
+
+  ol,
+  ul,
+  menu {
+    list-style: revert;
+    margin-left: 1rem;
+  }
+
+  p {
+    margin: revert;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}

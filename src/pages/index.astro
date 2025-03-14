@@ -1,30 +1,64 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import FormSignupDemo from "../components/FormSignupDemo.jsx";
+import ImgHeroCover from "../assets/hero.png";
+import ImgMacbook from "../assets/mackbook.png";
+import ImgCharts from "../assets/charts.png";
+import SvgBrain from "../assets/brain.svg";
+import IconTriffecta from "../components/IconTriffecta.jsx";
 ---
 
 <Layout>
   <section class="relative bg-white py-8"></section>
 
-  <section class="bg-secondary relative py-18 text-white">
-    <div class="container mx-auto">
-      <h1 class="text-5xl font-bold text-wrap text-clip md:text-6xl">
-        Revolutionising Retail Media
-      </h1>
-      <p class="text-primary mt-4 text-5xl font-bold">
-        Simplified, Scalable, Smarter
-      </p>
-      <p class="mt-6 mb-6 text-lg">
-        Unlock the full potential of retail media with the only aggregator
-        designed specifically for retailers.
-      </p>
-      <a
-        href="#demo-signup"
-        class="bg-primary-dark text-text rounded-lg px-15 py-2"
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1 class="text-5xl font-bold text-wrap text-clip md:text-6xl">
+            Revolutionising Retail Media
+          </h1>
+          <p class="text-primary-dark mt-4 inline-block text-5xl font-bold">
+            Simplified, Scalable, Smarter
+          </p>
+        </div>
+
+        <div
+          class="mt-6 mb-6 inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4"
+        >
+          <p class="text-lg">
+            Unlock the full potential of retail media with the only aggregator
+            designed specifically for retailers.
+          </p>
+        </div>
+
+        <div class="block">
+          <a
+            href="#demo-signup"
+            class="bg-primary-dark text-text rounded-lg px-15 py-2 font-bold"
+          >
+            Request a Demo
+          </a>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-50%] right-[-40%] z-10 lg:top-[-80%] lg:right-[-10%]"
       >
-        Request a Demo
-      </a>
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
     </div>
+
+    <img
+      id="hero"
+      src={ImgHeroCover.src}
+      alt="A picture of products on shelves"
+      fetchpriority="high"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover"
+    />
   </section>
 
   <section class="bg-primary-dark p-1.25"></section>
@@ -34,7 +68,18 @@ import FormSignupDemo from "../components/FormSignupDemo.jsx";
       class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
     >
       <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
-        <div class="rounded-2xl bg-white p-6 pt-40 pb-40 shadow"></div>
+        <div class="relative h-72 rounded-2xl bg-white">
+          <div class="relative flex h-full items-center justify-center">
+            <div>
+              <IconTriffecta
+                size="300px"
+                strokeWidth="0.7"
+                transform="rotate(180)"
+              />
+            </div>
+            <div class="absolute top-[23%] text-9xl">T</div>
+          </div>
+        </div>
         <h2 class="mt-6 text-xl font-bold">One Platform, All Publishers</h2>
         <p class="text-text-light mt-2 text-lg">
           Execute and manage campaigns effortlessly across multiple retail media
@@ -42,7 +87,16 @@ import FormSignupDemo from "../components/FormSignupDemo.jsx";
         </p>
       </div>
       <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
-        <div class="rounded-2xl bg-white p-6 pt-40 pb-40 shadow"></div>
+        <div class="h-72 rounded-2xl bg-white p-2.5">
+          <div class="relative flex h-full items-center justify-center">
+            <img
+              id="charts"
+              src={ImgCharts.src}
+              alt="A picture of a different reporting available in the Triffeca platform"
+              class="relative w-full"
+            />
+          </div>
+        </div>
         <h2 class="mt-6 text-xl font-bold">Unified, Actionable Insights</h2>
         <p class="text-text-light mt-2 text-lg">
           Access consolidated, standardized data in real time to make smarter
@@ -51,7 +105,14 @@ import FormSignupDemo from "../components/FormSignupDemo.jsx";
         </p>
       </div>
       <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
-        <div class="rounded-2xl bg-white p-6 pt-40 pb-40 shadow"></div>
+        <div class="h-72 rounded-2xl bg-white p-2.5">
+          <img
+            id="charts"
+            src={SvgBrain.src}
+            alt="A picture of a brain"
+            class="h-full w-full"
+          />
+        </div>
         <h2 class="mt-6 text-xl font-bold">AI-Driven Efficiency</h2>
         <p class="text-text-light mt-2 text-lg">
           Leverage machine learning and automation to optimize campaigns at
@@ -62,42 +123,62 @@ import FormSignupDemo from "../components/FormSignupDemo.jsx";
     </div>
   </section>
 
-  <section class="relative bg-white py-10">
-    <div class="container mx-auto">
-      <section
-        class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
+  <section class="overflow-hidden bg-white py-10">
+    <div class="relative container mx-auto">
+      <div class="relative z-20">
+        <section
+          class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
+        >
+          <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
+            <div class="relative flex h-full items-center justify-center">
+              <img
+                id="macbook"
+                src={ImgMacbook.src}
+                alt="A picture of a laptop using the Triffeca platform"
+                class="relative lg:top-[2%] lg:scale-160"
+              />
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-3 lg:col-span-8 lg:p-6">
+            <h2 class="text-4xl font-bold">Why Triffecta?</h2>
+            <ul class="mt-6 space-y-8">
+              <li class="flex">
+                <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
+                <p class="ml-2 text-lg">
+                  <span class="font-bold">Built for Retailers:</span> We understand
+                  the nuances of retail media and have designed every feature with
+                  your needs in mind.
+                </p>
+              </li>
+              <li class="flex">
+                <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
+                <p class="ml-2 text-lg">
+                  <span class="font-bold">Scalable Solutions:</span> Whether you’re
+                  managing a single store or multiple brands, our platform adapts
+                  to your growth.
+                </p>
+              </li>
+              <li class="flex">
+                <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
+                <p class="ml-2 text-lg">
+                  <span class="font-bold">Seamless Onboarding & Support: </span>
+                  Our dedicated customer success team is here to ensure you’re up
+                  and running in no time.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+      <div
+        class="absolute top-[-60%] left-[-40%] z-10 lg:top-[-80%] lg:left-[5%]"
       >
-        <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6"></div>
-        <div class="col-span-6 sm:col-span-3 lg:col-span-8 lg:p-6">
-          <h2 class="text-4xl font-bold">Why Triffecta?</h2>
-          <ul class="mt-6 space-y-8">
-            <li class="flex">
-              <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
-              <p class="ml-2 text-lg">
-                <span class="font-bold">Built for Retailers:</span> We understand
-                the nuances of retail media and have designed every feature with
-                your needs in mind.
-              </p>
-            </li>
-            <li class="flex">
-              <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
-              <p class="ml-2 text-lg">
-                <span class="font-bold">Scalable Solutions:</span> Whether you’re
-                managing a single store or multiple brands, our platform adapts to
-                your growth.
-              </p>
-            </li>
-            <li class="flex">
-              <span class="text-primary-dark mt-1 text-xl sm:mt-2.5">▼</span>
-              <p class="ml-2 text-lg">
-                <span class="font-bold">Seamless Onboarding & Support: </span> Our
-                dedicated customer success team is here to ensure you’re up and running
-                in no time.
-              </p>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <IconTriffecta
+          size="1400px"
+          strokeWidth="0.4"
+          transform="rotate(164)"
+        />
+      </div>
     </div>
   </section>
 
@@ -119,22 +200,29 @@ import FormSignupDemo from "../components/FormSignupDemo.jsx";
     </div>
   </section>
 
-  <section class="relative bg-white py-18">
-    <div class="container mx-auto">
-      <h2 class="text-6xl font-bold">
-        Ready to <span class="text-primary-dark">Simplify</span>, <span
-          class="text-primary-dark">Scale</span
-        >, and <span class="text-primary-dark">Succeed</span>?
-      </h2>
-      <p class="mt-6 mb-6 text-lg">
-        Discover how Triffecta can revolutionize your retail media campaigns.
-      </p>
-      <a
-        href="#demo-signup"
-        class="bg-primary-dark text-text rounded-lg px-15 py-2"
+  <section class="overflow-hidden bg-white py-18">
+    <div class="relative container mx-auto">
+      <div class="relative z-20">
+        <h2 class="text-6xl font-bold">
+          Ready to <span class="text-primary-dark">Simplify</span>, <span
+            class="text-primary-dark">Scale</span
+          >, and <span class="text-primary-dark">Succeed</span>?
+        </h2>
+        <p class="mt-6 mb-6 text-lg">
+          Discover how Triffecta can revolutionize your retail media campaigns.
+        </p>
+        <a
+          href="#demo-signup"
+          class="bg-primary-dark text-text rounded-lg px-15 py-2 font-bold"
+        >
+          Request a Demo
+        </a>
+      </div>
+      <div
+        class="absolute top-[-150%] left-[-130%] z-10 lg:top-[-350%] lg:left-[-8%]"
       >
-        Request a Demo
-      </a>
+        <IconTriffecta size="1400px" strokeWidth="0.4" transform="rotate(99)" />
+      </div>
     </div>
   </section>
 

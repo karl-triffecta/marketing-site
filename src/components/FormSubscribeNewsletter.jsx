@@ -25,7 +25,7 @@ export default function FormSubscribeNewsletter() {
         />
         <button
           type="submit"
-          class="bg-primary-dark text-text rounded-lg px-4 py-2"
+          class="bg-primary-dark text-text rounded-lg px-4 py-2 font-bold"
         >
           Subscribe
         </button>

@@ -1,6 +1,8 @@
 export default function IconTriffecta({
   size = "100px",
   strokeColor = "var(--color-primary)",
+  strokeWidth = "1.2",
+  transform = "rotate(180)",
 }) {
   return (
     <svg
@@ -10,10 +12,10 @@ export default function IconTriffecta({
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       stroke={strokeColor}
-      stroke-width="1.2"
+      stroke-width={strokeWidth}
       stroke-linecap="round"
       stroke-linejoin="miter"
-      transform="rotate(180)"
+      transform={transform}
     >
       <polygon points="12 3 2.5 21 21.5 21 12 3"></polygon>
     </svg>
