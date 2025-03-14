@@ -1,0 +1,33 @@
+---
+const baseUrl = import.meta.env.BASE_URL || "/";
+
+/*
+  There are supposedly typescript versions of particles inc for astro and preact but I just couldn't get them to work so just doing it the old fashioned way
+    https://github.com/tsparticles/tsparticles
+    https://github.com/tsparticles/astro/
+    https://github.com/tsparticles/preact/
+
+  particles.js manually copied
+    from
+      node_modules/particles.js/particles.js
+    to
+      src/js/vendor/particles.js
+*/
+---
+
+<script is:inline src=`${baseUrl}/js/vendor/particles.js`></script>
+<script>
+  const baseUrl = import.meta.env.BASE_URL || "/";
+  window.addEventListener("load", function () {
+    // @ts-ignore
+    window.particlesJS.load(
+      "particles-js",
+      `${baseUrl}/js/particles.json`,
+      function () {
+        console.log("Particles.js initialized!");
+      },
+    );
+  });
+</script>
+
+<div id="particles-js" class="absolute inset-0 z-0"></div>
