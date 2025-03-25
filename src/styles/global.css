@@ -8,6 +8,7 @@
     https://www.whocanuse.com/
     https://coolors.co/contrast-checker
 */
+/* Yellow Primary
 :root {
   --color-primary: #fad89a;
   --color-primary-dark: #f9ce88;
@@ -16,6 +17,21 @@
   --color-background: #f0f0f0;
   --color-text: #131a1b;
   --color-text-light: #4f4f4f;
+}
+*/
+
+/* Teal Primary */
+:root {
+  --color-primary: #009485;
+  --color-primary-dark: #009485ba;
+  --color-secondary: #263238;
+  --color-accent: #fad89a;
+  --color-accent-dark: #f9ce88;
+  --color-accent-light: #fce4b8;
+  --color-background: #f0f0f0;
+  --color-text: #131a1b;
+  --color-text-light: #4f4f4f;
+  --color-action-primary: #2f3637;
 }
 
 /* Dark mode theme (optional)
@@ -54,7 +70,7 @@
   }
 
   a {
-    color: var(--color-accent);
+    color: var(--color-primary-dark);
     text-decoration: none;
     cursor: pointer;
   }

@@ -1,8 +1,8 @@
 ---
 import "../styles/global.css";
+import Header from "../components/Header.jsx";
 import FormSubscribeNewsletter from "../components/FormSubscribeNewsletter.jsx";
 import LogoTriffecta from "../components/LogoTriffecta.jsx";
-
 import IconLinkedIn from "../components/IconLinkedIn.jsx";
 import IconTwitter from "../components/IconTwitter.jsx";
 
@@ -47,35 +47,14 @@ const base = "/marketing-site/";
     <link rel="manifest" href="site.webmanifest" />
   </head>
   <body class="bg-background">
-    <header class="bg-primary-dark p-4">
-      <div
-        class="container mx-auto flex flex-col items-center sm:flex-row sm:justify-between sm:px-8 md:px-12 lg:px-20"
-      >
-        <a href="#top" class="mb-4 text-center lg:mb-2" id="top">
-          <LogoTriffecta size={2} strokeColor="#FFFFFF" />
-        </a>
-        <nav
-          class="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
-        >
-          <a
-            href="#demo-signup"
-            class="bg-secondary text-primary rounded-lg px-15 py-2 font-bold"
-            >Request a Demo</a
-          >
-          <a
-            href="https://portal.triffecta.com/"
-            class="px-4 font-bold hover:underline">Sign In</a
-          >
-        </nav>
-      </div>
-    </header>
+    <Header client:load />
 
     <main>
       <slot />
     </main>
 
     <footer class="bg-white">
-      <section class="bg-primary-dark p-1.25"></section>
+      <section class="bg-triffecta-gradient p-1.25"></section>
 
       <div
         class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"

@@ -1,5 +1,5 @@
 export default function FormSubscribeNewsletter() {
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const values = Object.fromEntries(formData.entries());
@@ -25,7 +25,7 @@ export default function FormSubscribeNewsletter() {
         />
         <button
           type="submit"
-          class="bg-primary-dark text-text rounded-lg px-4 py-2 font-bold"
+          class="bg-action-primary text-accent rounded-lg px-4 py-2 font-bold"
         >
           Subscribe
         </button>

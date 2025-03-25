@@ -1,6 +1,6 @@
 export default function IconTriffecta({
   size = "100px",
-  strokeColor = "var(--color-primary)",
+  strokeColor = "var(--color-accent)",
   strokeWidth = "1.2",
   transform = "rotate(180)",
 }) {

@@ -1,4 +1,4 @@
-import IconTriffecta from "./IconTriffecta.jsx";
+import IconTriffecta from "./IconTriffecta.js";
 
 /*
 Sizes
@@ -8,7 +8,7 @@ Sizes
 */
 export default function LogoTriffecta({
   size = 1,
-  strokeColor = "var(--color-primary)",
+  strokeColor = "var(--color-accent)",
 }) {
   let largeTextSize = "27px",
     smallTextSize = "20px",
