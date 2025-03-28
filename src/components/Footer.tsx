@@ -32,7 +32,7 @@ export default function Footer() {
               <a href="privacy" class="hover:underline">
                 Privacy Policy
               </a>
-              <span>|</span>
+              <span class="mx-2">|</span>
               <a href="cookies" class="hover:underline">
                 Cookie Policy
               </a>

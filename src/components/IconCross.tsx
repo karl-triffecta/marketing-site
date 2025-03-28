@@ -1,5 +1,5 @@
 // https://www.svgrepo.com/svg/506172/cross
-export default function IconMenu({ size = "40px", strokeColor = "#FFFFFF" }) {
+export default function IconCross({ size = "40px", strokeColor = "#FFFFFF" }) {
   return (
     <svg
       width={size}
