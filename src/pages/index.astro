@@ -1,26 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
 import FadeIn from "../components/FadeIn.tsx";
-import FeatureScroller from "../components/FeatureScroller.js";
-import FormSignupDemo from "../components/FormSignupDemo.js";
+import FeatureScroller from "../components/FeatureScroller.tsx";
+import FormSignupDemo from "../components/FormSignupDemo.tsx";
+import IconTriffecta from "../components/IconTriffecta.tsx";
+import LinkButtonRequestDemo from "../components/LinkButtonRequestDemo.tsx";
+
 import ImgHeroTop from "../assets/hero-top.png";
 import ImgHeroBottom from "../assets/hero-bottom.png";
 import ImgMacbook from "../assets/mackbook.png";
-import IconTriffecta from "../components/IconTriffecta.js";
 ---
 
 <Layout>
-  <section class="relative bg-white py-8"></section>
-
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
-      <FadeIn client:load delay={400} duration={4000}>
+      <FadeIn client:load delay={300} duration={3000}>
         <div class="relative z-20">
           <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
-            <h1 class="text-5xl font-bold text-wrap text-clip md:text-6xl">
+            <h1
+              class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+            >
               Revolutionising Retail Media
             </h1>
-            <p class="text-accent-dark mt-4 inline-block text-5xl font-bold">
+            <p
+              class="text-accent-dark mt-4 inline-block text-4xl font-bold sm:text-5xl"
+            >
               Simplified, Scalable, Smarter
             </p>
           </div>
@@ -35,12 +40,7 @@ import IconTriffecta from "../components/IconTriffecta.js";
           </div>
 
           <div class="block">
-            <a
-              href="#demo-signup"
-              class="bg-action-primary text-accent rounded-lg px-15 py-2 font-bold"
-            >
-              Request a Demo
-            </a>
+            <LinkButtonRequestDemo />
           </div>
         </div>
         <div
@@ -60,7 +60,7 @@ import IconTriffecta from "../components/IconTriffecta.js";
       src={ImgHeroTop.src}
       alt="A picture of a woman shopping for groceries"
       fetchpriority="high"
-      class="absolute top-0 left-0 z-0 h-full w-full object-cover"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-[70%_center] sm:object-center"
     />
   </section>
 
@@ -70,7 +70,7 @@ import IconTriffecta from "../components/IconTriffecta.js";
 
   <section class="overflow-hidden bg-white py-10">
     <div class="relative container mx-auto">
-      <FadeIn client:load delay={400} duration={4000}>
+      <FadeIn client:load delay={300} duration={3000}>
         <div class="relative z-20">
           <section
             class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
@@ -151,7 +151,7 @@ import IconTriffecta from "../components/IconTriffecta.js";
 
   <section class="relative overflow-hidden bg-white py-18 text-white">
     <div class="relative z-10 container mx-auto">
-      <FadeIn client:load delay={400} duration={4000}>
+      <FadeIn client:load delay={300} duration={3000}>
         <div class="relative z-20">
           <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
             <h2 class="text-6xl font-bold">
@@ -171,12 +171,7 @@ import IconTriffecta from "../components/IconTriffecta.js";
           </div>
 
           <div class="block">
-            <a
-              href="#demo-signup"
-              class="bg-action-primary text-accent rounded-lg px-15 py-2 font-bold"
-            >
-              Request a Demo
-            </a>
+            <LinkButtonRequestDemo />
           </div>
         </div>
         <div

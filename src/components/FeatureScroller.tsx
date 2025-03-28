@@ -73,7 +73,7 @@ export default function FeatureScrollStack() {
               <div
                 class={`${className} lg:sticky lg:top-[100px] ${marginTop}`}
               >
-                <div class="relative rounded-2xl bg-white p-2.5 shadow">
+                <div class="relative rounded-2xl bg-white p-2.5">
                   <div class="relative flex lg:h-64 items-center justify-center">
                     <img
                       src={feature.image}

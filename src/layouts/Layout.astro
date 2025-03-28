@@ -1,10 +1,7 @@
 ---
 import "../styles/global.css";
-import Header from "../components/Header.jsx";
-import FormSubscribeNewsletter from "../components/FormSubscribeNewsletter.jsx";
-import LogoTriffecta from "../components/LogoTriffecta.jsx";
-import IconLinkedIn from "../components/IconLinkedIn.jsx";
-import IconTwitter from "../components/IconTwitter.jsx";
+import Header from "../components/Header.tsx";
+import Footer from "../components/Footer.tsx";
 
 // TODO: When using Prod switch
 const base = "/marketing-site/";
@@ -48,44 +45,9 @@ const base = "/marketing-site/";
   </head>
   <body class="bg-background">
     <Header client:load />
-
     <main>
       <slot />
     </main>
-
-    <footer class="bg-white">
-      <section class="bg-triffecta-gradient p-1.25"></section>
-
-      <div
-        class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"
-      >
-        <div class="mb-8 flex-1 sm:mb-0">
-          <FormSubscribeNewsletter client:visible />
-        </div>
-        <div class="flex flex-1 flex-col items-end justify-between pl-10">
-          <a href="#top" class="mb-8 text-center lg:mb-0">
-            <LogoTriffecta />
-          </a>
-          <div class="flex flex-col items-end space-y-2">
-            <div>
-              <div class="flex space-x-4">
-                <a href="https://linkedin.com" target="_blank">
-                  <IconLinkedIn />
-                </a>
-                <a href="https://x.com" target="_blank">
-                  <IconTwitter />
-                </a>
-              </div>
-            </div>
-            <p>© 2025 Triffecta. All rights reserved.</p>
-            <div>
-              <a href="privacy" class="hover:underline">Privacy Policy</a>
-              <span>|</span>
-              <a href="cookies" class="hover:underline">Cookie Policy</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <Footer client:load />
   </body>
 </html>

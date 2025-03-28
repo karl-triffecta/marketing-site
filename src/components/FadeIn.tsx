@@ -37,7 +37,7 @@ export default function FadeIn({
   return (
     <div
       ref={ref}
-      class={`triffecta-fade-in relative transition-all duration-700 ease-out will-change-transform ${className}`}
+      class={`triffecta-fade-in transition-all duration-700 ease-out will-change-transform ${className}`}
       style={{
         transitionDelay: `${delay}ms`,
         transitionDuration: `${duration}ms`,
