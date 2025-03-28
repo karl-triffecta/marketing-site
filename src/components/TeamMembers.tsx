@@ -1,8 +1,8 @@
 import ImgTeamKen from "../assets/team/ken.png";
 import ImgTeamMark from "../assets/team/mark.png";
 import ImgTeamLesley from "../assets/team/lesley.png";
-import IconLinkedIn from "./IconLinkedIn";
-import IconDetective from "./IconDetective";
+import IconLinkedIn from "./icon/IconLinkedIn";
+import IconIncognito from "./icon/IconIncognito";
 import FadeIn from "./FadeIn";
 
 const team = [
@@ -71,7 +71,7 @@ export default function TeamMembers() {
                         />
                       ) : (
                         <div class="relative top-[-1%]">
-                          <IconDetective
+                          <IconIncognito
                             size="200px"
                             stroke="var(--color-primary-dark)"
                           />

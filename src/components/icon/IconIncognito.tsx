@@ -1,5 +1,5 @@
-// https://iconmonstr.com/linkedin-3-svg/
-export default function IconDetective({ size = "25px", stroke = "#000000" }) {
+// https://www.svgrepo.com/svg/376087/incognito
+export default function IconIncognito({ size = "25px", stroke = "#000000" }) {
   return (
     <svg
       width={size}

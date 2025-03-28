@@ -1,4 +1,4 @@
-import IconTriffecta from "./IconTriffecta.js";
+import IconTriffecta from "./icon/IconTriffecta.js";
 
 /*
 Sizes

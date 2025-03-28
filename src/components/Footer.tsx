@@ -1,7 +1,7 @@
 import LogoTriffecta from "./LogoTriffecta.js";
-import FormSubscribeNewsletter from "./FormSubscribeNewsletter.js";
-import IconLinkedIn from "./IconLinkedIn.js";
-import IconTwitter from "./IconTwitter.js";
+import FormSubscribeNewsletter from "./FormSubscribeNewsletter.tsx";
+import IconLinkedIn from "./icon/IconLinkedIn.tsx";
+import IconTwitter from "./icon/IconTwitter.tsx";
 
 export default function Footer() {
   return (

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "preact/hooks";
-import LogoTriffecta from "./LogoTriffecta.jsx";
+import LogoTriffecta from "./LogoTriffecta.tsx";
 import LinkButtonRequestDemo from "./LinkButtonRequestDemo.tsx";
 import HeaderLinks from "./HeaderLinks.tsx";
-import IconMenu from "./IconMenu.tsx";
-import IconCross from "./IconCross.tsx";
+import IconMenu from "./icon/IconMenu.tsx";
+import IconCross from "./icon/IconCross.tsx";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);

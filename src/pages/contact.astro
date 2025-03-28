@@ -1,9 +1,67 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+import IconTriffecta from "../components/icon/IconTriffecta.tsx";
+
+import ImgHeroTop from "../assets/hero-top.png";
 ---
 
 <Layout>
-  <section class="relative bg-white py-8">
-    <div>Contact page</div>
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative z-10 container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1
+            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+          >
+            Contact Us
+          </h1>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-20%] left-[-75%] z-10 sm:top-[-300%] sm:left-[-20%]"
+      >
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
+    </div>
+
+    <img
+      id="hero"
+      src={ImgHeroTop.src}
+      alt="A picture of a woman shopping for groceries"
+      fetchpriority="high"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-top"
+    />
+  </section>
+
+  <section class="overflow-hidden bg-white py-10">
+    <div class="relative container mx-auto text-lg">
+      <p>
+        If you have any inquiries or are curious about what Triffecta does,
+        please send us a message and a member of our team will contact you
+        shortly.
+      </p>
+
+      <p class="mt-6">
+        Green Lea,<br />
+        Mytholmroyd,<br />
+        Hebden Bridge,<br />
+        West Yorkshire,<br />
+        HX7 5AW
+      </p>
+
+      <p class="mt-6">
+        <a href="tel:+447790831528">07790 831528</a><br /><a
+          class="text-primary-dark mt-4 hover:underline"
+          href="mailto:sales@triffecta.com">sales@triffecta.com</a
+        >
+      </p>
+
+      <p class="mt-6">Company Number: 15554685</p>
+    </div>
   </section>
 </Layout>

@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
+import DevConsole from "../components/DevConsole.astro";
 
 // TODO: When using Prod switch
 const base = "/marketing-site/";
@@ -49,5 +50,6 @@ const base = "/marketing-site/";
       <slot />
     </main>
     <Footer client:load />
+    <DevConsole client:load />
   </body>
 </html>
