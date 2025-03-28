@@ -79,3 +79,13 @@
     text-decoration: underline;
   }
 }
+
+.triffecta-fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.triffecta-fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
