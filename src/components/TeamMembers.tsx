@@ -9,38 +9,38 @@ const team = [
   {
     image: ImgTeamKen.src,
     name: "Ken Platt",
-    title: "CEO & Co-Founder",
+    title: "Founder & CEO",
     link: "https://www.linkedin.com/in/ken-platt-retail-media-expert/",
     description:
-      "CEO and Co-Founder of Triffecta, Ken is a seasoned expert in retail media networks. With a wealth of experience in the industry, he has been instrumental in shaping the company's vision and strategy.",
+      "eCommerce expert and Retail Media Veteran with 20+ years experience spanning the retail, consultancy & agency industries. Led Retail Media business through acquisition, and scales to $80 across the US in 2 years.",
   },
   {
     image: ImgTeamMark.src,
     name: "Mark Briggs",
-    title: "CTO & Co-Founder",
+    title: "CTO",
     link: "https://www.linkedin.com/in/mark-briggs-1755394b/",
     description:
-      "CTO and Co-Founder of Triffecta, Mark is a technology visionary with a passion for innovation. He leads the development of cutting-edge solutions that drive the company's success.",
+      "Product leader with 20 years experience across multiple industries inc. financial & ad-tech. Worked with US retailers and brands for the last 5 years.",
   },
   {
     image: ImgTeamLesley.src,
     name: "Lesley Mace",
-    title: "Sales & Marketing",
+    title: "Operations & Customer Lead",
     link: "https://www.linkedin.com/in/lesley-mace-3471409/",
     description:
-      "Sales and Marketing professional at Triffecta, Lesley is dedicated to building strong relationships with clients and partners. Her expertise in sales and marketing strategies has been key to the company's growth.",
+      "Global Alliance Director. Led customer success operation in retail media across 10 US retailers.",
   },
   {
     name: "Incognito",
     title: "Technical Wizard",
     description:
-      "Over a decade of technical experience building software and systems. Incognito is a master of all things technical, with a knack for solving complex problems and creating innovative solutions.",
+      "Over a decade of technical experience building complex software and systems.",
   },
   {
     name: "Incognito",
     title: "Technical Wizard",
     description:
-      "Also with a decade of technical experience building software and systems. Incognito is a master of all things technical, with a knack for solving complex problems and creating innovative solutions.",
+      "Over a decade of technical experience building complex software and systems.",
   },
   {
     name: "Incognito",
