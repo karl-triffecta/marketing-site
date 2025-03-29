@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
+import CookieBanner from "../components/CookieBanner.tsx";
 import DevConsole from "../components/DevConsole.astro";
 
 // TODO: When using Prod switch
@@ -25,8 +26,9 @@ const base = "/marketing-site/";
       content="Triffecta | Revolutionizing Retail Media"
     />
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1LG8PF9LR"
+    ></script>
     <!--
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1LG8PF9LR"></script>
     TODO: SEO tags... <meta property="og:title" content="">
     -->
 
@@ -51,5 +53,6 @@ const base = "/marketing-site/";
     </main>
     <Footer client:load />
     <DevConsole client:load />
+    <CookieBanner baseUrl={base} client:load />
   </body>
 </html>
