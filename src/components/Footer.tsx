@@ -19,10 +19,18 @@ export default function Footer() {
           <div class="flex flex-col items-end space-y-2">
             <div>
               <div class="flex space-x-4">
-                <a href="https://linkedin.com" target="_blank">
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  aria-label="Read more about Triffecta on LinkedIn"
+                >
                   <IconLinkedIn />
                 </a>
-                <a href="https://x.com" target="_blank">
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  aria-label="Read more about Triffecta on X"
+                >
                   <IconTwitter />
                 </a>
               </div>
