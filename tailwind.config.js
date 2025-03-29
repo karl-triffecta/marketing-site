@@ -11,11 +11,21 @@ export default {
       container: {
         center: true,
         padding: {
-          DEFAULT: "32px",
-          sm: "32px",
-          md: "48px",
-          lg: "80px",
+          DEFAULT: "1rem", // 16px
+          sm: "1rem",
+          md: "2rem",
+          lg: "2rem", // 32px instead of 48px
+          xl: "4rem", // 64px
+          "2xl": "6rem", // 96px for very large screens
         },
+      },
+      screens: {
+        sm: "640px",
+        md: "768px",
+        //lg: "1024px",
+        lg: "900px", // Use more space under 1300px
+        xl: "1280px",
+        "2xl": "1536px",
       },
       colors: {
         primary: "var(--color-primary)",
