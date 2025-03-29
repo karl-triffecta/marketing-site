@@ -13,6 +13,7 @@ export default function Header() {
       setScrolled(window.scrollY > 50);
     };
 
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -20,9 +21,9 @@ export default function Header() {
   return (
     <header class="relative z-50">
       <div
-        class={`overflow-hidden transition-all duration-300 ${
+        class={`z-40 overflow-hidden transition-all duration-300 ${
           scrolled
-            ? "fixed left-0 z-40 w-full bg-white sm:top-0 sm:py-3"
+            ? "fixed left-0 w-full bg-white shadow-lg sm:top-0 sm:py-3"
             : "bg-primary p-1 sm:p-4"
         }`}
       >

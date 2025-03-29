@@ -34,13 +34,13 @@ const team = [
     name: "Incognito",
     title: "Technical Wizard",
     description:
-      "Over a decade of technical experience building complex software and systems.",
+      "20+ years experience in leading, architecting & building eCommerce & ad tech solutions",
   },
   {
     name: "Incognito",
     title: "Technical Wizard",
     description:
-      "Over a decade of technical experience building complex software and systems.",
+      "15+ years of web dev & engineering across eCommerce & ad tech",
   },
   {
     name: "Incognito",

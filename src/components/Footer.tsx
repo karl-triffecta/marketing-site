@@ -35,7 +35,7 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-            <p>© 2025 Triffecta. All rights reserved.</p>
+            <p>© 2025 Triffecta</p>
             <div>
               <a href="privacy" class="hover:underline">
                 Privacy Policy
