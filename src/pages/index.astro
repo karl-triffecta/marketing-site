@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import FormCalendlyDemo from "../components/FormCalendlyDemo.astro";
 
 import FadeIn from "../components/FadeIn.tsx";
 import FeatureScroller from "../components/FeatureScroller.tsx";
-import FormSignupDemo from "../components/FormSignupDemo.tsx";
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 import LinkButtonRequestDemo from "../components/LinkButtonRequestDemo.tsx";
 
@@ -207,4 +207,6 @@ import ImgMacbook from "../assets/mackbook.png";
     <FormSignupDemo client:visible />
   </section>
   -->
+
+  <FormCalendlyDemo client:load />
 </Layout>
