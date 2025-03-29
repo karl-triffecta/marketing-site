@@ -1,3 +1,5 @@
+import TriffectaButton from "./TriffectaButton";
+
 export default function FormSignupDemo() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -41,12 +43,7 @@ export default function FormSignupDemo() {
           type="email"
           class="focus:border-accent rounded-xl border-1 border-[#CCCCCC] py-2 pl-4"
         />
-        <button
-          type="submit"
-          class="bg-action-primary text-accent rounded-lg px-4 py-2 font-bold"
-        >
-          Request a Demo
-        </button>
+        <TriffectaButton type="submit">Request a Demo</TriffectaButton>
       </form>
     </div>
   );

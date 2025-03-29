@@ -1,5 +1,8 @@
+import TriffectaButton from "./TriffectaButton";
+
 export default function FormSubscribeNewsletter() {
-  const handleSubmit = (event: any) => {
+  // @ts-ignore
+  const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const values = Object.fromEntries(formData.entries());
@@ -23,12 +26,7 @@ export default function FormSubscribeNewsletter() {
           type="email"
           class="rounded-xl border-1 border-[#CCCCCC] py-2 pl-4"
         />
-        <button
-          type="submit"
-          class="bg-action-primary text-accent rounded-lg px-4 py-2 font-bold"
-        >
-          Subscribe
-        </button>
+        <TriffectaButton type="submit">Subscribe</TriffectaButton>
       </form>
     </div>
   );
