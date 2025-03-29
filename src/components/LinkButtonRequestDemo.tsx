@@ -5,7 +5,7 @@ export default function LinkButtonRequestDemo({
   free = false,
 }) {
   return (
-    <TriffectaButton href="/demo" className={classes}>
+    <TriffectaButton href="demo" className={classes}>
       {free ? `Book a free Demo` : `Book a Demo`}
     </TriffectaButton>
   );

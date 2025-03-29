@@ -23,7 +23,7 @@ export default function Header() {
       <div
         class={`z-40 overflow-hidden transition-all duration-300 ${
           scrolled
-            ? "fixed left-0 w-full bg-white shadow-lg sm:top-0 sm:py-3"
+            ? "fixed top-0 left-0 w-full bg-white shadow-lg sm:py-3"
             : "bg-primary p-1 sm:p-4"
         }`}
       >
@@ -51,7 +51,7 @@ export default function Header() {
 
         {/* Mobile Header */}
         <div class="container mx-auto flex items-center justify-between p-3 sm:hidden">
-          <a href="#top" id="top" class="ml-2 flex-shrink-0 text-center">
+          <a href="" class="ml-2 flex-shrink-0 text-center">
             <LogoTriffecta
               size={1}
               strokeColor={scrolled ? "#fad89a" : "#FFFFFF"}
