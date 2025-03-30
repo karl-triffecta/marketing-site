@@ -24,12 +24,13 @@ export default function Footer() {
             <div>
               <div class="flex space-x-4">
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/company/triffecta-com/"
                   target="_blank"
                   aria-label="Read more about Triffecta on LinkedIn"
                 >
                   <IconLinkedIn />
                 </a>
+                {/*
                 <a
                   href="https://x.com"
                   target="_blank"
@@ -37,6 +38,7 @@ export default function Footer() {
                 >
                   <IconTwitter />
                 </a>
+                */}
               </div>
             </div>
             <p>© 2025 Triffecta</p>
