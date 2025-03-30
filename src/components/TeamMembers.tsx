@@ -1,4 +1,4 @@
-import ImgTeamKen from "../assets/team/ken.png";
+import ImgTeamKen from "../assets/team/ken.jpeg";
 import ImgTeamMark from "../assets/team/mark.png";
 import ImgTeamLesley from "../assets/team/lesley.png";
 import IconLinkedIn from "./icon/IconLinkedIn";
@@ -64,12 +64,13 @@ export default function TeamMembers() {
               <FadeIn delay={300 * index} duration={3000}>
                 <div class="relative">
                   <div class="relative rounded-2xl bg-white">
-                    <div class="relative flex h-70 items-center justify-center">
+                    <div class="relative flex h-84 items-center justify-center md:h-74">
                       {member.image ? (
                         <img
                           src={member.image}
                           alt={`A picture of ${member.name}`}
-                          class="absolute top-0 left-0 z-0 h-full w-full rounded-2xl object-cover object-center"
+                          class="absolute top-0 left-0 z-0 h-full w-full rounded-2xl object-cover object-top"
+                          style="filter: sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1);"
                         />
                       ) : (
                         <div class="relative top-[-1%]">
