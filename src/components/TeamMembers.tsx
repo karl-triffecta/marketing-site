@@ -42,11 +42,13 @@ const team = [
     description:
       "15+ years of web dev & engineering across eCommerce & ad tech",
   },
+  /*
   {
     name: "Incognito",
     title: "",
     description: "",
   },
+  */
 ];
 
 export default function TeamMembers() {
