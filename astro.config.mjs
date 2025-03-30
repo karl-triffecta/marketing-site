@@ -14,6 +14,7 @@ export default defineConfig({
   */
   output: "static",
   site: "https://triffecta.com",
+  base: "/",
   //base: "/marketing-site",
   //site: "http://localhost:4321/marketing-site/",
   /*
