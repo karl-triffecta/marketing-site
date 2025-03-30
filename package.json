@@ -13,6 +13,7 @@
     "@astrojs/preact": "^4.0.5",
     "@tailwindcss/vite": "^4.0.13",
     "astro": "^5.4.3",
+    "astro-seo": "^0.8.4",
     "particles.js": "^2.0.0",
     "preact": "^10.26.4",
     "tailwindcss": "^4.0.13"

@@ -1,9 +1,13 @@
 ---
 import "../styles/global.css";
+import { SEO } from "astro-seo";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
 import CookieBanner from "../components/CookieBanner.tsx";
 import DevConsole from "../components/DevConsole.astro";
+
+// SEO
+import ImgHeroTop from "../assets/hero-top.png";
 
 // TODO: When using Prod switch
 const base = "/marketing-site/";
@@ -20,17 +24,62 @@ const base = "/marketing-site/";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <meta name="generator" content={Astro.generator} />
-    <title>Triffecta | Revolutionizing Retail Media</title>
+    <title>Triffecta | Revolutionizing Retail Media at Scale</title>
     <meta
       name="description"
-      content="Triffecta | Revolutionizing Retail Media"
+      content="Triffecta | Revolutionizing Retail Media at Scale"
     />
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1LG8PF9LR"
     ></script>
+
     <!--
-    TODO: SEO tags... <meta property="og:title" content="">
+    twitter={{
+      creator: "@triffecta-com",
+    }}
     -->
+    <SEO
+      title="Triffecta | Revolutionizing Retail Media at Scale"
+      description="Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers"
+      openGraph={{
+        basic: {
+          title: "Triffecta | Revolutionizing Retail Media at Scale",
+          type: "website",
+          image: ImgHeroTop.src,
+        },
+      }}
+      extend={{
+        link: [
+          { rel: "icon", href: `${base}favicon.ico`, sizes: "any" },
+          { rel: "icon", href: `${base}favicon.svg`, type: "image/svg+xml" },
+          { rel: "apple-touch-icon", href: `${base}icon.png` },
+          { rel: "manifest", href: `${base}site.webmanifest` },
+          { rel: "shortcut icon", href: `${base}favicon.ico` },
+        ],
+        meta: [
+          { name: "twitter:image", content: "/hero-top.png" },
+          {
+            name: "twitter:title",
+            content: "Triffecta | Retail Media Simplified",
+          },
+          {
+            name: "twitter:description",
+            content:
+              "Run one campaign across multiple retailers with Triffecta. Experience automated retail media, clean data, and real-time reporting",
+          },
+          { property: "og:url", content: "https://triffecta.com" },
+          { property: "og:type", content: "website" },
+          {
+            property: "og:image:alt",
+            content: "Triffecta platform hero banner",
+          },
+          {
+            name: "linkedin:profile",
+            content: "https://www.linkedin.com/company/triffecta-com/",
+          },
+        ],
+      }}
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
