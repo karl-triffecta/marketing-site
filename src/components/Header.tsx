@@ -51,7 +51,7 @@ export default function Header() {
 
         {/* Mobile Header */}
         <div class="container mx-auto flex items-center justify-between p-3 sm:hidden">
-          <a href="" class="ml-2 flex-shrink-0 text-center">
+          <a href="/" class="ml-2 flex-shrink-0 text-center">
             <LogoTriffecta
               size={1}
               strokeColor={scrolled ? "#fad89a" : "#FFFFFF"}
