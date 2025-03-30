@@ -1,8 +1,165 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import FormCalendlyDemo from "../components/FormCalendlyDemo.astro";
+import IconPlus from "../components/icon/IconPlus.tsx";
+import Accordion from "../components/Accordion";
 ---
 
 <Layout>
   <FormCalendlyDemo />
+
+  <section class="overflow-hidden bg-white py-10">
+    <div class="relative container mx-auto">
+      <div class="relative z-20">
+        <section
+          class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
+        >
+          <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
+            <h2 class="text-4xl font-bold">Frequently asked questions</h2>
+          </div>
+          <div class="col-span-6 sm:col-span-3 lg:col-span-8 lg:p-6">
+            <ul class="mt-6">
+              <li class="border-secondary border-t-1 py-8">
+                <Accordion
+                  client:load
+                  title="What are the benefits of getting a demo?"
+                >
+                  <p class="mt-6 text-lg">
+                    Getting a demo of Triffecta offers you:
+                  </p>
+                  <ol>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >One Campaign. Full Reach:
+                        </span>See how you can run a single campaign across
+                        multiple top-tier retailers — no duplicate assets, no
+                        platform juggling.
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >Automated Where It Matters:
+                        </span>From setup to reporting, watch how Triffecta cuts
+                        manual work and frees your team to focus on strategy.
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >Clean, Standardized Reporting:
+                        </span>Get a preview of aggregated data that actually
+                        makes sense — finally.
+                      </p>
+                    </li>
+                  </ol>
+                  <p class="mt-4 text-lg">
+                    Experience the impact of Triffecta's retail media solution
+                    firsthand by booking a demo now.
+                  </p>
+                </Accordion>
+              </li>
+              <li class="border-secondary border-t-1 py-8">
+                <Accordion title="Who is Triffecta for?">
+                  <ol>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold">Top-Tier Brands: </span>Already
+                        active in retail media? Run one campaign across top
+                        retailers with clean data and automated workflows — no
+                        more platform juggling..
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold">Growth Brands: </span>Want
+                        access to a powerful retail media network that rivals
+                        the big players? Access a powerful retail media network
+                        without the complexity or cost. One campaign, one
+                        dashboard, full reach.
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold">Agencies: </span>Managing
+                        campaigns for multiple clients? Simplify multi-client
+                        execution, streamline reporting, and focus on strategy —
+                        not spreadsheets.
+                      </p>
+                    </li>
+                  </ol>
+                </Accordion>
+              </li>
+              <li class="border-secondary border-t-1 border-b-1 py-8">
+                <Accordion title="Is Triffecta the right tool for me?">
+                  <ol>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >You’re tired of duplicating campaigns across
+                          platforms:
+                        </span>Triffecta lets you launch once and run everywhere
+                        — cutting setup time and scaling reach without the
+                        chaos.
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >You need clean, standardized data to prove ROI:
+                        </span>Get full visibility, own your data, and show
+                        results that unlock bigger budgets.
+                      </p>
+                    </li>
+                    <li class="mt-4 flex">
+                      <span class="text-accent-dark mt-1 text-xl sm:mt-2.5"
+                        >▼</span
+                      >
+                      <p class="ml-2 text-lg">
+                        <span class="font-bold"
+                          >You want smarter media performance, not just more
+                          spend:
+                        </span>Triffecta uses AI to automatically allocate
+                        budget to top-performing placements — across retailers
+                        and formats — automatically.
+                      </p>
+                    </li>
+                  </ol>
+                  <p class="mt-4 text-lg">
+                    If that sounds like you, it’s time to see Triffecta in
+                    action. Book your demo today.
+                  </p>
+                </Accordion>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
 </Layout>
