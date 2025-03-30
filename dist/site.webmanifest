@@ -1,12 +1,15 @@
 {
-  "short_name": "",
-  "name": "",
-  "icons": [{
-    "src": "icon.png",
-    "type": "image/png",
-    "sizes": "192x192"
-  }],
+  "short_name": "Triffecta",
+  "name": "Triffecta – Revolutionizing Retail Media at Scale",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
   "start_url": "/?utm_source=homescreen",
   "background_color": "#f0f0f0",
-  "theme_color": "#fad89a"
+  "theme_color": "#fad89a",
+  "display": "standalone"
 }
