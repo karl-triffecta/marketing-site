@@ -20,18 +20,27 @@ const base = "/marketing-site/";
     <!-- When not hosted on domain -->
     <base href={base} />
 
+    <title>Triffecta | Revolutionizing Retail Media at Scale</title>
+    <meta name="generator" content={Astro.generator} />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fad89a" />
+    <meta name="application-name" content="Triffecta" />
+    <meta name="apple-mobile-web-app-title" content="Triffecta" />
 
-    <meta name="generator" content={Astro.generator} />
-    <title>Triffecta | Revolutionizing Retail Media at Scale</title>
     <meta
       name="description"
-      content="Triffecta | Revolutionizing Retail Media at Scale"
+      content="Triffecta simplifies retail media execution with AI-powered automation, standardized data, and single-campaign activation across multiple retailers."
     />
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1LG8PF9LR"
-    ></script>
+    <meta name="author" content="Triffecta" />
+    <meta
+      name="keywords"
+      content="retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="google" content="notranslate" />
 
     <!--
     twitter={{
@@ -71,7 +80,7 @@ const base = "/marketing-site/";
           { property: "og:type", content: "website" },
           {
             property: "og:image:alt",
-            content: "Triffecta platform hero banner",
+            content: "Triffecta making retail media easy",
           },
           {
             name: "linkedin:profile",
@@ -88,12 +97,8 @@ const base = "/marketing-site/";
       rel="stylesheet"
     />
 
-    <link rel="icon" href={`${base}favicon.ico`} sizes="any" />
-    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/icon.png" />
-
-    <meta name="theme-color" content="#fad89a" />
-    <link rel="manifest" href="site.webmanifest" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C1LG8PF9LR"
+    ></script>
   </head>
   <body class="bg-background">
     <Header client:load />
