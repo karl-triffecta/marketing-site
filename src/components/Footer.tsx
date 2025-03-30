@@ -13,7 +13,11 @@ export default function Footer() {
           <FormSubscribeNewsletter />
         </div>
         <div class="flex flex-1 flex-col items-end justify-between pl-10">
-          <a href="" class="mb-8 text-center lg:mb-0">
+          <a
+            href=""
+            class="mb-8 text-center lg:mb-0"
+            aria-label="Link back to the Triffecta homepage"
+          >
             <LogoTriffecta />
           </a>
           <div class="flex flex-col items-end space-y-2">

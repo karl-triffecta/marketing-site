@@ -30,8 +30,8 @@ export default function Header() {
         {/* Desktop Header */}
         <div class="container mx-auto hidden items-center justify-between px-4 sm:flex sm:px-8 lg:px-20">
           <a
-            href="#top"
-            id="top"
+            aria-label="Link back to the Triffecta homepage"
+            href=""
             className={`block flex-shrink-0 text-center ${
               scrolled ? "mb-0" : "mb-2"
             }`}
