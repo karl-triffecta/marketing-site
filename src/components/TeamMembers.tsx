@@ -12,7 +12,7 @@ const team = [
     title: "Founder & CEO",
     link: "https://www.linkedin.com/in/ken-platt-retail-media-expert/",
     description:
-      "eCommerce expert and Retail Media Veteran with 20+ years experience spanning the retail, consultancy & agency industries. Led Retail Media business through acquisition, and scales to $80 across the US in 2 years.",
+      "eCommerce expert and Retail Media Veteran with 20+ years experience spanning the retail, consultancy & agency industries.",
   },
   {
     image: ImgTeamMark.src,
