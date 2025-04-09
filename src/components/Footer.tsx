@@ -9,10 +9,7 @@ export default function Footer() {
       <section class="bg-triffecta-gradient p-1.25"></section>
 
       <div class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20">
-        <div class="mb-8 flex-1 sm:mb-0">
-          <p>© 2025 Triffecta</p>
-          {/*<FormSubscribeNewsletter />*/}
-        </div>
+        <div class="mb-8 flex-1 sm:mb-0">{<FormSubscribeNewsletter />}</div>
 
         <div class="flex flex-1 flex-col items-end justify-between pl-10">
           <a
@@ -43,15 +40,13 @@ export default function Footer() {
                 */}
               </div>
             </div>
-            {/*
             <p>© 2025 Triffecta</p>
-            */}
             <div>
-              <a href="privacy" class="hover:underline">
+              <a href="/privacy" class="hover:underline">
                 Privacy Policy
               </a>
               <span class="mx-2">|</span>
-              <a href="cookies" class="hover:underline">
+              <a href="/cookies" class="hover:underline">
                 Cookie Policy
               </a>
             </div>
