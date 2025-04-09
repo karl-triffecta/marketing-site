@@ -11,7 +11,13 @@ export default {
       },
     },
     {
-      files: ["src/**/*.jsx", "src/**/*.tsx"],
+      files: ["src/**/*.ts", "src/**/*.tsx"],
+      options: {
+        parser: "typescript",
+      },
+    },
+    {
+      files: ["src/**/*.jsx"],
       options: {
         parser: "babel",
       },
