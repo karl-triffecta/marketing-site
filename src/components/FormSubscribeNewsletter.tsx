@@ -1,5 +1,6 @@
 import { useState } from "preact/hooks";
 import TriffectaButton from "./TriffectaButton";
+import IconTick from "./icon/IconTick";
 
 export default function FormSubscribeNewsletter() {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ export default function FormSubscribeNewsletter() {
     }
 
     if (!isOptedIn) {
-      setError("You must agree to the privacy policy.");
+      setError("You must agree to the privacy policy to subscribe.");
       return;
     }
 
@@ -62,7 +63,7 @@ export default function FormSubscribeNewsletter() {
   return (
     <div class="rounded-2xl bg-white lg:w-md">
       {success ? (
-        <div class="mb-4 rounded-lg bg-green-100 p-4 text-green-700">
+        <div class="bg-success-light text-success mb-4 rounded-lg p-4 font-bold">
           {success}
         </div>
       ) : (
@@ -88,17 +89,24 @@ export default function FormSubscribeNewsletter() {
                 type="email"
                 value={email}
                 onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
-                class="mb-2 w-full rounded-xl border-1 border-[#CCCCCC] py-2 pl-4"
+                class="focus:border-primary mb-2 w-full rounded-xl border-1 border-[#CCCCCC] py-2 pl-4 focus:outline-none"
                 disabled={loading}
               />
 
-              <label class="flex items-center space-x-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={isOptedIn}
-                  onChange={() => setIsOptedIn(!isOptedIn)}
-                  disabled={loading}
-                />
+              <label class="flex cursor-pointer items-center space-x-3 text-sm select-none">
+                <div class="relative">
+                  <input
+                    name="notificationOptIn"
+                    class="peer absolute h-5 w-5 cursor-pointer opacity-0"
+                    type="checkbox"
+                    checked={isOptedIn}
+                    onChange={() => setIsOptedIn(!isOptedIn)}
+                    disabled={loading}
+                  />
+                  <div class="peer-checked:border-primary peer-checked:bg-primary flex h-5 w-5 items-center justify-center rounded border border-gray-400 transition">
+                    <IconTick strokeColor={"#FFFFFF"} />
+                  </div>
+                </div>
                 <span>
                   I agree to the{" "}
                   <a
@@ -113,14 +121,11 @@ export default function FormSubscribeNewsletter() {
               </label>
             </div>
 
-            <TriffectaButton
-              type="submit"
-              disabled={loading || !isOptedIn || !validateEmail(email)}
-            >
+            {error && <p class="text-error text-sm font-bold">{error}</p>}
+
+            <TriffectaButton type="submit" disabled={loading}>
               {loading ? "Submitting..." : "Subscribe"}
             </TriffectaButton>
-
-            {error && <p class="text-sm text-red-600">{error}</p>}
           </fieldset>
         </form>
       )}

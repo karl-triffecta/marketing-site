@@ -38,6 +38,10 @@ export default {
         textLight: "var(--color-text-light)",
         actionPrimary: "var(--color-action-primary)",
         gradient: "var(--color-gradient)",
+        error: "var(--color-error)",
+        errorLight: "var(--color-error-light)",
+        success: "var(--color-success)",
+        successLight: "var(--color-success-light)",
       },
       backgroundImage: {
         "triffecta-gradient": "linear-gradient(90deg, #fad89a 25%, #4db6ac)",

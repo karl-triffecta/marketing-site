@@ -32,6 +32,10 @@
   --color-text: #131a1b;
   --color-text-light: #4f4f4f;
   --color-action-primary: #2f3637;
+  --color-error: #e53935;
+  --color-error-light: #fdeded;
+  --color-success: #2e7d32;
+  --color-success-light: #edf7ed;
 }
 
 /* Dark mode theme (optional)

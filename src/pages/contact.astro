@@ -4,6 +4,8 @@ import Layout from "../layouts/Layout.astro";
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
 import ImgHeroTop from "../assets/hero-top.png";
+
+import FormContact from "../components/FormContact.tsx";
 ---
 
 <Layout>
@@ -38,30 +40,42 @@ import ImgHeroTop from "../assets/hero-top.png";
     />
   </section>
 
-  <section class="overflow-hidden bg-white py-10">
-    <div class="relative container mx-auto text-lg">
-      <p>
-        If you have any inquiries or are curious about what Triffecta does,
-        please send us a message and a member of our team will contact you
-        shortly.
-      </p>
+  <section class="mx-auto mb-8 py-6">
+    <div class="relative container">
+      <div class="lg:p-6">
+        <p class="text-lg">
+          If you have any inquiries or are curious about what Triffecta does,
+          please send us a message and a member of our team will contact you
+          shortly.
+        </p>
+      </div>
+      <div
+        class="grid grid-cols-4 gap-4 sm:grid-cols-4 sm:gap-4 lg:grid-cols-8 lg:gap-8"
+      >
+        <div class="col-span-4 text-lg sm:col-span-4 lg:col-span-3 lg:p-6">
+          <p>
+            <a href="tel:+447790831528">07790 831528</a><br /><a
+              class="text-primary-dark mt-4 hover:underline"
+              href="mailto:sales@triffecta.com">sales@triffecta.com</a
+            >
+          </p>
 
-      <p class="mt-6">
-        Green Lea,<br />
-        Mytholmroyd,<br />
-        Hebden Bridge,<br />
-        West Yorkshire,<br />
-        HX7 5AW
-      </p>
+          <p class="mt-6">
+            Green Lea,<br />
+            Mytholmroyd,<br />
+            Hebden Bridge,<br />
+            West Yorkshire,<br />
+            HX7 5AW
+          </p>
 
-      <p class="mt-6">
-        <a href="tel:+447790831528">07790 831528</a><br /><a
-          class="text-primary-dark mt-4 hover:underline"
-          href="mailto:sales@triffecta.com">sales@triffecta.com</a
+          <p class="mt-6">Company Number: 15554685</p>
+        </div>
+        <div
+          class="col-span-4 sm:col-span-4 lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
         >
-      </p>
-
-      <p class="mt-6">Company Number: 15554685</p>
+          <FormContact client:load />
+        </div>
+      </div>
     </div>
   </section>
 </Layout>

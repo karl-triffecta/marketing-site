@@ -5,6 +5,7 @@ type ButtonProps = {
   onClick?: (e: MouseEvent) => void;
   children: JSX.Element | string;
   className?: string;
+  disabled?: boolean;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary";
 };
@@ -16,12 +17,16 @@ export default function TriffectaButton({
   className = "px-4 py-2",
   type = "button",
   variant = "primary",
+  disabled = false,
 }: ButtonProps) {
-  const baseClasses = "rounded-lg font-bold transition hover:shadow-2xl cursor-pointer";
+  const baseClasses =
+    "rounded-lg font-bold transition hover:shadow-2xl cursor-pointer";
 
   const variantClasses = {
-    primary: "bg-action-primary text-accent hover:text-text hover:bg-accent-dark",
-    secondary: "bg-accent-dark text-text hover:text-accent hover:bg-action-primary",
+    primary:
+      "bg-action-primary text-accent hover:text-text hover:bg-accent-dark",
+    secondary:
+      "bg-accent-dark text-text hover:text-accent hover:bg-action-primary",
   };
 
   const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${className}`;
@@ -35,7 +40,12 @@ export default function TriffectaButton({
   }
 
   return (
-    <button type={type} onClick={onClick} class={combinedClasses}>
+    <button
+      type={type}
+      onClick={onClick}
+      class={combinedClasses}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
