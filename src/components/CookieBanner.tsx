@@ -1,5 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 import TriffectaButton from "./TriffectaButton";
+interface ConsentSettings {
+  analytics_storage?: "granted" | "denied";
+  ad_storage?: "granted" | "denied";
+  ad_user_data?: "granted" | "denied";
+  ad_personalization?: "granted" | "denied";
+}
 
 export default function CookieBanner({ baseUrl = "" }) {
   const [visible, setVisible] = useState(false);
@@ -10,7 +16,7 @@ export default function CookieBanner({ baseUrl = "" }) {
       .some((item) => item.trim().startsWith("cookies_accepted="));
 
     if (cookiesAccepted) {
-      loadAnalytics();
+      updateConsent(true);
       setVisible(false);
     } else {
       setVisible(true);
@@ -18,20 +24,31 @@ export default function CookieBanner({ baseUrl = "" }) {
   }, []);
 
   const acceptCookies = () => {
-    document.cookie = `cookies_accepted=true; max-age=${60 * 60 * 24 * 30}; path=/`;
+    document.cookie =
+      "cookies_accepted=true; max-age=2592000; path=/; Secure; SameSite=Strict";
     setVisible(false);
-    loadAnalytics();
+    updateConsent(true);
   };
 
-  const loadAnalytics = () => {
-    window.dataLayer = window.dataLayer || [];
+  const updateConsent = (granted: boolean) => {
     // @ts-ignore
-    function gtag(...args) {
-      window.dataLayer.push(args);
+    if (typeof window.gtag === "function") {
+      const consentUpdate: ConsentSettings = granted
+        ? {
+            analytics_storage: "granted",
+            ad_storage: "granted", // Grant all as simple "Accept All"
+            ad_user_data: "granted",
+            ad_personalization: "granted",
+          }
+        : {
+            analytics_storage: "denied",
+            ad_storage: "denied",
+            ad_user_data: "denied",
+            ad_personalization: "denied",
+          };
+      // @ts-ignore
+      window.gtag("consent", "update", consentUpdate);
     }
-
-    gtag("js", new Date());
-    gtag("config", "G-C1LG8PF9LR");
   };
 
   if (!visible) return null;
