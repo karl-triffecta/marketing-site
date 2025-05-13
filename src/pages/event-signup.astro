@@ -1,0 +1,62 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+import IconTriffecta from "../components/icon/IconTriffecta.tsx";
+
+import ImgHeroTop from "../assets/hero-top.png";
+
+import EventSignup from "../components/EventSignup.tsx";
+---
+
+<Layout>
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative z-10 container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1
+            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+          >
+            Let's <span class="text-accent-dark">Connect</span>
+          </h1>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-20%] left-[-75%] z-10 sm:top-[-300%] sm:left-[-20%]"
+      >
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
+    </div>
+
+    <img
+      id="hero"
+      src={ImgHeroTop.src}
+      alt="A picture of a woman shopping for groceries"
+      fetchpriority="high"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-top"
+    />
+  </section>
+
+  <section class="mx-auto mb-8 py-6">
+    <div class="relative container">
+      <div class="lg:p-6">
+        <p class="text-lg">
+          We’d love to follow up with you. Share your details below and we’ll be
+          in touch to set up a meeting.
+        </p>
+      </div>
+      <div
+        class="mt-6 grid grid-cols-4 gap-4 sm:grid-cols-4 sm:gap-4 md:mt-0 lg:grid-cols-8 lg:gap-8"
+      >
+        <div
+          class="order-first col-span-4 sm:col-span-4 lg:order-last lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
+        >
+          <EventSignup client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
