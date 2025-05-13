@@ -50,9 +50,11 @@ import FormContact from "../components/FormContact.tsx";
         </p>
       </div>
       <div
-        class="grid grid-cols-4 gap-4 sm:grid-cols-4 sm:gap-4 lg:grid-cols-8 lg:gap-8"
+        class="mt-6 grid grid-cols-4 gap-4 sm:grid-cols-4 sm:gap-4 md:mt-0 lg:grid-cols-8 lg:gap-8"
       >
-        <div class="col-span-4 text-lg sm:col-span-4 lg:col-span-3 lg:p-6">
+        <div
+          class="order-last col-span-4 mt-6 text-lg sm:col-span-4 lg:order-first lg:col-span-3 lg:mt-0 lg:p-6"
+        >
           <p>
             <a href="tel:+447790831528">07790 831528</a><br /><a
               class="text-primary-dark mt-4 hover:underline"
@@ -71,7 +73,7 @@ import FormContact from "../components/FormContact.tsx";
           <p class="mt-6">Company Number: 15554685</p>
         </div>
         <div
-          class="col-span-4 sm:col-span-4 lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
+          class="order-first col-span-4 sm:col-span-4 lg:order-last lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
         >
           <FormContact client:load />
         </div>
