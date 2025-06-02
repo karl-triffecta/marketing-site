@@ -78,7 +78,7 @@ npm run build
 
 ### Project setup
 
-Commands used to setup this project or reference
+Commands used to setup this project for reference (dev only requirements)
 
 ```bash
 # https://docs.astro.build/en/install-and-setup/
@@ -95,4 +95,12 @@ npm install --save-dev @typescript-eslint/parser
 # https://docs.astro.build/en/editor-setup/#prettier
 # https://github.com/tailwindlabs/prettier-plugin-tailwindcss
 npm install --save-dev prettier prettier-plugin-astro prettier-plugin-tailwindcss
+
+# https://www.npmjs.com/package/intl-tel-input
+npm install intl-tel-input utils
 ```
+
+### Helpers
+
+eval "$(ssh-agent -s)" && ssh-add --apple-use-keychain ~/.ssh/karl-triffecta
+nvm install && npm install && npm run dev
