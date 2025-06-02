@@ -1,20 +1,25 @@
-import { useState, useRef } from "preact/hooks";
+import { useEffect, useState, useRef } from "preact/hooks";
 import { z } from "zod";
 import TriffectaButton from "./TriffectaButton";
-import IconTick from "./icon/IconTick";
+import intlTelInput from "intl-tel-input";
+import "intl-tel-input/build/css/intlTelInput.css";
 
 const schema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  jobTitle: z.string().min(1, "Job title is required"),
   businessEmail: z.string().email("A valid business email is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
   notificationOptIn: z.boolean(),
 });
 
-export default function EventSignup() {
+export default function EventConnections() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    jobTitle: "",
     businessEmail: "",
+    phoneNumber: "",
     notificationOptIn: false,
   });
 
@@ -25,8 +30,38 @@ export default function EventSignup() {
   const refs = {
     firstName: useRef<HTMLInputElement>(null),
     lastName: useRef<HTMLInputElement>(null),
+    jobTitle: useRef<HTMLInputElement>(null),
     businessEmail: useRef<HTMLInputElement>(null),
+    phoneInputRef: useRef<HTMLInputElement>(null),
   };
+
+  useEffect(() => {
+    if (!refs.phoneInputRef.current) return;
+
+    const initPhone = async () => {
+      const iti = intlTelInput(refs.phoneInputRef.current!, {
+        initialCountry: "gb",
+        loadUtils: () => import("intl-tel-input/utils"),
+        nationalMode: false,
+      });
+
+      const updateNumber = () => {
+        const phoneNumber = iti.getNumber();
+        setFormData((prev) => ({ ...prev, phoneNumber }));
+        setErrors((prev) => ({ ...prev, phoneNumber: "" }));
+      };
+
+      refs.phoneInputRef.current!.addEventListener("input", updateNumber);
+      refs.phoneInputRef.current!.addEventListener(
+        "countrychange",
+        updateNumber,
+      );
+
+      return () => iti.destroy();
+    };
+
+    initPhone();
+  }, []);
 
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement;
@@ -89,7 +124,9 @@ export default function EventSignup() {
       setFormData({
         firstName: "",
         lastName: "",
+        jobTitle: "",
         businessEmail: "",
+        phoneNumber: "",
         notificationOptIn: false,
       });
     } catch (err) {
@@ -123,7 +160,7 @@ export default function EventSignup() {
                   name="firstName"
                   placeholder="First Name"
                   value={formData.firstName}
-                  onInput={handleChange}
+                  onChange={handleChange}
                   class={inputClass("firstName")}
                 />
                 {errors.firstName && (
@@ -139,7 +176,7 @@ export default function EventSignup() {
                   name="lastName"
                   placeholder="Last Name"
                   value={formData.lastName}
-                  onInput={handleChange}
+                  onChange={handleChange}
                   class={inputClass("lastName")}
                 />
                 {errors.lastName && (
@@ -152,16 +189,50 @@ export default function EventSignup() {
 
             <div>
               <input
+                ref={refs.jobTitle}
+                name="jobTitle"
+                placeholder="Job Title"
+                value={formData.jobTitle}
+                onChange={handleChange}
+                class={inputClass("jobTitle")}
+              />
+              {errors.jobTitle && (
+                <p class="text-error mt-1.5 ml-4.5 text-sm font-bold">
+                  {errors.jobTitle}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <input
                 ref={refs.businessEmail}
                 name="businessEmail"
                 placeholder="Business Email"
                 value={formData.businessEmail}
-                onInput={handleChange}
+                onChange={handleChange}
                 class={inputClass("businessEmail")}
               />
               {errors.businessEmail && (
                 <p class="text-error mt-1.5 ml-4.5 text-sm font-bold">
                   {errors.businessEmail}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <input
+                ref={refs.phoneInputRef}
+                id="phone"
+                name="phoneNumber"
+                type="tel"
+                placeholder="Phone Number"
+                class={`w-full rounded-xl border-1 py-2 pl-4 ${
+                  errors.phoneNumber ? "border-error" : "border-[#CCCCCC]"
+                } focus:border-primary focus:outline-none`}
+              />
+              {errors.phoneNumber && (
+                <p class="text-error mt-1.5 ml-4.5 text-sm font-bold">
+                  {errors.phoneNumber}
                 </p>
               )}
             </div>
@@ -173,7 +244,7 @@ export default function EventSignup() {
               you the content requested.
             </p>
 
-            <div className="flex justify-end">
+            <div className="flex justify-center lg:justify-end">
               <TriffectaButton
                 type="submit"
                 disabled={loading}

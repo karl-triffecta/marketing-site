@@ -5,10 +5,10 @@ import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
 import ImgHeroTop from "../assets/hero-top.png";
 
-import EventSignup from "../components/EventSignup.tsx";
+import EventConnections from "../components/EventConnections.tsx";
 ---
 
-<Layout>
+<Layout showNewsletter={false}>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
       <div class="relative z-20">
@@ -16,7 +16,7 @@ import EventSignup from "../components/EventSignup.tsx";
           <h1
             class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
           >
-            Let's <span class="text-accent-dark">Connect</span>
+            Great Meeting <span class="text-accent-dark">You</span>
           </h1>
         </div>
       </div>
@@ -44,8 +44,8 @@ import EventSignup from "../components/EventSignup.tsx";
     <div class="relative container">
       <div class="lg:p-6">
         <p class="text-lg">
-          We’d love to follow up with you. Share your details below and we’ll be
-          in touch to set up a meeting.
+          Let’s stay in touch - drop your info below so we can follow up,
+          alternatively please book in a meeting that suits your calendar.
         </p>
       </div>
       <div
@@ -54,7 +54,7 @@ import EventSignup from "../components/EventSignup.tsx";
         <div
           class="order-first col-span-4 sm:col-span-4 lg:order-last lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
         >
-          <EventSignup client:load />
+          <EventConnections client:load />
         </div>
       </div>
     </div>

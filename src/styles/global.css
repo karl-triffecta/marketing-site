@@ -48,6 +48,14 @@
 }
 */
 
+/* Phone number overrides */
+.iti__search-input {
+  padding: 8px 16px;
+}
+.iti {
+  width: 100%;
+}
+
 /* Undo https://tailwindcss.com/docs/preflight */
 .preflight-undo {
   h1,
