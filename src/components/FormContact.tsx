@@ -289,7 +289,7 @@ export default function FormContact() {
               you the content requested.
             </p>
 
-            <div className="flex justify-end">
+            <div className="flex justify-center lg:justify-end">
               <TriffectaButton
                 type="submit"
                 disabled={loading}
