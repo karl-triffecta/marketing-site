@@ -3,13 +3,15 @@ import FormSubscribeNewsletter from "./FormSubscribeNewsletter.tsx";
 import IconLinkedIn from "./icon/IconLinkedIn.tsx";
 import IconTwitter from "./icon/IconTwitter.tsx";
 
-export default function Footer() {
+export default function Footer({ showNewsletter = true }) {
   return (
     <footer class="bg-white">
       <section class="bg-triffecta-gradient p-1.25"></section>
 
       <div class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20">
-        <div class="mb-8 flex-1 sm:mb-0">{<FormSubscribeNewsletter />}</div>
+        {showNewsletter && (
+          <div class="mb-8 flex-1 sm:mb-0">{<FormSubscribeNewsletter />}</div>
+        )}
 
         <div class="flex flex-1 flex-col items-end justify-between pl-10">
           <a

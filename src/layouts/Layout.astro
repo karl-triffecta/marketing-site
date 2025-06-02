@@ -12,6 +12,7 @@ import ImgHeroTop from "../assets/hero-top.png";
 // When using Prod switch
 //const base = "/marketing-site/";
 const base = "/";
+const { showNewsletter = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -126,7 +127,7 @@ const base = "/";
     <main>
       <slot />
     </main>
-    <Footer client:load />
+    <Footer client:load showNewsletter={showNewsletter} />
     <DevConsole />
     <CookieBanner baseUrl={base} client:load />
   </body>
