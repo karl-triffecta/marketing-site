@@ -3,6 +3,21 @@ import TriffectaButton from "./TriffectaButton";
 import IconTick from "./icon/IconTick";
 
 export default function FormSubscribeNewsletter() {
+  const headings = [
+    {
+      title: "The Future’s Brewing-You In?",
+      button: "We’re not just sharing updates-we’re starting a movement.",
+    },
+    {
+      title: "Early Access, Zero Spam, Maximum Impact",
+      button: "Your inbox deserves better. This is it.",
+    },
+    { title: "You’ll Want to Say You Were Here First", button: "Trust us." },
+  ];
+
+  const [heading, setHeading] = useState(
+    headings[Math.floor(Math.random() * headings.length)],
+  );
   const [email, setEmail] = useState("");
   const [isOptedIn, setIsOptedIn] = useState(false);
   const [error, setError] = useState("");
@@ -77,7 +92,7 @@ export default function FormSubscribeNewsletter() {
             }`}
             disabled={loading}
           >
-            <h3 class="text-xl font-bold">Subscribe to our Newsletter</h3>
+            <h3 class="text-xl font-bold">{heading.title}</h3>
 
             <div>
               <input
@@ -124,7 +139,7 @@ export default function FormSubscribeNewsletter() {
             {error && <p class="text-error text-sm font-bold">{error}</p>}
 
             <TriffectaButton type="submit" disabled={loading}>
-              {loading ? "Submitting..." : "Subscribe"}
+              {loading ? "Submitting..." : heading.button}
             </TriffectaButton>
           </fieldset>
         </form>
