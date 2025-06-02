@@ -20,14 +20,17 @@ export default function FadeIn({
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        el.classList.add("is-visible");
-        observer.disconnect();
-      }
-    }, {
-      threshold: 0.1,
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("is-visible");
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.1,
+      },
+    );
 
     observer.observe(el);
 

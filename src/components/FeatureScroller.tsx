@@ -28,8 +28,7 @@ const features = [
 ];
 
 export default function FeatureScrollStack() {
-
-  const className = "feature-content"
+  const className = "feature-content";
 
   useLayoutEffect(() => {
     const updateHeights = () => {
@@ -70,11 +69,9 @@ export default function FeatureScrollStack() {
               key={index}
               class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6"
             >
-              <div
-                class={`${className} lg:sticky lg:top-[100px] ${marginTop}`}
-              >
+              <div class={`${className} lg:sticky lg:top-[100px] ${marginTop}`}>
                 <div class="relative rounded-2xl bg-white p-2.5">
-                  <div class="relative flex lg:h-64 items-center justify-center">
+                  <div class="relative flex items-center justify-center lg:h-64">
                     <img
                       src={feature.image}
                       alt={feature.alt || feature.title}
