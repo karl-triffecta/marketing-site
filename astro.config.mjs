@@ -5,6 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { minify } from "terser";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
   /*
@@ -21,7 +23,12 @@ export default defineConfig({
     ##########################################
     ##########################################
   */
-  integrations: [preact()],
+  integrations: [
+    preact(),
+    sitemap({
+      filter: (page) => page !== "https://triffecta.com/event-connections/",
+    }),
+  ],
   vite: {
     plugins: [
       tailwindcss(),

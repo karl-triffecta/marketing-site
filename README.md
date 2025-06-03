@@ -96,6 +96,9 @@ npm install --save-dev @typescript-eslint/parser
 # https://github.com/tailwindlabs/prettier-plugin-tailwindcss
 npm install --save-dev prettier prettier-plugin-astro prettier-plugin-tailwindcss
 
+# https://docs.astro.build/en/guides/integrations-guide/sitemap/
+npx astro add sitemap
+
 # https://www.npmjs.com/package/intl-tel-input
 npm install intl-tel-input utils
 ```
