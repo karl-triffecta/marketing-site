@@ -31,24 +31,6 @@ const { showNewsletter = true } = Astro.props;
     <meta name="application-name" content="Triffecta" />
     <meta name="apple-mobile-web-app-title" content="Triffecta" />
 
-    <meta
-      name="description"
-      content="Triffecta simplifies retail media execution with AI-powered automation, standardized data, and single-campaign activation across multiple retailers."
-    />
-    <meta name="author" content="Triffecta" />
-    <meta
-      name="keywords"
-      content="retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta"
-    />
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
-    <meta name="google" content="notranslate" />
-
-    <!--
-    twitter={{
-      creator: "@triffecta-com",
-    }}
-    -->
     <SEO
       title="Triffecta | Revolutionizing Retail Media at Scale"
       description="Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers"
@@ -70,8 +52,8 @@ const { showNewsletter = true } = Astro.props;
           url: ImgHeroTop.src,
           alt: "Triffecta making retail media easy",
           type: "image/png",
-          width: 1440,
-          height: 463,
+          width: 1200,
+          height: 630,
         },
       }}
       extend={{
@@ -85,7 +67,15 @@ const { showNewsletter = true } = Astro.props;
           { name: "robots", content: "index, follow" },
           { name: "googlebot", content: "index, follow" },
           { name: "google", content: "notranslate" },
-          { name: "twitter:image", content: "/hero-top.png" },
+          { name: "author", content: "Triffecta" },
+          { name: "keywords", content: "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta" },
+          { property: "og:url", content: "https://triffecta.com" },
+          { property: "og:type", content: "website" },
+          {
+            property: "og:image:alt",
+            content: "Triffecta making retail media easy",
+          },
+          { name: "twitter:image", content: ImgHeroTop.src },
           {
             name: "twitter:title",
             content: "Triffecta | Retail Media Simplified",
@@ -94,12 +84,6 @@ const { showNewsletter = true } = Astro.props;
             name: "twitter:description",
             content:
               "Run one campaign across multiple retailers with Triffecta. Experience automated retail media, clean data, and real-time reporting",
-          },
-          { property: "og:url", content: "https://triffecta.com" },
-          { property: "og:type", content: "website" },
-          {
-            property: "og:image:alt",
-            content: "Triffecta making retail media easy",
           },
         ],
       }}
