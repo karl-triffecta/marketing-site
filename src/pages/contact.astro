@@ -5,10 +5,17 @@ import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
 import FormContact from "../components/FormContact.tsx";
 
-import { Picture } from "astro:assets";
+import { getImage, Picture } from "astro:assets";
 import ImgHeroTop from "../assets/hero-top.png";
+const optimizedImgHeroTop = await getImage({
+  src: ImgHeroTop,
+  format: "webp",
+});
 ---
 
+<Fragment slot="head">
+  <link rel="preload" href={optimizedImgHeroTop.src} as="image" />
+</Fragment>
 <Layout>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
@@ -35,7 +42,7 @@ import ImgHeroTop from "../assets/hero-top.png";
     <Picture
       id="hero"
       src={ImgHeroTop}
-      formats={["avif", "webp", "png"]}
+      formats={["webp", "avif", "png"]}
       widths={[480, 768, 1280, 1920]}
       sizes="100vw"
       alt="A picture of a woman shopping for groceries"
