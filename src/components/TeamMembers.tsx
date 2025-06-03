@@ -1,13 +1,23 @@
-import ImgTeamKen from "../assets/team/ken.jpg";
-import ImgTeamMark from "../assets/team/mark.jpg";
-import ImgTeamLesley from "../assets/team/lesley.jpg";
+import ImgTeamKenJpg from "../assets/team/ken.jpg";
+import ImgTeamKenAvif from "../assets/team/ken.avif";
+import ImgTeamKenWebp from "../assets/team/ken.webp";
+import ImgTeamMarkJpg from "../assets/team/mark.jpg";
+import ImgTeamMarkAvif from "../assets/team/mark.avif";
+import ImgTeamMarkWebp from "../assets/team/mark.webp";
+import ImgTeamLesleyJpg from "../assets/team/lesley.jpg";
+import ImgTeamLesleyAvif from "../assets/team/lesley.avif";
+import ImgTeamLesleyWebp from "../assets/team/lesley.webp";
 import IconLinkedIn from "./icon/IconLinkedIn";
 import IconIncognito from "./icon/IconIncognito";
 import FadeIn from "./FadeIn";
 
 const team = [
   {
-    image: ImgTeamKen.src,
+    image: {
+      jpg: ImgTeamKenJpg.src,
+      avif: ImgTeamKenAvif.src,
+      webp: ImgTeamKenWebp.src,
+    },
     name: "Ken Platt",
     title: "Founder & CEO",
     link: "https://www.linkedin.com/in/ken-platt-retail-media-expert/",
@@ -15,7 +25,11 @@ const team = [
       "eCommerce expert and Retail Media Veteran with 20+ years experience spanning the retail, consultancy & agency industries.",
   },
   {
-    image: ImgTeamMark.src,
+    image: {
+      jpg: ImgTeamMarkJpg.src,
+      avif: ImgTeamMarkAvif.src,
+      webp: ImgTeamMarkWebp.src,
+    },
     name: "Mark Briggs",
     title: "CTO",
     link: "https://www.linkedin.com/in/mark-briggs-1755394b/",
@@ -23,7 +37,11 @@ const team = [
       "Product leader with 20 years experience across multiple industries inc. financial & ad-tech. Worked with US retailers and brands for the last 5 years.",
   },
   {
-    image: ImgTeamLesley.src,
+    image: {
+      jpg: ImgTeamLesleyJpg.src,
+      avif: ImgTeamLesleyAvif.src,
+      webp: ImgTeamLesleyWebp.src,
+    },
     name: "Lesley Mace",
     title: "Operations & Customer Lead",
     link: "https://www.linkedin.com/in/lesley-mace-3471409/",
@@ -68,15 +86,15 @@ export default function TeamMembers() {
                       {member.image ? (
                         <picture>
                           <source
-                            srcSet={`${member.image.replace(".jpg", ".avif")}`}
+                            srcSet={`${member.image.avif}`}
                             type="image/avif"
                           />
                           <source
-                            srcSet={`${member.image.replace(".jpg", ".webp")}`}
+                            srcSet={`${member.image.webp}`}
                             type="image/webp"
                           />
                           <img
-                            src={`${member.image}`}
+                            src={`${member.image.jpg}`}
                             alt={`A picture of ${member.name}`}
                             width={600}
                             height={600}
