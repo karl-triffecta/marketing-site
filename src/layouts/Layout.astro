@@ -52,11 +52,26 @@ const { showNewsletter = true } = Astro.props;
     <SEO
       title="Triffecta | Revolutionizing Retail Media at Scale"
       description="Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers"
+      canonical="https://triffecta.com"
       openGraph={{
         basic: {
           title: "Triffecta | Revolutionizing Retail Media at Scale",
           type: "website",
           image: ImgHeroTop.src,
+          url: "https://triffecta.com",
+        },
+        optional: {
+          siteName: "Triffecta",
+          description:
+            "Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers.",
+          locale: "en_US",
+        },
+        image: {
+          url: ImgHeroTop.src,
+          alt: "Triffecta making retail media easy",
+          type: "image/png",
+          width: 1440,
+          height: 463,
         },
       }}
       extend={{
@@ -67,6 +82,9 @@ const { showNewsletter = true } = Astro.props;
           { rel: "manifest", href: `${base}site.webmanifest` },
         ],
         meta: [
+          { name: "robots", content: "index, follow" },
+          { name: "googlebot", content: "index, follow" },
+          { name: "google", content: "notranslate" },
           { name: "twitter:image", content: "/hero-top.png" },
           {
             name: "twitter:title",
@@ -83,13 +101,26 @@ const { showNewsletter = true } = Astro.props;
             property: "og:image:alt",
             content: "Triffecta making retail media easy",
           },
-          {
-            name: "linkedin:profile",
-            content: "https://www.linkedin.com/company/triffecta-com/",
-          },
         ],
       }}
     />
+    <!--
+    twitter={{
+        card: "summary_large_image",
+        site: "@triffecta_com",
+        creator: "@triffecta_com",
+        title: "Triffecta | Retail Media Simplified",
+        description:
+          "Run one campaign across multiple retailers with Triffecta. Experience automated retail media, clean data, and real-time reporting.",
+        image: ImgHeroTop.src,
+        imageAlt: "Triffecta platform dashboard showcasing retail media automation",
+      }}
+
+      {
+        name: "linkedin:profile",
+        content: "https://www.linkedin.com/company/triffecta-com/",
+      },
+    -->
     <script type="application/ld+json">
       {JSON.stringify({
         "@context": "https://schema.org",
