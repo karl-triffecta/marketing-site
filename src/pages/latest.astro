@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+import FadeIn from "../components/FadeIn.tsx";
+
+import IconTriffecta from "../components/icon/IconTriffecta.tsx";
+
+import { getImage, Picture } from "astro:assets";
+import ImgHeroLights from "../assets/hero-lights.png";
+const optimizedImgHeroLights = await getImage({
+  src: ImgHeroLights,
+  format: "webp",
+});
+---
+
+<Fragment slot="head">
+  <link rel="preload" href={optimizedImgHeroLights.src} as="image" />
+</Fragment>
+<Layout>
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative z-10 container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1
+            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+          >
+            Latest
+          </h1>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-20%] left-[-75%] z-10 sm:top-[-300%] sm:left-[-20%]"
+      >
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
+    </div>
+
+    <Picture
+      id="hero"
+      src={ImgHeroLights}
+      formats={["webp", "avif", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
+      alt="A picture of a woman shopping for groceries"
+      fetchpriority="high"
+      loading="eager"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-bottom"
+    />
+  </section>
+
+  <section class="relative overflow-hidden py-18">
+    <div class="relative z-10 container mx-auto">
+      <div class="col-span-6 sm:col-span-3 lg:col-span-6">
+        <FadeIn client:load delay={150} duration={1500}>
+          <div
+            class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
+          >
+            <div
+              class="order-1 col-span-6 flex items-center justify-end sm:col-span-3 lg:order-2 lg:col-span-6"
+            >
+              <div
+                class="aspect-square max-h-64 w-full rounded-lg bg-gray-200 lg:aspect-auto lg:h-64 lg:w-64"
+              >
+                <a
+                  target="_blank"
+                  class="text-primary-dark underline"
+                  href="https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY"
+                >
+                  <img
+                    src="https://media.licdn.com/dms/image/v2/D4E22AQGraFoG4JKgvg/feedshare-shrink_800/B4EZc0OTtUG4Ag-/0/1748927862529?e=1752105600&v=beta&t=Rzkvx2jPjwYU3CDKnuBAUVSwjTSY2krQjY2QpXHVuSI"
+                    alt="Placeholder image"
+                    class="h-full w-full rounded-lg object-cover"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div
+              class="order-2 col-span-6 flex h-full flex-col justify-between sm:col-span-3 lg:order-1 lg:col-span-6"
+            >
+              <div>
+                <h3 class="text-2xl font-bold">Triffecta @ Shoptalk</h3>
+                <p class="mt-4 text-lg">
+                  Retail Media is finally getting the spotlight it deserves at
+                  Shoptalk — and Triffecta will be there. If you're looking to
+                  simplify, scale, and unify your retail media strategy across
+                  retailers, let’s talk. 📍 Find us in the new Retail Media
+                  stream. <a
+                    target="_blank"
+                    class="text-primary-dark underline"
+                    href="https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY"
+                    >find out more on linkedin</a
+                  >
+                </p>
+              </div>
+              <div class="text-text-light mt-8 lg:mt-4">3rd June 2025</div>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -10,6 +10,15 @@ export default function HeaderLinks({ mobileNav = false }) {
             mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
           }
         >
+          <a href="/latest" class="hover:underline">
+            Latest
+          </a>
+        </li>
+        <li
+          className={
+            mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
+          }
+        >
           <a href="/team" class="hover:underline">
             Meet the Team
           </a>
