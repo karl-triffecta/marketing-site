@@ -106,17 +106,17 @@ const { showNewsletter = true } = Astro.props;
       },
     -->
     <script type="application/ld+json">
-      {JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Triffecta",
-        "url": "https://triffecta.com",
-        "logo": "https://triffecta.com/icon.png",
-        "sameAs": [
-          "https://www.linkedin.com/company/triffecta-com/"
-        ],
-        "description": "Triffecta simplifies retail media execution with AI-powered automation, standardized data, and single-campaign activation across multiple retailers."
-      })}
+      {
+        `{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Triffecta",
+          "url": "https://triffecta.com",
+          "logo": "https://triffecta.com/icon.png",
+          "sameAs": ["https://www.linkedin.com/company/triffecta-com/"],
+          "description": "Triffecta simplifies retail media execution with AI-powered automation, standardized data, and single-campaign activation across multiple retailers."
+        }`
+      }
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
