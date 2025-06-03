@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
 
 type FadeInProps = {
@@ -15,35 +15,59 @@ export default function FadeIn({
   duration = 700,
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
+  const [effectiveDuration, setEffectiveDuration] = useState(duration);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const prefersMotion = window.matchMedia(
+      "(prefers-reduced-motion: no-preference)",
+    ).matches;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("is-visible");
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.1,
-      },
-    );
+    const isMobile = window.innerWidth <= 480;
 
-    observer.observe(el);
+    setShouldAnimate(prefersMotion);
 
-    return () => observer.disconnect();
+    if (isMobile && duration > 1000) {
+      setEffectiveDuration(1000);
+    } else {
+      setEffectiveDuration(duration);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!shouldAnimate) return;
+
+    const handle = window.requestIdleCallback(() => {
+      const el = ref.current;
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            el.classList.add("is-visible");
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 },
+      );
+
+      observer.observe(el);
+    });
+
+    return () => window.cancelIdleCallback(handle);
+  }, [shouldAnimate]);
+
+  if (!shouldAnimate) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <div
       ref={ref}
-      class={`triffecta-fade-in transition-all duration-700 ease-out will-change-transform ${className}`}
+      class={`triffecta-fade-in transition-all duration-700 ease-out ${className}`}
       style={{
         transitionDelay: `${delay}ms`,
-        transitionDuration: `${duration}ms`,
+        transitionDuration: `${effectiveDuration}ms`,
       }}
     >
       {children}

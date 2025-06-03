@@ -100,4 +100,5 @@
 .triffecta-fade-in.is-visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: transform;
 }
