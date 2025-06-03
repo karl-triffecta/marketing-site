@@ -1,6 +1,6 @@
-import ImgTeamKen from "../assets/team/ken.jpeg";
-import ImgTeamMark from "../assets/team/mark.png";
-import ImgTeamLesley from "../assets/team/lesley.png";
+import ImgTeamKen from "../assets/team/ken.jpg";
+import ImgTeamMark from "../assets/team/mark.jpg";
+import ImgTeamLesley from "../assets/team/lesley.jpg";
 import IconLinkedIn from "./icon/IconLinkedIn";
 import IconIncognito from "./icon/IconIncognito";
 import FadeIn from "./FadeIn";
@@ -66,12 +66,29 @@ export default function TeamMembers() {
                   <div class="relative rounded-2xl bg-white">
                     <div class="relative flex h-84 items-center justify-center md:h-74">
                       {member.image ? (
-                        <img
-                          src={member.image}
-                          alt={`A picture of ${member.name}`}
-                          class="absolute top-0 left-0 z-0 h-full w-full rounded-2xl object-cover object-top"
-                          style="filter: sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1);"
-                        />
+                        <picture>
+                          <source
+                            srcSet={`${member.image.replace(".jpg", ".avif")}`}
+                            type="image/avif"
+                          />
+                          <source
+                            srcSet={`${member.image.replace(".jpg", ".webp")}`}
+                            type="image/webp"
+                          />
+                          <img
+                            src={`${member.image}`}
+                            alt={`A picture of ${member.name}`}
+                            width={600}
+                            height={600}
+                            loading="lazy"
+                            decoding="async"
+                            className="absolute top-0 left-0 z-0 h-full w-full rounded-2xl object-cover object-top"
+                            style={{
+                              filter:
+                                "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
+                            }}
+                          />
+                        </picture>
                       ) : (
                         <div class="relative top-[-1%]">
                           <IconIncognito

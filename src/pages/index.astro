@@ -7,6 +7,7 @@ import FeatureScroller from "../components/FeatureScroller.tsx";
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 import LinkButtonRequestDemo from "../components/LinkButtonRequestDemo.tsx";
 
+import { Picture } from "astro:assets";
 import ImgHeroTop from "../assets/hero-top.png";
 import ImgHeroBottom from "../assets/hero-bottom.png";
 import ImgMacbook from "../assets/mackbook.png";
@@ -55,11 +56,15 @@ import ImgMacbook from "../assets/mackbook.png";
       </FadeIn>
     </div>
 
-    <img
+    <Picture
       id="hero"
-      src={ImgHeroTop.src}
+      src={ImgHeroTop}
+      formats={["avif", "webp", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
       alt="A picture of a woman shopping for groceries"
       fetchpriority="high"
+      loading="eager"
       class="absolute top-0 left-0 z-0 h-full w-full object-cover object-[70%_center] sm:object-center"
     />
   </section>
@@ -77,10 +82,14 @@ import ImgMacbook from "../assets/mackbook.png";
           >
             <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
               <div class="relative flex h-full items-center justify-center">
-                <img
+                <Picture
                   id="macbook"
-                  src={ImgMacbook.src}
+                  src={ImgMacbook}
+                  formats={["avif", "webp", "png"]}
+                  widths={[380, 760]}
+                  sizes="(min-width: 1024px) 379px, 100vw"
                   alt="A picture of a laptop using the Triffeca platform"
+                  loading="lazy"
                   class="relative lg:top-[2%] lg:scale-160"
                 />
               </div>
@@ -191,11 +200,14 @@ import ImgMacbook from "../assets/mackbook.png";
       </FadeIn>
     </div>
 
-    <img
+    <Picture
       id="hero"
-      src={ImgHeroBottom.src}
+      src={ImgHeroBottom}
+      formats={["avif", "webp", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
+      loading="lazy"
       alt="A picture of woman looking at products on shelves"
-      fetchpriority="high"
       class="absolute top-0 left-0 z-0 h-full w-full object-cover"
     />
   </section>

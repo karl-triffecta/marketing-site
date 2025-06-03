@@ -4,6 +4,7 @@ import TeamMembers from "../components/TeamMembers.tsx";
 
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
+import { Picture } from "astro:assets";
 import ImgHeroLights from "../assets/hero-lights.png";
 ---
 
@@ -30,11 +31,15 @@ import ImgHeroLights from "../assets/hero-lights.png";
       </div>
     </div>
 
-    <img
+    <Picture
       id="hero"
-      src={ImgHeroLights.src}
+      src={ImgHeroLights}
+      formats={["avif", "webp", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
       alt="A picture of a woman shopping for groceries"
       fetchpriority="high"
+      loading="eager"
       class="absolute top-0 left-0 z-0 h-full w-full object-cover object-bottom"
     />
   </section>

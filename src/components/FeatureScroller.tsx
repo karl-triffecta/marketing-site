@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "preact/hooks";
-import ImgPublishers from "../assets/publishers.png";
-import ImgCharts from "../assets/charts.png";
-import ImgAutomation from "../assets/automation.png";
+import ImgPublishers from "../assets/features/publishers.png";
+import ImgCharts from "../assets/features/charts.png";
+import ImgAutomation from "../assets/features/automation.png";
 
 const features = [
   {
@@ -72,11 +72,25 @@ export default function FeatureScrollStack() {
               <div class={`${className} lg:sticky lg:top-[100px] ${marginTop}`}>
                 <div class="relative rounded-2xl bg-white p-2.5">
                   <div class="relative flex items-center justify-center lg:h-64">
-                    <img
-                      src={feature.image}
-                      alt={feature.alt || feature.title}
-                      class="relative max-h-full w-full object-contain"
-                    />
+                    <picture>
+                      <source
+                        srcSet={`${feature.image.replace(".png", ".avif")}`}
+                        type="image/avif"
+                      />
+                      <source
+                        srcSet={`${feature.image.replace(".png", ".webp")}`}
+                        type="image/webp"
+                      />
+                      <img
+                        src={`${feature.image}`}
+                        alt={feature.alt || feature.title}
+                        loading="lazy"
+                        decoding="async"
+                        width={378}
+                        height={284}
+                        className="relative max-h-full w-full object-contain"
+                      />
+                    </picture>
                   </div>
                 </div>
                 <h2 class="mt-6 text-xl font-bold">{feature.title}</h2>

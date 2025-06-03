@@ -3,9 +3,10 @@ import Layout from "../layouts/Layout.astro";
 
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
-import ImgHeroTop from "../assets/hero-top.png";
-
 import EventConnections from "../components/EventConnections.tsx";
+
+import { Picture } from "astro:assets";
+import ImgHeroTop from "../assets/hero-top.png";
 ---
 
 <Layout showNewsletter={false}>
@@ -31,11 +32,15 @@ import EventConnections from "../components/EventConnections.tsx";
       </div>
     </div>
 
-    <img
+    <Picture
       id="hero"
-      src={ImgHeroTop.src}
+      src={ImgHeroTop}
+      formats={["avif", "webp", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
       alt="A picture of a woman shopping for groceries"
       fetchpriority="high"
+      loading="eager"
       class="absolute top-0 left-0 z-0 h-full w-full object-cover object-top"
     />
   </section>
