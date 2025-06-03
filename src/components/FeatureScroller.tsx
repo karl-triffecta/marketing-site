@@ -1,25 +1,43 @@
 import { useLayoutEffect } from "preact/hooks";
-import ImgPublishers from "../assets/features/publishers.png";
-import ImgCharts from "../assets/features/charts.png";
-import ImgAutomation from "../assets/features/automation.png";
+import ImgPublishersPng from "../assets/features/publishers.png";
+import ImgPublishersAvif from "../assets/features/publishers.avif";
+import ImgPublishersWebp from "../assets/features/publishers.webp";
+import ImgChartsPng from "../assets/features/charts.png";
+import ImgChartsAvif from "../assets/features/charts.avif";
+import ImgChartsWebp from "../assets/features/charts.webp";
+import ImgAutomationPng from "../assets/features/automation.png";
+import ImgAutomationAvif from "../assets/features/automation.avif";
+import ImgAutomationWebp from "../assets/features/automation.webp";
 
 const features = [
   {
-    image: ImgPublishers.src,
+    image: {
+      png: ImgPublishersPng.src,
+      avif: ImgPublishersAvif.src,
+      webp: ImgPublishersWebp.src,
+    },
     title: "One Platform, All Publishers",
     alt: "A graph of different publishers connected to the Triffecta platform",
     description:
       "Execute and manage campaigns effortlessly across multiple retail media networks—no more juggling multiple logins or platforms.",
   },
   {
-    image: ImgCharts.src,
+    image: {
+      png: ImgChartsPng.src,
+      avif: ImgChartsAvif.src,
+      webp: ImgChartsWebp.src,
+    },
     title: "Unified, Actionable Insights",
     alt: "A mixture of graphs and analytics the Triffecta platform provides",
     description:
       "Access consolidated, standardized data in real time to make smarter decisions, faster. Our robust reporting and analytics empower you to act on insights with confidence.",
   },
   {
-    image: ImgAutomation.src,
+    image: {
+      png: ImgAutomationPng.src,
+      avif: ImgAutomationAvif.src,
+      webp: ImgAutomationWebp.src,
+    },
     title: "AI-Driven Efficiency",
     alt: "Examples of how Triffecta platform automates and optimizes campaigns",
     description:
@@ -74,15 +92,15 @@ export default function FeatureScrollStack() {
                   <div class="relative flex items-center justify-center lg:h-64">
                     <picture>
                       <source
-                        srcSet={`${feature.image.replace(".png", ".avif")}`}
+                        srcSet={`${feature.image.avif}`}
                         type="image/avif"
                       />
                       <source
-                        srcSet={`${feature.image.replace(".png", ".webp")}`}
+                        srcSet={`${feature.image.webp}`}
                         type="image/webp"
                       />
                       <img
-                        src={`${feature.image}`}
+                        src={`${feature.image.png}`}
                         alt={feature.alt || feature.title}
                         loading="lazy"
                         decoding="async"
