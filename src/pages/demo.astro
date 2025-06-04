@@ -3,9 +3,16 @@ import Layout from "../layouts/Layout.astro";
 import FormCalendlyDemo from "../components/FormCalendlyDemo.astro";
 import IconPlus from "../components/icon/IconPlus.tsx";
 import Accordion from "../components/Accordion";
+
+const seo = {
+  title: "Book a Demo",
+  description:
+    "Experience the power of Triffecta's retail media platform with a personalized demo. See how we can streamline your campaigns and enhance your reporting.",
+  path: "/demo/",
+};
 ---
 
-<Layout>
+<Layout seo={seo}>
   <FormCalendlyDemo />
 
   <section class="overflow-hidden bg-white py-10">

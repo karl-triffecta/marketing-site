@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { SEO } from "astro-seo";
+import { Schema } from "astro-seo-schema";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
 import CookieBanner from "../components/CookieBanner.tsx";
@@ -13,6 +14,25 @@ import ImgHeroTop from "../assets/hero-top.png";
 //const base = "/marketing-site/";
 const base = "/";
 const { showNewsletter = true } = Astro.props;
+
+const { seo = {} } = Astro.props;
+
+const domain = "https://triffecta.com";
+
+const page = {
+  canonicalUrl: `${domain}${seo.path || Astro.url.pathname}`,
+  name: seo.name || "Triffecta",
+  title: seo.title || "Revolutionizing Retail Media at Scale",
+  titleTemplate: seo.titleTemplate || "%s | Triffecta",
+  description:
+    seo.description ||
+    "Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers",
+  robots: seo.robots || "index, follow",
+  altText: seo.altText || "Triffecta Revolutionizing Retail Media at Scale",
+  keywords:
+    seo.keywords ||
+    "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
+};
 ---
 
 <!doctype html>
@@ -21,36 +41,48 @@ const { showNewsletter = true } = Astro.props;
     <!-- When not hosted on domain -->
     <base href={base} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-
-    <title>Triffecta | Revolutionizing Retail Media at Scale</title>
     <meta name="generator" content={Astro.generator} />
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#fad89a" />
-    <meta name="application-name" content="Triffecta" />
-    <meta name="apple-mobile-web-app-title" content="Triffecta" />
+    <meta name="application-name" content={page.name} />
+    <meta name="apple-mobile-web-app-title" content={page.name} />
 
+    <Schema
+      item={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: page.name,
+        url: domain,
+        logo: `${domain}/icon.png`,
+        sameAs: ["https://www.linkedin.com/company/triffecta-com/"],
+        description: page.title,
+      }}
+    />
+    <!-- TODO: Twitter -->
     <SEO
-      title="Triffecta | Revolutionizing Retail Media at Scale"
-      description="Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers"
-      canonical="https://triffecta.com"
+      title={page.title}
+      titleTemplate={page.titleTemplate}
+      description={page.description}
+      canonical={page.canonicalUrl}
+      nofollow={page.robots.includes("nofollow")}
+      noindex={page.robots.includes("noindex")}
       openGraph={{
         basic: {
-          title: "Triffecta | Revolutionizing Retail Media at Scale",
+          title: page.title,
           type: "website",
           image: ImgHeroTop.src,
-          url: "https://triffecta.com",
+          url: page.canonicalUrl,
         },
         optional: {
-          siteName: "Triffecta",
-          description:
-            "Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers.",
+          siteName: page.name,
+          description: page.description,
           locale: "en_US",
         },
         image: {
           url: ImgHeroTop.src,
-          alt: "Triffecta making retail media easy",
+          alt: page.altText,
           type: "image/png",
           width: 1200,
           height: 630,
@@ -64,62 +96,31 @@ const { showNewsletter = true } = Astro.props;
           { rel: "manifest", href: `${base}site.webmanifest` },
         ],
         meta: [
-          { name: "robots", content: "index, follow" },
-          { name: "googlebot", content: "index, follow" },
+          { name: "googlebot", content: page.robots },
           { name: "google", content: "notranslate" },
-          { name: "author", content: "Triffecta" },
+          { name: "author", content: page.name },
           {
             name: "keywords",
-            content:
-              "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
+            content: page.keywords,
           },
-          { property: "og:url", content: "https://triffecta.com" },
+          { property: "og:url", content: page.canonicalUrl },
           { property: "og:type", content: "website" },
           {
             property: "og:image:alt",
-            content: "Triffecta making retail media easy",
+            content: page.altText,
           },
           { name: "twitter:image", content: ImgHeroTop.src },
           {
             name: "twitter:title",
-            content: "Triffecta | Retail Media Simplified",
+            content: page.title,
           },
           {
             name: "twitter:description",
-            content:
-              "Run one campaign across multiple retailers with Triffecta. Experience automated retail media, clean data, and real-time reporting",
+            content: page.description,
           },
         ],
       }}
     />
-    <!--
-    twitter={{
-        card: "summary_large_image",
-        site: "@triffecta_com",
-        creator: "@triffecta_com",
-        title: "Triffecta | Retail Media Simplified",
-        description:
-          "Run one campaign across multiple retailers with Triffecta. Experience automated retail media, clean data, and real-time reporting.",
-        image: ImgHeroTop.src,
-        imageAlt: "Triffecta platform dashboard showcasing retail media automation",
-      }}
-
-      {
-        name: "linkedin:profile",
-        content: "https://www.linkedin.com/company/triffecta-com/",
-      },
-    -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Triffecta",
-        "url": "https://triffecta.com",
-        "logo": "https://triffecta.com/icon.png",
-        "sameAs": ["https://www.linkedin.com/company/triffecta-com/"],
-        "description": "Triffecta simplifies retail media execution with AI-powered automation, standardized data, and single-campaign activation across multiple retailers."
-      }
-    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

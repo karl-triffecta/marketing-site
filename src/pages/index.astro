@@ -15,12 +15,17 @@ const optimizedImgHeroTop = await getImage({
 });
 import ImgHeroBottom from "../assets/hero-bottom.png";
 import ImgMacbook from "../assets/mackbook.png";
+
+const seo = {
+  title: "Triffecta | Revolutionizing Retail Media at Scale",
+  titleTemplate: "%s",
+};
 ---
 
 <Fragment slot="head">
   <link rel="preload" href={optimizedImgHeroTop.src} as="image" />
 </Fragment>
-<Layout>
+<Layout seo={seo}>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
       <FadeIn client:load delay={300} duration={3000}>

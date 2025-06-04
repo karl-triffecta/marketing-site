@@ -1,8 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+const seo = {
+  title: "Cookies Policy",
+  description:
+    "Learn about Triffecta's cookies policy and how we use cookies on our website.",
+  path: "/cookies/",
+};
 ---
 
-<Layout>
+<Layout seo={seo}>
   <section class="relative bg-white py-8">
     <div
       class="container mx-auto flex flex-col py-8 sm:flex-row sm:items-stretch sm:justify-between sm:px-8 md:px-12 lg:px-20"

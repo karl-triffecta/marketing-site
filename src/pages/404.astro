@@ -1,9 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Particles from "../components/Particles.astro";
+
+const seo = {
+  title: "Page Not Found",
+  description: "The page you are looking for does not exist.",
+  robots: "noindex, nofollow",
+  path: "/404/",
+};
 ---
 
-<Layout>
+<Layout seo={seo}>
   <section
     class="relative flex h-[60vh] items-center justify-center bg-white py-8"
   >
@@ -12,7 +19,12 @@ import Particles from "../components/Particles.astro";
     >
       <div class="z-10 w-full text-center">
         <h1 class="mb-8 text-6xl">Page Not Found</h1>
-        <p>Sorry, but the page you were trying to view does not exist.</p>
+        <p class="mb-8">
+          Sorry, but the page you were trying to view does not exist.
+        </p>
+        <a href="/contact" class="text-primary underline"
+          >Need help? Contact us</a
+        >
       </div>
       <Particles />
     </div>

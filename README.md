@@ -88,6 +88,9 @@ npx astro add preact
 # https://docs.astro.build/en/guides/styling/#tailwind
 npx astro add tailwind
 
+# https://docs.astro.build/en/guides/integrations-guide/sitemap/
+npx astro add sitemap
+
 # https://ota-meshi.github.io/eslint-plugin-astro/user-guide/
 npm install --save-dev eslint eslint-plugin-astro
 npm install --save-dev @typescript-eslint/parser
@@ -95,9 +98,6 @@ npm install --save-dev @typescript-eslint/parser
 # https://docs.astro.build/en/editor-setup/#prettier
 # https://github.com/tailwindlabs/prettier-plugin-tailwindcss
 npm install --save-dev prettier prettier-plugin-astro prettier-plugin-tailwindcss
-
-# https://docs.astro.build/en/guides/integrations-guide/sitemap/
-npx astro add sitemap
 
 # https://www.npmjs.com/package/intl-tel-input
 npm install intl-tel-input utils

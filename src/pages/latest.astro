@@ -10,12 +10,18 @@ const optimizedImgHeroLights = await getImage({
   src: ImgHeroLights,
   format: "webp",
 });
+
+const seo = {
+  title: "Latest Updates",
+  description: "Stay updated with the latest news and events from Triffecta.",
+  path: "/latest/",
+};
 ---
 
 <Fragment slot="head">
   <link rel="preload" href={optimizedImgHeroLights.src} as="image" />
 </Fragment>
-<Layout>
+<Layout seo={seo}>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
       <div class="relative z-20">

@@ -11,12 +11,18 @@ const optimizedImgHeroTop = await getImage({
   src: ImgHeroTop,
   format: "webp",
 });
+
+const seo = {
+  title: "Event Connections",
+  description: "Connect with Triffecta at events",
+  path: "/event-connections/",
+};
 ---
 
 <Fragment slot="head">
   <link rel="preload" href={optimizedImgHeroTop.src} as="image" />
 </Fragment>
-<Layout showNewsletter={false}>
+<Layout showNewsletter={false} seo={seo}>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
       <div class="relative z-20">
