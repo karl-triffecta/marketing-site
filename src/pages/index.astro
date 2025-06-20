@@ -16,6 +16,10 @@ const optimizedImgHeroTop = await getImage({
 import ImgHeroBottom from "../assets/hero-bottom.png";
 import ImgMacbook from "../assets/mackbook.png";
 
+import HeroBackgroundVideo from "../components/HeroBackgroundVideo.tsx";
+import heroWebm from "../assets/hero-bg.webm";
+import heroMp4 from "../assets/hero-bg.mp4";
+
 const seo = {
   title: "Triffecta | Revolutionizing Retail Media at Scale",
   titleTemplate: "%s",
@@ -78,6 +82,14 @@ const seo = {
       fetchpriority="high"
       loading="eager"
       class="absolute top-0 left-0 z-0 h-full w-full object-cover object-[70%_center] sm:object-center"
+    />
+    <HeroBackgroundVideo
+      webmSrc={heroWebm}
+      mp4Src={heroMp4}
+      poster={optimizedImgHeroTop.src}
+      className="absolute top-0 left-0 z-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-1200"
+      delay={1200}
+      client:load
     />
   </section>
 
