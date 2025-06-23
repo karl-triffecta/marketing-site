@@ -56,6 +56,8 @@ export default function HeroBackgroundVideo({
       preload="none"
       poster={poster}
       class={`${className}`}
+      aria-hidden="true"
+      tabindex={-1}
     >
       <source src={webmSrc} type="video/webm" />
       <source src={mp4Src} type="video/mp4" />
