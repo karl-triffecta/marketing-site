@@ -32,6 +32,13 @@ const page = {
   keywords:
     seo.keywords ||
     "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
+  image: seo.image || ImgHeroTop.src,
+  author: seo.author || "",
+  publishedTime: seo.publishedTime
+    ? `${seo.publishedTime}T09:00:00Z`
+    : new Date().toISOString(),
+  articleTags: seo.articleTags || [],
+  type: seo.type || "website",
 };
 ---
 
@@ -71,8 +78,8 @@ const page = {
       openGraph={{
         basic: {
           title: page.title,
-          type: "website",
-          image: ImgHeroTop.src,
+          type: page.type,
+          image: page.image,
           url: page.canonicalUrl,
         },
         optional: {
@@ -81,12 +88,19 @@ const page = {
           locale: "en_US",
         },
         image: {
-          url: ImgHeroTop.src,
+          url: page.image,
           alt: page.altText,
           type: "image/png",
           width: 1200,
           height: 630,
         },
+        ...(page.type === "article" && {
+          article: {
+            publishedTime: page.publishedTime,
+            authors: page.author ? [page.author] : [],
+            tags: page.articleTags,
+          },
+        }),
       }}
       extend={{
         link: [
@@ -109,7 +123,7 @@ const page = {
             property: "og:image:alt",
             content: page.altText,
           },
-          { name: "twitter:image", content: ImgHeroTop.src },
+          { name: "twitter:image", content: page.image },
           {
             name: "twitter:title",
             content: page.title,
@@ -118,6 +132,12 @@ const page = {
             name: "twitter:description",
             content: page.description,
           },
+          ...(page.type === "article"
+            ? [
+                { name: "twitter:card", content: "summary_large_image" },
+                { name: "twitter:image:alt", content: page.altText },
+              ]
+            : []),
         ],
       }}
     />

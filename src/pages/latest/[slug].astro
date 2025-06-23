@@ -21,16 +21,23 @@ if (!post) throw new Error(`Post not found: ${slug}`);
 
 const { Content } = await post.render();
 
-const seo = {
-  title: post.data.title,
-  description: post.data.description,
-  path: `/latest/${slug}`,
-};
-
 const optimizedImgBanner = await getImage({
   src: post.data.image,
   format: "webp",
 });
+
+const seo = {
+  title: post.data.title,
+  description: post.data.description,
+  path: `/latest/${slug}`,
+  altText: post.data.alt,
+  keywords: post.data.tags,
+  image: optimizedImgBanner.src,
+  author: post.data.author?.name || "Triffecta Team",
+  publishedTime: post.data.date,
+  articleTags: post.data.tags?.split(" ") || [],
+  type: "article",
+};
 ---
 
 <Fragment slot="head">
