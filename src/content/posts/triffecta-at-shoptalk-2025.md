@@ -11,4 +11,4 @@ platform: "linkedin"
 tags: "#Shoptalk2025 #RetailMedia #CPG #RetailInnovation #Triffecta "
 ---
 
-Find out more on LinkedIn
+<a href="https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY" target="_blank">Find out more on LinkedIn</a>
