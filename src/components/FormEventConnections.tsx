@@ -13,7 +13,7 @@ const schema = z.object({
   notificationOptIn: z.boolean(),
 });
 
-export default function EventConnections() {
+export default function FormEventConnections() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",

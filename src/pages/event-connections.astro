@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 
-import EventConnections from "../components/EventConnections.tsx";
+import FormEventConnections from "../components/FormEventConnections.tsx";
 
 import { getImage, Picture } from "astro:assets";
 import ImgHeroTop from "../assets/hero-top.png";
@@ -72,7 +72,7 @@ const seo = {
         <div
           class="order-first col-span-4 sm:col-span-4 lg:order-last lg:col-span-5 lg:p-6 lg:pb-0 2xl:mb-0"
         >
-          <EventConnections client:load />
+          <FormEventConnections client:load />
         </div>
       </div>
     </div>
