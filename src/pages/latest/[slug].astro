@@ -1,0 +1,121 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import { getImage, Picture, Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
+import FormattedPostDate from "../../components/FormattedPostDate.tsx";
+import ImgHeroTop from "../../assets/hero-top.png";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntry("posts", slug);
+
+if (!post) throw new Error(`Post not found: ${slug}`);
+
+const { Content } = await post.render();
+
+const seo = {
+  title: post.data.title,
+  description: post.data.description,
+  path: `/latest/${slug}`,
+};
+
+const optimizedImgBanner = await getImage({
+  src: post.data.image,
+  format: "webp",
+});
+---
+
+<Fragment slot="head">
+  <link rel="preload" href={optimizedImgBanner.src} as="image" />
+</Fragment>
+<Layout seo={seo}>
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative z-10 container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1
+            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+          >
+            {post.data.title}
+          </h1>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-20%] left-[-75%] z-10 sm:top-[-300%] sm:left-[-20%]"
+      >
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
+    </div>
+
+    <Picture
+      id="hero"
+      src={post.data.image}
+      formats={["webp", "avif", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
+      alt="A picture of a woman shopping for groceries"
+      fetchpriority="high"
+      loading="eager"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-center"
+    />
+  </section>
+
+  <section class="relative overflow-hidden bg-white py-6">
+    <div class="relative z-10 container mx-auto py-6">
+      <article class="prose mx-auto lg:px-4">
+        <div class="flex flex-wrap items-center justify-normal gap-2 lg:my-6">
+          {
+            post.data.author && (
+              <>
+                <a href="/team">
+                  <div class="flex items-center space-x-4">
+                    <Image
+                      src={post.data.author.avatar}
+                      alt={`A picture of ${post.data.author.name}`}
+                      class="h-10 w-10 rounded-full object-cover"
+                      style={{
+                        filter:
+                          "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
+                      }}
+                    />
+                    <div class="text-sm">
+                      <p class="font-semibold text-gray-900">
+                        {post.data.author.name}
+                      </p>
+                    </div>
+                  </div>
+                </a>
+
+                <span>·</span>
+              </>
+            )
+          }
+
+          <span class="text-sm text-gray-500">
+            <FormattedPostDate date={post.data.date} />
+          </span>
+        </div>
+
+        <div class="preflight-undo post-article text-lg">
+          <Content />
+        </div>
+
+        <p class="mt-8 text-sm text-gray-500">
+          <strong>{post.data.tags}</strong>
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>

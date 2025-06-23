@@ -7,6 +7,8 @@ import FeatureScroller from "../components/FeatureScroller.tsx";
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
 import LinkButtonRequestDemo from "../components/LinkButtonRequestDemo.tsx";
 
+import PostList from "../components/PostList.astro";
+
 import { getImage, Picture } from "astro:assets";
 import ImgHeroTop from "../assets/hero-top.png";
 const optimizedImgHeroTop = await getImage({
@@ -248,55 +250,11 @@ const seo = {
         <div class="col-span-4 p-0 sm:col-span-3 lg:col-span-4 lg:px-6">
           <h2 class="text-6xl leading-[3rem] font-bold">Latest</h2>
         </div>
-        <div
+        <ul
           class="col-span-8 mt-6 p-0 sm:col-span-3 lg:col-span-8 lg:mt-0 lg:px-6"
         >
-          <FadeIn client:load delay={150} duration={1500}>
-            <div
-              class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
-            >
-              <div
-                class="order-1 col-span-6 flex items-center justify-end sm:col-span-3 lg:order-2 lg:col-span-6"
-              >
-                <div
-                  class="aspect-square max-h-56 w-full rounded-lg bg-gray-200 lg:aspect-auto lg:h-56 lg:w-56"
-                >
-                  <a
-                    target="_blank"
-                    class="text-primary-dark underline"
-                    href="https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY"
-                  >
-                    <img
-                      src="https://media.licdn.com/dms/image/v2/D4E22AQGraFoG4JKgvg/feedshare-shrink_800/B4EZc0OTtUG4Ag-/0/1748927862529?e=1752105600&v=beta&t=Rzkvx2jPjwYU3CDKnuBAUVSwjTSY2krQjY2QpXHVuSI"
-                      alt="Placeholder image"
-                      class="h-full w-full rounded-lg object-cover"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              <div
-                class="order-2 col-span-6 flex h-full flex-col justify-between sm:col-span-3 lg:order-1 lg:col-span-6"
-              >
-                <div>
-                  <h3 class="text-2xl leading-5 font-bold">
-                    Triffecta @ Shoptalk
-                  </h3>
-                  <p class="mt-4 text-lg">
-                    Retail Media is finally getting the spotlight it deserves at
-                    Shoptalk — and Triffecta will be there... <a
-                      target="_blank"
-                      class="text-primary-dark underline"
-                      href="https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY"
-                      >find out more on linkedin</a
-                    >
-                  </p>
-                </div>
-                <div class="text-text-light mt-8 lg:mt-4">3rd June 2025</div>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
+          <PostList short={true} />
+        </ul>
       </div>
     </div>
   </section>

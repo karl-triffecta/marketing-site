@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import FadeIn from "./FadeIn";
+import FormattedPostDate from "./FormattedPostDate.tsx";
+import { getCollection } from "astro:content";
+
+export interface Props {
+  short?: boolean;
+}
+
+const { short = false } = Astro.props;
+
+const posts = await getCollection("posts");
+
+posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+const visiblePosts = short ? posts.slice(0, 3) : posts;
+
+function formatTags(tags: string, max = 3) {
+  if (!tags) return "";
+  const arr = tags
+    .split("#")
+    .map((t) => t.trim())
+    .filter(Boolean);
+  const shown = arr.slice(0, max).map((t) => `#${t}`);
+  return shown.join(" ") + (arr.length > max ? " ..." : "");
+}
+---
+
+{
+  visiblePosts.map((post) => (
+    <li>
+      <FadeIn client:load delay={150} duration={1500}>
+        <a
+          target={post.data.href ? "_blank" : "_self"}
+          href={post.data.href ? post.data.href : `/latest/${post.slug}/`}
+        >
+          <div class="mb-8 grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8">
+            <div class="order-1 col-span-6 flex items-center justify-end sm:col-span-3 lg:order-2 lg:col-span-6">
+              <div
+                class={`aspect-square w-full rounded-lg bg-gray-200 lg:aspect-auto ${
+                  short
+                    ? "max-h-56 lg:h-56 lg:w-56"
+                    : "max-h-64 lg:h-64 lg:w-64"
+                }`}
+              >
+                <Image
+                  src={post.data.image}
+                  alt={post.data.alt || post.data.title}
+                  class="h-full w-full rounded-lg object-cover"
+                />
+              </div>
+            </div>
+
+            <div
+              class={`order-2 col-span-6 flex h-full flex-col justify-between sm:col-span-3 lg:order-1 lg:col-span-6 ${
+                short ? "" : "lg:px-4"
+              } `}
+            >
+              <div>
+                <h3 class="text-2xl leading-5 font-bold">
+                  {post.data.title ? post.data.title : "Latest Post"}
+                </h3>
+                <p class="mt-4 text-lg">
+                  <span class={short ? "line-clamp-4" : ""}>
+                    {post.data.description
+                      ? post.data.description
+                      : "Check out our latest insights and updates."}
+                  </span>
+                  {post.data.href && (
+                    <span class="text-primary-dark underline">
+                      {" "}
+                      find out more on{" "}
+                      {post.data.platform ? post.data.platform : "this link"}.
+                    </span>
+                  )}
+                </p>
+              </div>
+
+              <div class="text-text-light mt-8 lg:mt-4">
+                <div class="text-sm font-semibold">
+                  {short ? formatTags(post.data.tags || "") : post.data.tags}
+                </div>
+                <FormattedPostDate date={post.data.date} />
+              </div>
+            </div>
+          </div>
+        </a>
+      </FadeIn>
+    </li>
+  ))
+}

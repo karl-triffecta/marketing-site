@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PostList from "../../components/PostList.astro";
+import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
+import { getImage, Picture } from "astro:assets";
+import ImgHeroLights from "../../assets/hero-lights.png";
+
+const optimizedImgHeroLights = await getImage({
+  src: ImgHeroLights,
+  format: "webp",
+});
+
+const seo = {
+  title: "Latest Updates",
+  description: "Stay updated with the latest news and events from Triffecta.",
+  path: "/latest/",
+};
+---
+
+<Fragment slot="head">
+  <link rel="preload" href={optimizedImgHeroLights.src} as="image" />
+</Fragment>
+<Layout seo={seo}>
+  <section class="bg-secondary relative overflow-hidden py-18 text-white">
+    <div class="relative z-10 container mx-auto">
+      <div class="relative z-20">
+        <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
+          <h1
+            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+          >
+            Latest
+          </h1>
+        </div>
+      </div>
+      <div
+        class="absolute top-[-20%] left-[-75%] z-10 sm:top-[-300%] sm:left-[-20%]"
+      >
+        <IconTriffecta
+          size="1000px"
+          strokeWidth="0.7"
+          transform="rotate(212)"
+        />
+      </div>
+    </div>
+
+    <Picture
+      id="hero"
+      src={ImgHeroLights}
+      formats={["webp", "avif", "png"]}
+      widths={[480, 768, 1280, 1920]}
+      sizes="100vw"
+      alt="A picture of a woman shopping for groceries"
+      fetchpriority="high"
+      loading="eager"
+      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-bottom"
+    />
+  </section>
+
+  <section class="relative overflow-hidden bg-white py-10 lg:py-18">
+    <div class="relative z-10 container mx-auto">
+      <ul class="col-span-6 sm:col-span-3 lg:col-span-6">
+        <PostList short={false} />
+      </ul>
+    </div>
+  </section>
+</Layout>

@@ -56,6 +56,17 @@
   width: 100%;
 }
 
+.post-article {
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  p {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
 /* Undo https://tailwindcss.com/docs/preflight */
 .preflight-undo {
   h1,
