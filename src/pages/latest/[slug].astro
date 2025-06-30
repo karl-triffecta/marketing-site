@@ -117,6 +117,20 @@ const seo = {
 
         <div class="preflight-undo post-article text-lg">
           <Content />
+          {
+            post.data.platform && (
+              <p class="mt-4">
+                <a
+                  href={post.data.href}
+                  target="_blank"
+                  class="text-primary-dark underline"
+                >
+                  Find out more on{" "}
+                  <span class="capitalize">{post.data.platform}</span>
+                </a>
+              </p>
+            )
+          }
         </div>
 
         <p class="mt-8 text-sm text-gray-500">

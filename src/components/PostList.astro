@@ -17,16 +17,6 @@ posts.sort(
 );
 
 const visiblePosts = short ? posts.slice(0, 3) : posts;
-
-function formatTags(tags: string, max = 3) {
-  if (!tags) return "";
-  const arr = tags
-    .split("#")
-    .map((t) => t.trim())
-    .filter(Boolean);
-  const shown = arr.slice(0, max).map((t) => `#${t}`);
-  return shown.join(" ") + (arr.length > max ? " ..." : "");
-}
 ---
 
 {
@@ -71,8 +61,8 @@ function formatTags(tags: string, max = 3) {
                   </span>
                   {post.data.href && (
                     <span class="text-primary-dark underline">
-                      {" "}
-                      find out more on{" "}
+                      {!short && <br />}
+                      Find out more on{" "}
                       {post.data.platform ? post.data.platform : "this link"}.
                     </span>
                   )}
@@ -80,9 +70,9 @@ function formatTags(tags: string, max = 3) {
               </div>
 
               <div class="text-text-light mt-8 lg:mt-4">
-                <div class="text-sm font-semibold">
-                  {short ? formatTags(post.data.tags || "") : post.data.tags}
-                </div>
+                {!short && (
+                  <div class="text-sm font-semibold">{post.data.tags}</div>
+                )}
                 <FormattedPostDate date={post.data.date} />
               </div>
             </div>
