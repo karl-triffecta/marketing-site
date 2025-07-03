@@ -11,7 +11,7 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
     Retail media is now a core part of the marketing mix. And it’s working—search drives conversion, retailers offer rich first-party data, and campaigns are running across more platforms than ever.
   </p>
 
-  <p><strong>But here's the catch 👇</strong></p>
+  <p><strong>But here's the catch</strong></p>
 
   <ul>
     <li>You're logging into <strong>5+ different systems</strong> just to understand what’s performing</li>
