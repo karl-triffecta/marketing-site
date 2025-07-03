@@ -22,7 +22,7 @@ if (!post) throw new Error(`Post not found: ${slug}`);
 const { Content } = await post.render();
 
 const optimizedImgBanner = await getImage({
-  src: post.data.image,
+  src: post.data.image || ImgHeroTop,
   format: "webp",
 });
 
@@ -68,7 +68,7 @@ const seo = {
 
     <Picture
       id="hero"
-      src={post.data.image}
+      src={post.data.image || ImgHeroTop}
       formats={["webp", "avif", "png"]}
       widths={[480, 768, 1280, 1920]}
       sizes="100vw"
