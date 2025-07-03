@@ -1,13 +1,13 @@
 export default function IconPlus({
-  size = "40px",
+  size = "100%",
   strokeColor = "#F6BF6C",
   backgroundColor = "#DFDFD7",
   className = "",
 }) {
   return (
     <svg
-      width="100%"
-      height="100%"
+      width={size}
+      height={size}
       viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
