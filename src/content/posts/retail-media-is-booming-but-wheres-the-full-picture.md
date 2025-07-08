@@ -2,6 +2,7 @@
 title: "Retail Media Is Booming—But Where’s the Full Picture?"
 date: "2025-07-03"
 alt: ""
+image: ./images/20250703-group.jpg
 description: "Retail media is growing fast—but fragmentation is holding it back. Discover how Triffecta simplifies performance tracking across platforms."
 tags: "#RetailMedia #EcommerceMarketing #AdTech #ShopperMarketing #ROIonRetail #RetailInnovation #MarketingInsights"
 author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
