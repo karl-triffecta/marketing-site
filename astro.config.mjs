@@ -26,7 +26,11 @@ export default defineConfig({
   integrations: [
     preact(),
     sitemap({
-      filter: (page) => page !== "https://triffecta.com/event-connections/",
+      filter: (page) =>
+        ![
+          "https://triffecta.com/event-connections/",
+          "https://triffecta.com/data-room/",
+        ].includes(page),
     }),
   ],
   vite: {
