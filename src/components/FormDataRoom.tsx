@@ -154,7 +154,11 @@ export default function FormDataRoom() {
           <section class="mx-auto py-1">
             <div class="relative container">
               <div class="lg:p-6">
-                <h2 class="mt-4 text-2xl font-bold">{folder.title}</h2>
+                <h2
+                  class={`text-2xl font-bold ${!folder.cards.length ? "text-gray-400" : "mt-4"}`}
+                >
+                  {folder.title}
+                </h2>
                 <div class="relative grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4 pt-4 pb-1">
                   {folder.cards.map((card) => (
                     <a
