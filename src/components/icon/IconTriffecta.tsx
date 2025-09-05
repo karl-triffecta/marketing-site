@@ -15,9 +15,10 @@ export default function IconTriffecta({
       stroke-width={strokeWidth}
       stroke-linecap="round"
       stroke-linejoin="miter"
-      transform={transform}
     >
-      <polygon points="12 3 2.5 21 21.5 21 12 3"></polygon>
+      <g transform="rotate(180, 12, 12)">
+        <polygon points="12 3 2.5 21 21.5 21 12 3"></polygon>
+      </g>
     </svg>
   );
 }

@@ -8,6 +8,16 @@ type FadeInProps = {
   duration?: number;
 };
 
+// Polyfill for requestIdleCallback
+if (typeof window !== "undefined") {
+  if (!("requestIdleCallback" in window)) {
+    (window as any).requestIdleCallback = (cb: Function) =>
+      setTimeout(() => cb(), 1);
+
+    (window as any).cancelIdleCallback = (id: number) => clearTimeout(id);
+  }
+}
+
 export default function FadeIn({
   children,
   className = "",
