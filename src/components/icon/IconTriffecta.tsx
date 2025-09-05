@@ -2,7 +2,7 @@ export default function IconTriffecta({
   size = "100px",
   strokeColor = "var(--color-accent)",
   strokeWidth = "1.2",
-  transform = "rotate(180)",
+  rotate = 180,
 }) {
   return (
     <svg
@@ -15,8 +15,9 @@ export default function IconTriffecta({
       stroke-width={strokeWidth}
       stroke-linecap="round"
       stroke-linejoin="miter"
+      style={`transform:rotate(${rotate}deg)`}
     >
-      <g transform="rotate(180, 12, 12)">
+      <g>
         <polygon points="12 3 2.5 21 21.5 21 12 3"></polygon>
       </g>
     </svg>
