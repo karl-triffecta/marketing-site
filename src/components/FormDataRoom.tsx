@@ -82,19 +82,19 @@ export default function FormDataRoom() {
       cards: [
         {
           title: "Financials Overview",
-          href: "https://drive.google.com/file/d/1Z6sMt3fPtgnHOwmPpRgwQRGTeSx-yoGU/view?usp=drive_link",
+          href: "https://drive.google.com/file/d/1Z6sMt3fPtgnHOwmPpRgwQRGTeSx-yoGU/view?usp=share_link",
+        },
+        {
+          title: "Financial Forecast",
+          href: "https://docs.google.com/spreadsheets/d/1WoOmlU7HJL7SoXz4oHNNJTTb5YmEBvbVsGoQx2O3Big/view?usp=drive_link",
         },
         {
           title: "Software Development Transactions",
-          href: "https://drive.google.com/file/d/1ZkTVVvDMwfHpJZ1QcKp91NXUqc8JIHK0/view?usp=drive_link",
+          href: "https://drive.google.com/file/d/1ZkTVVvDMwfHpJZ1QcKp91NXUqc8JIHK0/view?usp=share_link",
         },
         {
           title: "Depreciation Schedule",
           href: "https://drive.google.com/file/d/12-NXvuHOfdrRb_3z6KMinOKNMhLV1Zej/view?usp=drive_link",
-        },
-        {
-          title: "Loan Application",
-          href: "https://docs.google.com/spreadsheets/d/1ooAuFC6jYSNlor-MtgjdKj3GPKYVEz6Y/edit?usp=drive_link&ouid=103345407896235373100&rtpof=true&sd=true",
         },
       ],
     },
@@ -155,7 +155,7 @@ export default function FormDataRoom() {
             <div class="relative container">
               <div class="lg:p-6">
                 <h2
-                  class={`text-2xl font-bold ${!folder.cards.length ? "text-gray-400" : "mt-4"}`}
+                  class={`mt-4 text-2xl font-bold ${!folder.cards.length ? "text-gray-400" : ""}`}
                 >
                   {folder.title}
                 </h2>
