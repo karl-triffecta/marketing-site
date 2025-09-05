@@ -44,7 +44,7 @@ export default function FormDataRoom() {
       cards: [
         {
           title: "Product Video",
-          href: "https://drive.google.com/file/d/180LPuFYjZWoHLdfikgeyPgHVtu8Eg3CR/view?usp=drive_link",
+          href: "https://drive.google.com/file/d/1D9i1Al1Cf6F4s0OHnZbPT_eq44SQO2_L/view?usp=share_link",
         },
         {
           title: "Tech Docs",
