@@ -10,7 +10,7 @@ export default function FormDataRoom() {
       cards: [
         {
           title: "Pitch Deck",
-          href: "https://drive.google.com/file/d/1WUjZBYXYHP1SpmOW6Rg_DF3K-9lft6IJ/view?usp=share_link",
+          href: "https://drive.google.com/file/d/1PxasicGbS40QTOEoXft2GdS3GcrF6hXa/view?usp=share_link",
         },
         {
           title: "Our Team",
