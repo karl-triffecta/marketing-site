@@ -19,6 +19,9 @@ const posts = defineCollection({
       external: z.boolean().optional(),
       href: z.string().optional(),
       platform: z.string().optional(),
+      postImage: image().optional(),
+      postImageTitle: z.string().optional(),
+      postImageCaption: z.string().optional(),
     }),
 });
 

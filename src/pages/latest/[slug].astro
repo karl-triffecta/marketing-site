@@ -5,6 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
 import FormattedPostDate from "../../components/FormattedPostDate.tsx";
 import ImgHeroTop from "../../assets/hero-top.png";
+import PostImage from "../../components/PostImage.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -112,6 +113,15 @@ const seo = {
         </div>
 
         <div class="preflight-undo post-article text-lg">
+          {
+            post.data.postImage && (
+              <PostImage
+                src={post.data.postImage}
+                title={post.data.postImageTitle || ""}
+                caption={post.data.postImageCaption}
+              />
+            )
+          }
           <Content />
           {
             post.data.platform && (
