@@ -113,16 +113,7 @@ const seo = {
         </div>
 
         <div class="preflight-undo post-article text-lg">
-          {
-            post.data.postImage && (
-              <PostImage
-                src={post.data.postImage}
-                title={post.data.postImageTitle || ""}
-                caption={post.data.postImageCaption}
-              />
-            )
-          }
-          <Content />
+          <Content components={{ PostImage }} />
           {
             post.data.platform && (
               <p class="mt-4">

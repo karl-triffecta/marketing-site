@@ -1,23 +1,40 @@
 ---
 import { Image } from "astro:assets";
 
-const { title, src, caption } = Astro.props;
+const { title, src, caption, url, width, height } = Astro.props;
 ---
 
 <figure class="my-8 text-center">
   {title && <h3 class="mb-2 font-bold">{title}</h3>}
-  <Image
-    src={src}
-    alt={title || caption}
-    widths={[640, 768, 1024, 1280]}
-    sizes="100vw"
-    class="mx-auto"
-    loading="lazy"
-  />
+  {
+    src && (
+      <Image
+        src={src}
+        alt={title || caption}
+        widths={[640, 768, 1024, 1280]}
+        sizes="100vw"
+        class="mx-auto"
+        loading="lazy"
+        width={width}
+        height={height}
+      />
+    )
+  }
   {
     caption && (
       <figcaption class="mt-2 text-sm text-gray-500 italic">
-        {caption}
+        {url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline"
+          >
+            {caption}
+          </a>
+        ) : (
+          caption
+        )}
       </figcaption>
     )
   }

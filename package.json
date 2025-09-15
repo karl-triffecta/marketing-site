@@ -10,6 +10,7 @@
     "format": "npx prettier --write src/"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.5",
     "@astrojs/preact": "^4.0.5",
     "@astrojs/sitemap": "^3.4.0",
     "@tailwindcss/vite": "^4.0.13",

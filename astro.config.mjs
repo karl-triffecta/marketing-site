@@ -4,6 +4,7 @@ import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { minify } from "terser";
+import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
 
@@ -25,6 +26,7 @@ export default defineConfig({
   */
   integrations: [
     preact(),
+    mdx(),
     sitemap({
       filter: (page) =>
         ![
