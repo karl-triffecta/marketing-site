@@ -79,8 +79,9 @@ export default function FeatureScrollStack() {
     <section class="container mx-auto my-15">
       <div class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8">
         {features.map((feature, index) => {
-          const staggerMap = ["lg:mt-[32vh]", "lg:mt-[60vh]", "lg:mt-[90vh]"];
-          const marginTop = staggerMap[index] || `lg:mt-[${90 + index * 30}vh]`;
+          // Updated staggerMap for faster completion
+          const staggerMap = ["lg:mt-0", "lg:mt-[30vh]", "lg:mt-[60vh]"];
+          const marginTop = staggerMap[index] || `lg:mt-[${75 + index * 15}vh]`;
 
           return (
             <div
