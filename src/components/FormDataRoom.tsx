@@ -20,6 +20,10 @@ export default function FormDataRoom() {
           title: "Business Docs",
           href: "https://drive.google.com/drive/folders/1kkIm8BQaqtf4_4rw5prLJiemz5sM4btS?usp=drive_link",
         },
+        {
+          title: "Pipeline",
+          href: "https://drive.google.com/file/d/1f62tWkR6ZdqV8eS6-os2TZZM90wQ92I9/view?usp=drive_link",
+        },
       ],
     },
     {
