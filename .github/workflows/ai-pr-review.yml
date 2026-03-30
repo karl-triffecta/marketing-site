@@ -37,7 +37,6 @@ jobs:
 
       - name: Run AI review
         if: ${{ env.OPENAI_API_KEY != '' }}
-        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ env.OPENAI_API_KEY }}

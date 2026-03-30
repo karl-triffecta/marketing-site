@@ -204,9 +204,9 @@ function buildReviewInput(pr, files) {
     )
     .slice(0, MAX_REVIEW_FILES);
 
-  const excludedSensitiveFiles = files
-    .filter((file) => shouldExcludeFromLlm(file.filename))
-    .map((file) => file.filename);
+  const excludedSensitiveFilesCount = files.filter((file) =>
+    shouldExcludeFromLlm(file.filename),
+  ).length;
   const authorContextLabel = authorContext.hasAuthorContext
     ? authorContext.signals.length > 0
       ? `Detected ${authorContext.signals.length} author context signal(s).`
@@ -310,8 +310,8 @@ ${authorContext.summary}
 PR body (raw):
 ${truncate(authorContext.rawBody, 15000)}
 
-Excluded files (not sent to the model due to sensitive filename patterns):
-${excludedSensitiveFiles.length ? excludedSensitiveFiles.map((name) => `- ${name}`).join("\n") : "- None"}
+Excluded files due to sensitive filename patterns:
+${excludedSensitiveFilesCount}
 
 Changed files:
 ${truncate(diffText, MAX_DIFF_CHARS)}
@@ -487,10 +487,14 @@ function applyTrafficLightFormatting(markdown) {
   return lines.join("\n");
 }
 
-async function findExistingBotComment() {
+async function findExistingBotComment(totalCommentsHint = 0) {
   const allComments = [];
   let scanTruncated = false;
-  for (let page = 1; ; page += 1) {
+  const maxPages = Math.max(1, Math.floor(MAX_ISSUE_COMMENTS_SCAN / 100));
+  const estimatedTotalPages = Math.max(1, Math.ceil(totalCommentsHint / 100));
+  const startPage = Math.max(1, estimatedTotalPages - maxPages + 1);
+
+  for (let page = startPage; ; page += 1) {
     const comments = await github(
       `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
     );
@@ -499,14 +503,14 @@ async function findExistingBotComment() {
       scanTruncated = true;
       break;
     }
-    if (comments.length < 100) {
+    if (comments.length < 100 || page >= estimatedTotalPages) {
       break;
     }
   }
 
-  if (scanTruncated) {
+  if (scanTruncated || startPage > 1) {
     console.warn(
-      `[github] comment scan truncated at ${MAX_ISSUE_COMMENTS_SCAN} comments; older bot comments may be missed.`,
+      `[github] scanning newest comments only (start_page=${startPage}, max_scan=${MAX_ISSUE_COMMENTS_SCAN}); older bot comments may be missed.`,
     );
   }
 
@@ -572,7 +576,7 @@ async function main() {
     "_Automated shallow review: intended as a sanity check, not a blocking approval._",
   ].join("\n");
 
-  const existingComment = await findExistingBotComment();
+  const existingComment = await findExistingBotComment(pr.comments || 0);
 
   if (existingComment) {
     await updateComment(existingComment.id, body);
