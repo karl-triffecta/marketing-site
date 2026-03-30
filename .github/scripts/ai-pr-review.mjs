@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 // Intent:
 // - Provide a shallow, cost-effective, non-blocking PR sanity check for major risks.
 // - Assist human reviewers; not a replacement for code review or approvals.
@@ -13,7 +15,9 @@ const MAX_TOTAL_CHANGED_LINES = Number(
   process.env.MAX_TOTAL_CHANGED_LINES || 3500,
 );
 const MAX_TOTAL_FILES = Number(process.env.MAX_TOTAL_FILES || 200);
-const MAX_ISSUE_COMMENTS_SCAN = Number(process.env.MAX_ISSUE_COMMENTS_SCAN || 500);
+const MAX_ISSUE_COMMENTS_SCAN = Number(
+  process.env.MAX_ISSUE_COMMENTS_SCAN || 500,
+);
 const BOT_MARKER = "<!-- ai-pr-review-bot -->";
 const ENABLE_SENSITIVE_EXCLUSIONS =
   String(process.env.ENABLE_SENSITIVE_EXCLUSIONS || "true").toLowerCase() !==
@@ -23,10 +27,6 @@ const LLM_EXCLUDE_ALLOWLIST = String(process.env.LLM_EXCLUDE_ALLOWLIST || "")
   .map((value) => value.trim().toLowerCase())
   .filter(Boolean);
 const REDACTION_PLACEHOLDER = "[REDACTED]";
-
-if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
-  throw new Error("Missing required environment variables.");
-}
 
 const GITHUB_API = "https://api.github.com";
 const OPENAI_API = "https://api.openai.com/v1/responses";
@@ -110,7 +110,11 @@ function shouldExcludeFromLlm(filename) {
     return false;
   }
   // Exclude explicitly sensitive path segments.
-  if (pathParts.some((part) => /^(secret|secrets|credential|credentials)$/i.test(part))) {
+  if (
+    pathParts.some((part) =>
+      /^(secret|secrets|credential|credentials)$/i.test(part),
+    )
+  ) {
     return true;
   }
 
@@ -124,33 +128,59 @@ function redactSensitivePatchContent(patch) {
 
   // Pragmatic redaction: lightweight patterns to prevent obvious secret-like
   // values from leaving GitHub while preserving enough context for shallow review.
-  const patterns = [
-    /(api[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
-    /(secret[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
-    /(token\s*[:=]\s*['"]?)[^\s'",`]+/gi,
-    /(password\s*[:=]\s*['"]?)[^\s'",`]+/gi,
-    /(authorization\s*:\s*bearer\s+)[a-z0-9._-]+/gi,
-    /(-----BEGIN [A-Z ]+-----)([\s\S]*?)(-----END [A-Z ]+-----)/g,
-    /(AKIA[0-9A-Z]{16})/g,
-    /(ghp_[A-Za-z0-9]{20,})/g,
-  ];
+  // This is intentionally not exhaustive; tests cover common patterns only.
 
   let redactions = 0;
   let redactedPatch = patch;
-
-  for (const regex of patterns) {
+  const apply = (regex, replacer) => {
     redactedPatch = redactedPatch.replace(regex, (...args) => {
       redactions += 1;
-      if (args.length >= 4 && typeof args[1] === "string" && typeof args[3] === "string") {
-        // Handle PEM-style multi-line blocks while preserving BEGIN/END markers.
-        return `${args[1]}\n${REDACTION_PLACEHOLDER}\n${args[3]}`;
-      }
-      if (typeof args[1] === "string") {
-        return `${args[1]}${REDACTION_PLACEHOLDER}`;
-      }
-      return REDACTION_PLACEHOLDER;
+      return replacer(...args);
     });
-  }
+  };
+
+  apply(
+    /(api[_-]?key\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(secret[_-]?key\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(token\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(password\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(api[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(secret[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(token\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(password\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(authorization\s*:\s*bearer\s+)[a-z0-9._-]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(-----BEGIN [A-Z ]+-----)([\s\S]*?)(-----END [A-Z ]+-----)/g,
+    (_full, begin, _body, end) => `${begin}\n${REDACTION_PLACEHOLDER}\n${end}`,
+  );
+  apply(/AKIA[0-9A-Z]{16}/g, () => REDACTION_PLACEHOLDER);
+  apply(/ghp_[A-Za-z0-9]{20,}/g, () => REDACTION_PLACEHOLDER);
 
   return { redactedPatch, redactions };
 }
@@ -165,7 +195,8 @@ function normalizeWhitespace(text) {
 }
 
 function extractAuthorContext(pr) {
-  const rawBody = typeof pr.body === "string" ? normalizeWhitespace(pr.body) : "";
+  const rawBody =
+    typeof pr.body === "string" ? normalizeWhitespace(pr.body) : "";
   if (!rawBody) {
     return {
       rawBody: "(none provided)",
@@ -321,7 +352,9 @@ function buildReviewInput(pr, files) {
   let redactionCount = 0;
   const diffText = reviewableFiles
     .map((file) => {
-      const { redactedPatch, redactions } = redactSensitivePatchContent(file.patch);
+      const { redactedPatch, redactions } = redactSensitivePatchContent(
+        file.patch,
+      );
       redactionCount += redactions;
       return [
         `FILE: ${file.filename}`,
@@ -462,10 +495,7 @@ function extractOpenAIText(data) {
     for (const part of item.content) {
       if (!part) continue;
       if (typeof part.text === "string") chunks.push(part.text);
-      if (
-        part.type === "output_text" &&
-        typeof part.output_text === "string"
-      ) {
+      if (part.type === "output_text" && typeof part.output_text === "string") {
         chunks.push(part.output_text);
       }
     }
@@ -516,7 +546,8 @@ function normalizeRecommendation(markdown) {
 
   const nextHeaderIndex = lines.findIndex(
     (line, idx) =>
-      idx > recommendationHeaderIndex && line.trim().toLowerCase().startsWith("## "),
+      idx > recommendationHeaderIndex &&
+      line.trim().toLowerCase().startsWith("## "),
   );
   const recommendationEndIndex =
     nextHeaderIndex === -1 ? lines.length : nextHeaderIndex;
@@ -540,7 +571,11 @@ function applyTrafficLightFormatting(markdown) {
   );
 
   if (findingsHeaderIndex !== -1 && recommendationHeaderIndex !== -1) {
-    for (let i = findingsHeaderIndex + 1; i < recommendationHeaderIndex; i += 1) {
+    for (
+      let i = findingsHeaderIndex + 1;
+      i < recommendationHeaderIndex;
+      i += 1
+    ) {
       const trimmed = lines[i].trim();
       if (trimmed.startsWith("- high:")) {
         lines[i] = lines[i].replace(/- high:/i, "- 🔴 high:");
@@ -593,12 +628,15 @@ async function findExistingBotComment() {
   let scanned = 0;
 
   for (let page = lastPage; page >= startPage; page -= 1) {
-    const pageData = page === 1 ? firstPage : await fetchIssueCommentsPage(page);
+    const pageData =
+      page === 1 ? firstPage : await fetchIssueCommentsPage(page);
     const newestFirst = [...pageData.comments].reverse();
     scanned += pageData.comments.length;
 
     const match = newestFirst.find((comment) => {
-      return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
+      return (
+        typeof comment.body === "string" && comment.body.includes(BOT_MARKER)
+      );
     });
     if (match) return match;
     if (scanned >= MAX_ISSUE_COMMENTS_SCAN) break;
@@ -610,6 +648,9 @@ async function findExistingBotComment() {
     );
   }
 
+  // Best-effort by design: if no marker is found in the scan window, we may create
+  // a fresh comment rather than updating an older one. This tradeoff favors bounded
+  // API usage for a shallow, non-blocking sanity check workflow.
   return null;
 }
 
@@ -634,6 +675,10 @@ async function updateComment(commentId, body) {
 }
 
 async function main() {
+  if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
+    throw new Error("Missing required environment variables.");
+  }
+
   const { pr, files } = await getPrData();
 
   const reviewState = buildReviewInput(pr, files);
@@ -641,7 +686,9 @@ async function main() {
     `[review] exclusions_enabled=${ENABLE_SENSITIVE_EXCLUSIONS} excluded_files=${reviewState.excludedSensitiveFilesCount || 0} allowlist_size=${LLM_EXCLUDE_ALLOWLIST.length}`,
   );
   if (reviewState.redactionCount) {
-    console.log(`[review] content redactions applied=${reviewState.redactionCount}`);
+    console.log(
+      `[review] content redactions applied=${reviewState.redactionCount}`,
+    );
   }
   let review = "";
 
@@ -676,18 +723,35 @@ async function main() {
     "_Automated shallow review: intended as a sanity check, not a blocking approval._",
   ].join("\n");
 
-  const existingComment = await findExistingBotComment();
+  // Keep comment discovery/posting best-effort so transient GitHub failures do not
+  // turn this informational sanity check into a blocking failure mode.
+  try {
+    const existingComment = await findExistingBotComment();
 
-  if (existingComment) {
-    await updateComment(existingComment.id, body);
-    console.log("Updated existing bot comment.");
-  } else {
-    await createComment(body);
-    console.log("Created new bot comment.");
+    if (existingComment) {
+      await updateComment(existingComment.id, body);
+      console.log("Updated existing bot comment.");
+    } else {
+      await createComment(body);
+      console.log("Created new bot comment.");
+    }
+  } catch (error) {
+    console.warn("AI review comment step failed; continuing without posting.");
+    console.warn(error);
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+export { redactSensitivePatchContent, shouldExcludeFromLlm };
+
+const isDirectRun =
+  Boolean(process.argv[1]) &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  main().catch((error) => {
+    // Non-blocking intent: report errors, but do not fail CI.
+    console.warn("AI review script failed in non-blocking mode.");
+    console.warn(error);
+    process.exit(0);
+  });
+}
