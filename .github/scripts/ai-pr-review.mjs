@@ -11,6 +11,13 @@ const MAX_TOTAL_CHANGED_LINES = Number(
 const MAX_TOTAL_FILES = Number(process.env.MAX_TOTAL_FILES || 200);
 const MAX_ISSUE_COMMENTS_SCAN = Number(process.env.MAX_ISSUE_COMMENTS_SCAN || 500);
 const BOT_MARKER = "<!-- ai-pr-review-bot -->";
+const ENABLE_SENSITIVE_EXCLUSIONS =
+  String(process.env.ENABLE_SENSITIVE_EXCLUSIONS || "true").toLowerCase() !==
+  "false";
+const LLM_EXCLUDE_ALLOWLIST = String(process.env.LLM_EXCLUDE_ALLOWLIST || "")
+  .split(",")
+  .map((value) => value.trim().toLowerCase())
+  .filter(Boolean);
 
 if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
   throw new Error("Missing required environment variables.");
@@ -61,9 +68,13 @@ function shouldIgnoreFile(filename) {
 }
 
 function shouldExcludeFromLlm(filename) {
+  if (!ENABLE_SENSITIVE_EXCLUSIONS) return false;
   const lower = filename.toLowerCase();
   const pathParts = lower.split("/").filter(Boolean);
   const baseName = pathParts[pathParts.length - 1] || "";
+  if (LLM_EXCLUDE_ALLOWLIST.includes(baseName) || LLM_EXCLUDE_ALLOWLIST.includes(lower)) {
+    return false;
+  }
 
   if (baseName === ".npmrc" || baseName === ".yarnrc") return true;
 
@@ -218,6 +229,7 @@ function buildReviewInput(pr, files) {
     return {
       shouldSkipModel: true,
       authorContextLabel,
+      excludedSensitiveFilesCount,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -229,6 +241,7 @@ function buildReviewInput(pr, files) {
     return {
       shouldSkipModel: true,
       authorContextLabel,
+      excludedSensitiveFilesCount,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -241,6 +254,7 @@ function buildReviewInput(pr, files) {
     return {
       shouldSkipModel: false,
       authorContextLabel,
+      excludedSensitiveFilesCount,
       input: null,
     };
   }
@@ -261,6 +275,7 @@ function buildReviewInput(pr, files) {
   return {
     shouldSkipModel: false,
     authorContextLabel,
+    excludedSensitiveFilesCount,
     input: `
 You are a careful senior engineer reviewing a pull request.
 
@@ -487,38 +502,55 @@ function applyTrafficLightFormatting(markdown) {
   return lines.join("\n");
 }
 
-async function findExistingBotComment(totalCommentsHint = 0) {
-  const allComments = [];
-  let scanTruncated = false;
+function extractLastPageFromLinkHeader(linkHeader) {
+  if (!linkHeader) return null;
+  const match = linkHeader.match(/<[^>]*[?&]page=(\d+)[^>]*>;\s*rel="last"/i);
+  return match ? Number(match[1]) : null;
+}
+
+async function fetchIssueCommentsPage(page) {
+  const response = await fetch(
+    `${GITHUB_API}/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
+    { headers: githubHeaders },
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`GitHub API error ${response.status}: ${text}`);
+  }
+
+  return {
+    comments: await response.json(),
+    linkHeader: response.headers.get("link") || "",
+  };
+}
+
+async function findExistingBotComment() {
+  const firstPage = await fetchIssueCommentsPage(1);
+  const lastPage = extractLastPageFromLinkHeader(firstPage.linkHeader) || 1;
   const maxPages = Math.max(1, Math.floor(MAX_ISSUE_COMMENTS_SCAN / 100));
-  const estimatedTotalPages = Math.max(1, Math.ceil(totalCommentsHint / 100));
-  const startPage = Math.max(1, estimatedTotalPages - maxPages + 1);
+  const startPage = Math.max(1, lastPage - maxPages + 1);
+  let scanned = 0;
 
-  for (let page = startPage; ; page += 1) {
-    const comments = await github(
-      `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
-    );
-    allComments.push(...comments);
-    if (allComments.length >= MAX_ISSUE_COMMENTS_SCAN) {
-      scanTruncated = true;
-      break;
-    }
-    if (comments.length < 100 || page >= estimatedTotalPages) {
-      break;
-    }
+  for (let page = lastPage; page >= startPage; page -= 1) {
+    const pageData = page === 1 ? firstPage : await fetchIssueCommentsPage(page);
+    const newestFirst = [...pageData.comments].reverse();
+    scanned += pageData.comments.length;
+
+    const match = newestFirst.find((comment) => {
+      return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
+    });
+    if (match) return match;
+    if (scanned >= MAX_ISSUE_COMMENTS_SCAN) break;
   }
 
-  if (scanTruncated || startPage > 1) {
+  if (startPage > 1) {
     console.warn(
-      `[github] scanning newest comments only (start_page=${startPage}, max_scan=${MAX_ISSUE_COMMENTS_SCAN}); older bot comments may be missed.`,
+      `[github] scanning newest comments only (last_page=${lastPage}, start_page=${startPage}, max_scan=${MAX_ISSUE_COMMENTS_SCAN}); older bot comments may be missed.`,
     );
   }
 
-  // Prefer the newest matching marker comment to avoid stale updates.
-  const newestFirst = [...allComments].reverse();
-  return newestFirst.find((comment) => {
-    return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
-  });
+  return null;
 }
 
 async function createComment(body) {
@@ -570,13 +602,14 @@ async function main() {
     BOT_MARKER,
     "## AI PR Review",
     `Author context: ${reviewState.authorContextLabel}`,
+    `Excluded from AI scan: ${reviewState.excludedSensitiveFilesCount || 0} file(s)`,
     "",
     review,
     "",
     "_Automated shallow review: intended as a sanity check, not a blocking approval._",
   ].join("\n");
 
-  const existingComment = await findExistingBotComment(pr.comments || 0);
+  const existingComment = await findExistingBotComment();
 
   if (existingComment) {
     await updateComment(existingComment.id, body);

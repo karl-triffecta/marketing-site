@@ -47,4 +47,6 @@ jobs:
           MAX_DIFF_CHARS: "180000"
           MAX_TOTAL_CHANGED_LINES: "3500"
           MAX_TOTAL_FILES: "200"
+          ENABLE_SENSITIVE_EXCLUSIONS: "true"
+          LLM_EXCLUDE_ALLOWLIST: ".npmrc,.yarnrc"
         run: node .github/scripts/ai-pr-review.mjs
