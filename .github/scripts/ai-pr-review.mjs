@@ -64,6 +64,72 @@ function truncate(text, maxChars) {
   return `${text.slice(0, maxChars)}\n\n[truncated]`;
 }
 
+function normalizeWhitespace(text) {
+  return text.replace(/\r\n/g, "\n").trim();
+}
+
+function extractAuthorContext(pr) {
+  const rawBody = typeof pr.body === "string" ? normalizeWhitespace(pr.body) : "";
+  if (!rawBody) {
+    return {
+      rawBody: "(none provided)",
+      summary: "Author did not provide context.",
+      signals: [],
+    };
+  }
+
+  const lines = rawBody.split("\n");
+  const signals = [];
+  let currentHeading = "";
+  let currentBlock = [];
+
+  const flushBlock = () => {
+    if (!currentHeading || currentBlock.length === 0) return;
+    const value = currentBlock.join(" ").replace(/\s+/g, " ").trim();
+    if (value) signals.push(`- ${currentHeading}: ${value}`);
+  };
+
+  for (const line of lines) {
+    const headingMatch = line.match(/^\s{0,3}#{1,6}\s+(.+?)\s*$/);
+    if (headingMatch) {
+      flushBlock();
+      currentHeading = headingMatch[1].trim();
+      currentBlock = [];
+      continue;
+    }
+
+    const checklistMatch = line.match(/^\s*[-*]\s+\[(x|X| )\]\s+(.+)$/);
+    if (checklistMatch) {
+      const status = checklistMatch[1].toLowerCase() === "x" ? "done" : "todo";
+      const text = checklistMatch[2].trim();
+      signals.push(`- checklist (${status}): ${text}`);
+      continue;
+    }
+
+    const bulletMatch = line.match(/^\s*[-*]\s+(.+)$/);
+    if (bulletMatch) {
+      const text = bulletMatch[1].trim();
+      if (text) signals.push(`- note: ${text}`);
+      continue;
+    }
+
+    if (currentHeading && line.trim()) {
+      currentBlock.push(line.trim());
+    }
+  }
+  flushBlock();
+
+  const summary = signals.length
+    ? truncate(signals.join("\n"), 5000)
+    : "PR description was provided but no structured intent sections were detected.";
+
+  return {
+    rawBody,
+    summary,
+    signals,
+  };
+}
+
 async function getPrData() {
   const pr = await github(`/repos/${REPO}/pulls/${PR_NUMBER}`);
   const files = [];
@@ -101,6 +167,7 @@ function summarizeScopeForHumans(pr, files, reason) {
 }
 
 function buildReviewInput(pr, files) {
+  const authorContext = extractAuthorContext(pr);
   const reviewableFiles = files
     .filter((file) => file.patch && !shouldIgnoreFile(file.filename))
     .slice(0, MAX_REVIEW_FILES);
@@ -109,6 +176,10 @@ function buildReviewInput(pr, files) {
   if (files.length > MAX_TOTAL_FILES) {
     return {
       shouldSkipModel: true,
+      authorContextLabel:
+        authorContext.signals.length > 0
+          ? `Detected ${authorContext.signals.length} author context signal(s).`
+          : "Author did not provide context.",
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -119,6 +190,10 @@ function buildReviewInput(pr, files) {
   if (totalChangedLines > MAX_TOTAL_CHANGED_LINES) {
     return {
       shouldSkipModel: true,
+      authorContextLabel:
+        authorContext.signals.length > 0
+          ? `Detected ${authorContext.signals.length} author context signal(s).`
+          : "Author did not provide context.",
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -130,6 +205,10 @@ function buildReviewInput(pr, files) {
   if (reviewableFiles.length === 0) {
     return {
       shouldSkipModel: false,
+      authorContextLabel:
+        authorContext.signals.length > 0
+          ? `Detected ${authorContext.signals.length} author context signal(s).`
+          : "Author did not provide context.",
       input: null,
     };
   }
@@ -149,6 +228,10 @@ function buildReviewInput(pr, files) {
 
   return {
     shouldSkipModel: false,
+    authorContextLabel:
+      authorContext.signals.length > 0
+        ? `Detected ${authorContext.signals.length} author context signal(s).`
+        : "Author did not provide context.",
     input: `
 You are a careful senior engineer reviewing a pull request.
 
@@ -168,9 +251,15 @@ Rules:
 - do not nitpick formatting or style
 - do not invent issues
 - only mention problems you can justify from the diff
+- consider the PR author context (intent, scope, caveats, test notes) when judging risk
+- if a finding contradicts author intent, mention that clearly
 - include file paths in findings when possible
 - if there are no major concerns, keep Findings to a single "- None." bullet
 - keep the answer concise and actionable
+- recommendation policy:
+  - approve: no findings, or low severity findings only
+  - comment: any medium severity finding and no high severity findings
+  - investigate: any high severity finding
 
 Return markdown in exactly this structure:
 
@@ -186,8 +275,11 @@ Return markdown in exactly this structure:
 PR title:
 ${pr.title}
 
-PR body:
-${pr.body || "(none provided)"}
+PR author context summary:
+${authorContext.summary}
+
+PR body (raw):
+${truncate(authorContext.rawBody, 15000)}
 
 Changed files:
 ${truncate(diffText, MAX_DIFF_CHARS)}
@@ -269,6 +361,100 @@ function extractOpenAIText(data) {
   return chunks.join("\n").trim();
 }
 
+function normalizeRecommendation(markdown) {
+  const lines = markdown.split("\n");
+  const findingsHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## findings",
+  );
+  const recommendationHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## recommendation",
+  );
+
+  if (findingsHeaderIndex === -1 || recommendationHeaderIndex === -1) {
+    return markdown;
+  }
+
+  const findingsLines = lines
+    .slice(findingsHeaderIndex + 1, recommendationHeaderIndex)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("-"));
+
+  let hasHigh = false;
+  let hasMedium = false;
+  let hasLow = false;
+  let hasNone = false;
+
+  for (const finding of findingsLines) {
+    const value = finding.toLowerCase();
+    if (value.includes("none")) hasNone = true;
+    if (value.includes("high:")) hasHigh = true;
+    if (value.includes("medium:")) hasMedium = true;
+    if (value.includes("low:")) hasLow = true;
+  }
+
+  let recommendation = "comment";
+  if (hasHigh) {
+    recommendation = "investigate";
+  } else if (hasMedium) {
+    recommendation = "comment";
+  } else if (hasLow || hasNone || findingsLines.length === 0) {
+    recommendation = "approve";
+  }
+
+  const nextHeaderIndex = lines.findIndex(
+    (line, idx) =>
+      idx > recommendationHeaderIndex && line.trim().toLowerCase().startsWith("## "),
+  );
+  const recommendationEndIndex =
+    nextHeaderIndex === -1 ? lines.length : nextHeaderIndex;
+
+  const result = [
+    ...lines.slice(0, recommendationHeaderIndex + 1),
+    recommendation,
+    ...lines.slice(recommendationEndIndex),
+  ];
+
+  return result.join("\n");
+}
+
+function applyTrafficLightFormatting(markdown) {
+  const lines = markdown.split("\n");
+  const findingsHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## findings",
+  );
+  const recommendationHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## recommendation",
+  );
+
+  if (findingsHeaderIndex !== -1 && recommendationHeaderIndex !== -1) {
+    for (let i = findingsHeaderIndex + 1; i < recommendationHeaderIndex; i += 1) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith("- high:")) {
+        lines[i] = lines[i].replace(/- high:/i, "- 🔴 high:");
+      } else if (trimmed.startsWith("- medium:")) {
+        lines[i] = lines[i].replace(/- medium:/i, "- 🟠 medium:");
+      } else if (trimmed.startsWith("- low:")) {
+        lines[i] = lines[i].replace(/- low:/i, "- 🟢 low:");
+      }
+    }
+
+    for (let i = recommendationHeaderIndex + 1; i < lines.length; i += 1) {
+      const trimmed = lines[i].trim().toLowerCase();
+      if (!trimmed) continue;
+      if (trimmed.startsWith("investigate")) {
+        lines[i] = "🛑 investigate";
+      } else if (trimmed.startsWith("comment")) {
+        lines[i] = "💬 comment";
+      } else if (trimmed.startsWith("approve")) {
+        lines[i] = "✅ approve";
+      }
+      break;
+    }
+  }
+
+  return lines.join("\n");
+}
+
 async function findExistingBotComment() {
   const comments = await github(
     `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100`,
@@ -314,11 +500,14 @@ async function main() {
     ].join("\n");
   } else {
     review = await callOpenAI(reviewState.input);
+    review = normalizeRecommendation(review);
   }
+  review = applyTrafficLightFormatting(review);
 
   const body = [
     BOT_MARKER,
     "## AI PR Review",
+    `Author context: ${reviewState.authorContextLabel}`,
     "",
     review,
     "",
