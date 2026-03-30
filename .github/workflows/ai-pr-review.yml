@@ -10,6 +10,7 @@ concurrency:
 
 permissions:
   contents: read
+  issues: write
   pull-requests: write
 
 jobs:
@@ -35,6 +36,10 @@ jobs:
         run: echo "OPENAI_API_KEY is not set. Skipping AI review."
 
       - name: Run AI review
+        # Intent: shallow, non-blocking reviewer support focused on major issues.
+        # This check is informational and expected to be non-required in branch protection.
+        # Tests for this script are currently run manually by maintainers during changes
+        # (`node --test .github/scripts/ai-pr-review.test.mjs`) to keep this workflow lean.
         if: ${{ env.OPENAI_API_KEY != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,4 +51,6 @@ jobs:
           MAX_DIFF_CHARS: "180000"
           MAX_TOTAL_CHANGED_LINES: "3500"
           MAX_TOTAL_FILES: "200"
+          ENABLE_SENSITIVE_EXCLUSIONS: "true"
+          LLM_EXCLUDE_ALLOWLIST: ""
         run: node .github/scripts/ai-pr-review.mjs

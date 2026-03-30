@@ -1,3 +1,9 @@
+import { pathToFileURL } from "node:url";
+
+// Intent:
+// - Provide a shallow, cost-effective, non-blocking PR sanity check for major risks.
+// - Assist human reviewers; not a replacement for code review or approvals.
+// - Minimize sensitive data exposure to the LLM via filename exclusions and content redaction.
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const REPO = process.env.REPO;
@@ -9,11 +15,18 @@ const MAX_TOTAL_CHANGED_LINES = Number(
   process.env.MAX_TOTAL_CHANGED_LINES || 3500,
 );
 const MAX_TOTAL_FILES = Number(process.env.MAX_TOTAL_FILES || 200);
+const MAX_ISSUE_COMMENTS_SCAN = Number(
+  process.env.MAX_ISSUE_COMMENTS_SCAN || 500,
+);
 const BOT_MARKER = "<!-- ai-pr-review-bot -->";
-
-if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
-  throw new Error("Missing required environment variables.");
-}
+const ENABLE_SENSITIVE_EXCLUSIONS =
+  String(process.env.ENABLE_SENSITIVE_EXCLUSIONS || "true").toLowerCase() !==
+  "false";
+const LLM_EXCLUDE_ALLOWLIST = String(process.env.LLM_EXCLUDE_ALLOWLIST || "")
+  .split(",")
+  .map((value) => value.trim().toLowerCase())
+  .filter(Boolean);
+const REDACTION_PLACEHOLDER = "[REDACTED]";
 
 const GITHUB_API = "https://api.github.com";
 const OPENAI_API = "https://api.openai.com/v1/responses";
@@ -42,6 +55,23 @@ async function github(path, options = {}) {
   return response.json();
 }
 
+async function githubRequest(path, options = {}) {
+  const response = await fetch(`${GITHUB_API}${path}`, {
+    ...options,
+    headers: {
+      ...githubHeaders,
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`GitHub API error ${response.status}: ${text}`);
+  }
+
+  return response;
+}
+
 function shouldIgnoreFile(filename) {
   const ignoredPatterns = [
     "package-lock.json",
@@ -59,6 +89,102 @@ function shouldIgnoreFile(filename) {
   return ignoredPatterns.some((pattern) => filename.includes(pattern));
 }
 
+function shouldExcludeFromLlm(filename) {
+  if (!ENABLE_SENSITIVE_EXCLUSIONS) return false;
+  const lower = filename.toLowerCase();
+  const pathParts = lower.split("/").filter(Boolean);
+  const baseName = pathParts[pathParts.length - 1] || "";
+  const matchesHardSensitivePattern =
+    baseName === ".npmrc" ||
+    baseName === ".yarnrc" ||
+    /^\.env(\..+)?$/i.test(baseName) ||
+    /\.(pem|key|p12|pfx|crt|cer)$/i.test(baseName) ||
+    /^id_(rsa|dsa|ed25519)(\.pub)?$/i.test(baseName) ||
+    pathParts.includes(".ssh");
+  if (matchesHardSensitivePattern) return true;
+
+  if (
+    LLM_EXCLUDE_ALLOWLIST.includes(baseName) ||
+    LLM_EXCLUDE_ALLOWLIST.includes(lower)
+  ) {
+    return false;
+  }
+  // Exclude explicitly sensitive path segments.
+  if (
+    pathParts.some((part) =>
+      /^(secret|secrets|credential|credentials)$/i.test(part),
+    )
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function redactSensitivePatchContent(patch) {
+  if (!patch) {
+    return { redactedPatch: patch, redactions: 0 };
+  }
+
+  // Pragmatic redaction: lightweight patterns to prevent obvious secret-like
+  // values from leaving GitHub while preserving enough context for shallow review.
+  // This is intentionally not exhaustive; tests cover common patterns only.
+
+  let redactions = 0;
+  let redactedPatch = patch;
+  const apply = (regex, replacer) => {
+    redactedPatch = redactedPatch.replace(regex, (...args) => {
+      redactions += 1;
+      return replacer(...args);
+    });
+  };
+
+  apply(
+    /(api[_-]?key\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(secret[_-]?key\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(token\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(password\s*[:=]\s*["'])[^"']+(["'])/gi,
+    (_full, prefix, quote) => `${prefix}${REDACTION_PLACEHOLDER}${quote}`,
+  );
+  apply(
+    /(api[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(secret[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(token\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(password\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(authorization\s*:\s*bearer\s+)[a-z0-9._-]+/gi,
+    (_full, prefix) => `${prefix}${REDACTION_PLACEHOLDER}`,
+  );
+  apply(
+    /(-----BEGIN [A-Z ]+-----)([\s\S]*?)(-----END [A-Z ]+-----)/g,
+    (_full, begin, _body, end) => `${begin}\n${REDACTION_PLACEHOLDER}\n${end}`,
+  );
+  apply(/AKIA[0-9A-Z]{16}/g, () => REDACTION_PLACEHOLDER);
+  apply(/ghp_[A-Za-z0-9]{20,}/g, () => REDACTION_PLACEHOLDER);
+
+  return { redactedPatch, redactions };
+}
+
 function truncate(text, maxChars) {
   if (text.length <= maxChars) return text;
   return `${text.slice(0, maxChars)}\n\n[truncated]`;
@@ -69,7 +195,8 @@ function normalizeWhitespace(text) {
 }
 
 function extractAuthorContext(pr) {
-  const rawBody = typeof pr.body === "string" ? normalizeWhitespace(pr.body) : "";
+  const rawBody =
+    typeof pr.body === "string" ? normalizeWhitespace(pr.body) : "";
   if (!rawBody) {
     return {
       rawBody: "(none provided)",
@@ -127,6 +254,7 @@ function extractAuthorContext(pr) {
     rawBody,
     summary,
     signals,
+    hasAuthorContext: Boolean(rawBody),
   };
 }
 
@@ -169,17 +297,29 @@ function summarizeScopeForHumans(pr, files, reason) {
 function buildReviewInput(pr, files) {
   const authorContext = extractAuthorContext(pr);
   const reviewableFiles = files
-    .filter((file) => file.patch && !shouldIgnoreFile(file.filename))
+    .filter(
+      (file) =>
+        file.patch &&
+        !shouldIgnoreFile(file.filename) &&
+        !shouldExcludeFromLlm(file.filename),
+    )
     .slice(0, MAX_REVIEW_FILES);
+
+  const excludedSensitiveFilesCount = files.filter((file) =>
+    shouldExcludeFromLlm(file.filename),
+  ).length;
+  const authorContextLabel = authorContext.hasAuthorContext
+    ? authorContext.signals.length > 0
+      ? `Detected ${authorContext.signals.length} author context signal(s).`
+      : "Author provided context (unstructured text)."
+    : "Author did not provide context.";
 
   const totalChangedLines = (pr.additions || 0) + (pr.deletions || 0);
   if (files.length > MAX_TOTAL_FILES) {
     return {
       shouldSkipModel: true,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
+      excludedSensitiveFilesCount,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -190,10 +330,8 @@ function buildReviewInput(pr, files) {
   if (totalChangedLines > MAX_TOTAL_CHANGED_LINES) {
     return {
       shouldSkipModel: true,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
+      excludedSensitiveFilesCount,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -205,33 +343,35 @@ function buildReviewInput(pr, files) {
   if (reviewableFiles.length === 0) {
     return {
       shouldSkipModel: false,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
+      excludedSensitiveFilesCount,
       input: null,
     };
   }
 
+  let redactionCount = 0;
   const diffText = reviewableFiles
     .map((file) => {
+      const { redactedPatch, redactions } = redactSensitivePatchContent(
+        file.patch,
+      );
+      redactionCount += redactions;
       return [
         `FILE: ${file.filename}`,
         `STATUS: ${file.status}`,
         `ADDITIONS: ${file.additions}`,
         `DELETIONS: ${file.deletions}`,
         "PATCH:",
-        file.patch,
+        redactedPatch,
       ].join("\n");
     })
     .join("\n\n---\n\n");
 
   return {
     shouldSkipModel: false,
-    authorContextLabel:
-      authorContext.signals.length > 0
-        ? `Detected ${authorContext.signals.length} author context signal(s).`
-        : "Author did not provide context.",
+    authorContextLabel,
+    excludedSensitiveFilesCount,
+    redactionCount,
     input: `
 You are a careful senior engineer reviewing a pull request.
 
@@ -280,6 +420,12 @@ ${authorContext.summary}
 
 PR body (raw):
 ${truncate(authorContext.rawBody, 15000)}
+
+Excluded files due to sensitive filename patterns:
+${excludedSensitiveFilesCount}
+
+Redactions applied to patch content before model input:
+${redactionCount}
 
 Changed files:
 ${truncate(diffText, MAX_DIFF_CHARS)}
@@ -349,10 +495,7 @@ function extractOpenAIText(data) {
     for (const part of item.content) {
       if (!part) continue;
       if (typeof part.text === "string") chunks.push(part.text);
-      if (
-        part.type === "output_text" &&
-        typeof part.output_text === "string"
-      ) {
+      if (part.type === "output_text" && typeof part.output_text === "string") {
         chunks.push(part.output_text);
       }
     }
@@ -403,7 +546,8 @@ function normalizeRecommendation(markdown) {
 
   const nextHeaderIndex = lines.findIndex(
     (line, idx) =>
-      idx > recommendationHeaderIndex && line.trim().toLowerCase().startsWith("## "),
+      idx > recommendationHeaderIndex &&
+      line.trim().toLowerCase().startsWith("## "),
   );
   const recommendationEndIndex =
     nextHeaderIndex === -1 ? lines.length : nextHeaderIndex;
@@ -427,7 +571,11 @@ function applyTrafficLightFormatting(markdown) {
   );
 
   if (findingsHeaderIndex !== -1 && recommendationHeaderIndex !== -1) {
-    for (let i = findingsHeaderIndex + 1; i < recommendationHeaderIndex; i += 1) {
+    for (
+      let i = findingsHeaderIndex + 1;
+      i < recommendationHeaderIndex;
+      i += 1
+    ) {
       const trimmed = lines[i].trim();
       if (trimmed.startsWith("- high:")) {
         lines[i] = lines[i].replace(/- high:/i, "- 🔴 high:");
@@ -455,34 +603,99 @@ function applyTrafficLightFormatting(markdown) {
   return lines.join("\n");
 }
 
-async function findExistingBotComment() {
-  const comments = await github(
-    `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100`,
+function extractLastPageFromLinkHeader(linkHeader) {
+  if (!linkHeader) return null;
+  const match = linkHeader.match(/<[^>]*[?&]page=(\d+)[^>]*>;\s*rel="last"/i);
+  return match ? Number(match[1]) : null;
+}
+
+async function fetchIssueCommentsPage(page) {
+  const response = await githubRequest(
+    `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
   );
 
-  return comments.find((comment) => {
-    return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
-  });
+  return {
+    comments: await response.json(),
+    linkHeader: response.headers.get("link") || "",
+  };
+}
+
+async function findExistingBotComment() {
+  const firstPage = await fetchIssueCommentsPage(1);
+  const lastPage = extractLastPageFromLinkHeader(firstPage.linkHeader) || 1;
+  const maxPages = Math.max(1, Math.floor(MAX_ISSUE_COMMENTS_SCAN / 100));
+  const startPage = Math.max(1, lastPage - maxPages + 1);
+  let scanned = 0;
+
+  for (let page = lastPage; page >= startPage; page -= 1) {
+    const pageData =
+      page === 1 ? firstPage : await fetchIssueCommentsPage(page);
+    const newestFirst = [...pageData.comments].reverse();
+    scanned += pageData.comments.length;
+
+    const match = newestFirst.find((comment) => {
+      return (
+        typeof comment.body === "string" && comment.body.includes(BOT_MARKER)
+      );
+    });
+    if (match) return match;
+    if (scanned >= MAX_ISSUE_COMMENTS_SCAN) break;
+  }
+
+  if (startPage > 1) {
+    console.warn(
+      `[github] scanning newest comments only (last_page=${lastPage}, start_page=${startPage}, max_scan=${MAX_ISSUE_COMMENTS_SCAN}); older bot comments may be missed.`,
+    );
+  }
+
+  // Best-effort by design: if no marker is found in the scan window, we may create
+  // a fresh comment rather than updating an older one. This tradeoff favors bounded
+  // API usage for a shallow, non-blocking sanity check workflow, and duplicate
+  // comments are an acceptable failure mode for this repository.
+  return null;
 }
 
 async function createComment(body) {
+  // Uses github() (not githubRequest()) intentionally because github() already
+  // enforces response.ok and throws on API failures. Posting remains best-effort
+  // via outer non-blocking try/catch in main().
   return github(`/repos/${REPO}/issues/${PR_NUMBER}/comments`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ body }),
   });
 }
 
 async function updateComment(commentId, body) {
+  // Same tradeoff as createComment(): strict HTTP error checks at request level,
+  // but non-blocking behavior at workflow level.
   return github(`/repos/${REPO}/issues/comments/${commentId}`, {
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ body }),
   });
 }
 
 async function main() {
+  if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
+    throw new Error("Missing required environment variables.");
+  }
+
   const { pr, files } = await getPrData();
 
   const reviewState = buildReviewInput(pr, files);
+  console.log(
+    `[review] exclusions_enabled=${ENABLE_SENSITIVE_EXCLUSIONS} excluded_files=${reviewState.excludedSensitiveFilesCount || 0} allowlist_size=${LLM_EXCLUDE_ALLOWLIST.length}`,
+  );
+  if (reviewState.redactionCount) {
+    console.log(
+      `[review] content redactions applied=${reviewState.redactionCount}`,
+    );
+  }
   let review = "";
 
   if (reviewState.shouldSkipModel) {
@@ -508,24 +721,45 @@ async function main() {
     BOT_MARKER,
     "## AI PR Review",
     `Author context: ${reviewState.authorContextLabel}`,
+    `Excluded from AI scan: ${reviewState.excludedSensitiveFilesCount || 0} file(s)`,
+    `Redactions applied: ${reviewState.redactionCount || 0}`,
     "",
     review,
     "",
     "_Automated shallow review: intended as a sanity check, not a blocking approval._",
   ].join("\n");
 
-  const existingComment = await findExistingBotComment();
+  // Keep comment discovery/posting best-effort so transient GitHub failures do not
+  // turn this informational sanity check into a blocking failure mode.
+  try {
+    const existingComment = await findExistingBotComment();
 
-  if (existingComment) {
-    await updateComment(existingComment.id, body);
-    console.log("Updated existing bot comment.");
-  } else {
-    await createComment(body);
-    console.log("Created new bot comment.");
+    if (existingComment) {
+      await updateComment(existingComment.id, body);
+      console.log("Updated existing bot comment.");
+    } else {
+      await createComment(body);
+      console.log("Created new bot comment.");
+    }
+  } catch (error) {
+    console.warn("AI review comment step failed; continuing without posting.");
+    console.warn(error);
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+export { redactSensitivePatchContent, shouldExcludeFromLlm };
+
+const isDirectRun =
+  Boolean(process.argv[1]) &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  main().catch((error) => {
+    // Non-blocking intent: report errors, but do not fail CI.
+    // This script is advisory support for human reviewers and should not block merges.
+    // Team expectation: monitor logs manually when tuning behavior or investigating issues.
+    console.warn("AI review script failed in non-blocking mode.");
+    console.warn(error);
+    process.exit(0);
+  });
+}
