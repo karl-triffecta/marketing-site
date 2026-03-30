@@ -650,11 +650,15 @@ async function findExistingBotComment() {
 
   // Best-effort by design: if no marker is found in the scan window, we may create
   // a fresh comment rather than updating an older one. This tradeoff favors bounded
-  // API usage for a shallow, non-blocking sanity check workflow.
+  // API usage for a shallow, non-blocking sanity check workflow, and duplicate
+  // comments are an acceptable failure mode for this repository.
   return null;
 }
 
 async function createComment(body) {
+  // Uses github() (not githubRequest()) intentionally because github() already
+  // enforces response.ok and throws on API failures. Posting remains best-effort
+  // via outer non-blocking try/catch in main().
   return github(`/repos/${REPO}/issues/${PR_NUMBER}/comments`, {
     method: "POST",
     headers: {
@@ -665,6 +669,8 @@ async function createComment(body) {
 }
 
 async function updateComment(commentId, body) {
+  // Same tradeoff as createComment(): strict HTTP error checks at request level,
+  // but non-blocking behavior at workflow level.
   return github(`/repos/${REPO}/issues/comments/${commentId}`, {
     method: "PATCH",
     headers: {
@@ -750,6 +756,8 @@ const isDirectRun =
 if (isDirectRun) {
   main().catch((error) => {
     // Non-blocking intent: report errors, but do not fail CI.
+    // This script is advisory support for human reviewers and should not block merges.
+    // Team expectation: monitor logs manually when tuning behavior or investigating issues.
     console.warn("AI review script failed in non-blocking mode.");
     console.warn(error);
     process.exit(0);
