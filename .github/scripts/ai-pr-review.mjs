@@ -329,6 +329,44 @@ function normalizeRecommendation(markdown) {
   return result.join("\n");
 }
 
+function applyTrafficLightFormatting(markdown) {
+  const lines = markdown.split("\n");
+  const findingsHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## findings",
+  );
+  const recommendationHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## recommendation",
+  );
+
+  if (findingsHeaderIndex !== -1 && recommendationHeaderIndex !== -1) {
+    for (let i = findingsHeaderIndex + 1; i < recommendationHeaderIndex; i += 1) {
+      const trimmed = lines[i].trim();
+      if (trimmed.startsWith("- high:")) {
+        lines[i] = lines[i].replace(/- high:/i, "- 🔴 high:");
+      } else if (trimmed.startsWith("- medium:")) {
+        lines[i] = lines[i].replace(/- medium:/i, "- 🟠 medium:");
+      } else if (trimmed.startsWith("- low:")) {
+        lines[i] = lines[i].replace(/- low:/i, "- 🟢 low:");
+      }
+    }
+
+    for (let i = recommendationHeaderIndex + 1; i < lines.length; i += 1) {
+      const trimmed = lines[i].trim().toLowerCase();
+      if (!trimmed) continue;
+      if (trimmed.startsWith("investigate")) {
+        lines[i] = "🛑 investigate";
+      } else if (trimmed.startsWith("comment")) {
+        lines[i] = "💬 comment";
+      } else if (trimmed.startsWith("approve")) {
+        lines[i] = "✅ approve";
+      }
+      break;
+    }
+  }
+
+  return lines.join("\n");
+}
+
 async function findExistingBotComment() {
   const comments = await github(
     `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100`,
@@ -376,6 +414,7 @@ async function main() {
     review = await callOpenAI(reviewState.input);
     review = normalizeRecommendation(review);
   }
+  review = applyTrafficLightFormatting(review);
 
   const body = [
     BOT_MARKER,
