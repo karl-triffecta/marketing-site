@@ -9,6 +9,7 @@ const MAX_TOTAL_CHANGED_LINES = Number(
   process.env.MAX_TOTAL_CHANGED_LINES || 3500,
 );
 const MAX_TOTAL_FILES = Number(process.env.MAX_TOTAL_FILES || 200);
+const MAX_ISSUE_COMMENTS_SCAN = Number(process.env.MAX_ISSUE_COMMENTS_SCAN || 500);
 const BOT_MARKER = "<!-- ai-pr-review-bot -->";
 
 if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
@@ -57,6 +58,32 @@ function shouldIgnoreFile(filename) {
   ];
 
   return ignoredPatterns.some((pattern) => filename.includes(pattern));
+}
+
+function shouldExcludeFromLlm(filename) {
+  const lower = filename.toLowerCase();
+  const sensitivePatterns = [
+    ".env",
+    ".pem",
+    ".key",
+    ".p12",
+    ".pfx",
+    ".crt",
+    ".cer",
+    "id_rsa",
+    "id_dsa",
+    "id_ed25519",
+    "credentials",
+    "secret",
+    "secrets",
+    "private",
+    "token",
+    "auth",
+    "ssh/",
+    ".npmrc",
+    ".yarnrc",
+  ];
+  return sensitivePatterns.some((pattern) => lower.includes(pattern));
 }
 
 function truncate(text, maxChars) {
@@ -127,6 +154,7 @@ function extractAuthorContext(pr) {
     rawBody,
     summary,
     signals,
+    hasAuthorContext: Boolean(rawBody),
   };
 }
 
@@ -169,17 +197,28 @@ function summarizeScopeForHumans(pr, files, reason) {
 function buildReviewInput(pr, files) {
   const authorContext = extractAuthorContext(pr);
   const reviewableFiles = files
-    .filter((file) => file.patch && !shouldIgnoreFile(file.filename))
+    .filter(
+      (file) =>
+        file.patch &&
+        !shouldIgnoreFile(file.filename) &&
+        !shouldExcludeFromLlm(file.filename),
+    )
     .slice(0, MAX_REVIEW_FILES);
+
+  const excludedSensitiveFiles = files
+    .filter((file) => shouldExcludeFromLlm(file.filename))
+    .map((file) => file.filename);
+  const authorContextLabel = authorContext.hasAuthorContext
+    ? authorContext.signals.length > 0
+      ? `Detected ${authorContext.signals.length} author context signal(s).`
+      : "Author provided context (unstructured text)."
+    : "Author did not provide context.";
 
   const totalChangedLines = (pr.additions || 0) + (pr.deletions || 0);
   if (files.length > MAX_TOTAL_FILES) {
     return {
       shouldSkipModel: true,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -190,10 +229,7 @@ function buildReviewInput(pr, files) {
   if (totalChangedLines > MAX_TOTAL_CHANGED_LINES) {
     return {
       shouldSkipModel: true,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
       skipMessage: summarizeScopeForHumans(
         pr,
         files,
@@ -205,10 +241,7 @@ function buildReviewInput(pr, files) {
   if (reviewableFiles.length === 0) {
     return {
       shouldSkipModel: false,
-      authorContextLabel:
-        authorContext.signals.length > 0
-          ? `Detected ${authorContext.signals.length} author context signal(s).`
-          : "Author did not provide context.",
+      authorContextLabel,
       input: null,
     };
   }
@@ -228,10 +261,7 @@ function buildReviewInput(pr, files) {
 
   return {
     shouldSkipModel: false,
-    authorContextLabel:
-      authorContext.signals.length > 0
-        ? `Detected ${authorContext.signals.length} author context signal(s).`
-        : "Author did not provide context.",
+    authorContextLabel,
     input: `
 You are a careful senior engineer reviewing a pull request.
 
@@ -280,6 +310,9 @@ ${authorContext.summary}
 
 PR body (raw):
 ${truncate(authorContext.rawBody, 15000)}
+
+Excluded files (not sent to the model due to sensitive filename patterns):
+${excludedSensitiveFiles.length ? excludedSensitiveFiles.map((name) => `- ${name}`).join("\n") : "- None"}
 
 Changed files:
 ${truncate(diffText, MAX_DIFF_CHARS)}
@@ -456,11 +489,18 @@ function applyTrafficLightFormatting(markdown) {
 }
 
 async function findExistingBotComment() {
-  const comments = await github(
-    `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100`,
-  );
+  const allComments = [];
+  for (let page = 1; ; page += 1) {
+    const comments = await github(
+      `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
+    );
+    allComments.push(...comments);
+    if (comments.length < 100 || allComments.length >= MAX_ISSUE_COMMENTS_SCAN) {
+      break;
+    }
+  }
 
-  return comments.find((comment) => {
+  return allComments.find((comment) => {
     return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
   });
 }
@@ -468,6 +508,9 @@ async function findExistingBotComment() {
 async function createComment(body) {
   return github(`/repos/${REPO}/issues/${PR_NUMBER}/comments`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ body }),
   });
 }
@@ -475,6 +518,9 @@ async function createComment(body) {
 async function updateComment(commentId, body) {
   return github(`/repos/${REPO}/issues/comments/${commentId}`, {
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ body }),
   });
 }
