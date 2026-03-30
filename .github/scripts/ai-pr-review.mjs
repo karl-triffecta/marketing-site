@@ -1,3 +1,7 @@
+// Intent:
+// - Provide a shallow, cost-effective, non-blocking PR sanity check for major risks.
+// - Assist human reviewers; not a replacement for code review or approvals.
+// - Minimize sensitive data exposure to the LLM via filename exclusions and content redaction.
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const REPO = process.env.REPO;
@@ -18,6 +22,7 @@ const LLM_EXCLUDE_ALLOWLIST = String(process.env.LLM_EXCLUDE_ALLOWLIST || "")
   .split(",")
   .map((value) => value.trim().toLowerCase())
   .filter(Boolean);
+const REDACTION_PLACEHOLDER = "[REDACTED]";
 
 if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
   throw new Error("Missing required environment variables.");
@@ -110,6 +115,44 @@ function shouldExcludeFromLlm(filename) {
   }
 
   return false;
+}
+
+function redactSensitivePatchContent(patch) {
+  if (!patch) {
+    return { redactedPatch: patch, redactions: 0 };
+  }
+
+  // Pragmatic redaction: lightweight patterns to prevent obvious secret-like
+  // values from leaving GitHub while preserving enough context for shallow review.
+  const patterns = [
+    /(api[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    /(secret[_-]?key\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    /(token\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    /(password\s*[:=]\s*['"]?)[^\s'",`]+/gi,
+    /(authorization\s*:\s*bearer\s+)[a-z0-9._-]+/gi,
+    /(-----BEGIN [A-Z ]+-----)([\s\S]*?)(-----END [A-Z ]+-----)/g,
+    /(AKIA[0-9A-Z]{16})/g,
+    /(ghp_[A-Za-z0-9]{20,})/g,
+  ];
+
+  let redactions = 0;
+  let redactedPatch = patch;
+
+  for (const regex of patterns) {
+    redactedPatch = redactedPatch.replace(regex, (...args) => {
+      redactions += 1;
+      if (args.length >= 4 && typeof args[1] === "string" && typeof args[3] === "string") {
+        // Handle PEM-style multi-line blocks while preserving BEGIN/END markers.
+        return `${args[1]}\n${REDACTION_PLACEHOLDER}\n${args[3]}`;
+      }
+      if (typeof args[1] === "string") {
+        return `${args[1]}${REDACTION_PLACEHOLDER}`;
+      }
+      return REDACTION_PLACEHOLDER;
+    });
+  }
+
+  return { redactedPatch, redactions };
 }
 
 function truncate(text, maxChars) {
@@ -275,15 +318,18 @@ function buildReviewInput(pr, files) {
     };
   }
 
+  let redactionCount = 0;
   const diffText = reviewableFiles
     .map((file) => {
+      const { redactedPatch, redactions } = redactSensitivePatchContent(file.patch);
+      redactionCount += redactions;
       return [
         `FILE: ${file.filename}`,
         `STATUS: ${file.status}`,
         `ADDITIONS: ${file.additions}`,
         `DELETIONS: ${file.deletions}`,
         "PATCH:",
-        file.patch,
+        redactedPatch,
       ].join("\n");
     })
     .join("\n\n---\n\n");
@@ -292,6 +338,7 @@ function buildReviewInput(pr, files) {
     shouldSkipModel: false,
     authorContextLabel,
     excludedSensitiveFilesCount,
+    redactionCount,
     input: `
 You are a careful senior engineer reviewing a pull request.
 
@@ -343,6 +390,9 @@ ${truncate(authorContext.rawBody, 15000)}
 
 Excluded files due to sensitive filename patterns:
 ${excludedSensitiveFilesCount}
+
+Redactions applied to patch content before model input:
+${redactionCount}
 
 Changed files:
 ${truncate(diffText, MAX_DIFF_CHARS)}
@@ -590,6 +640,9 @@ async function main() {
   console.log(
     `[review] exclusions_enabled=${ENABLE_SENSITIVE_EXCLUSIONS} excluded_files=${reviewState.excludedSensitiveFilesCount || 0} allowlist_size=${LLM_EXCLUDE_ALLOWLIST.length}`,
   );
+  if (reviewState.redactionCount) {
+    console.log(`[review] content redactions applied=${reviewState.redactionCount}`);
+  }
   let review = "";
 
   if (reviewState.shouldSkipModel) {
@@ -616,6 +669,7 @@ async function main() {
     "## AI PR Review",
     `Author context: ${reviewState.authorContextLabel}`,
     `Excluded from AI scan: ${reviewState.excludedSensitiveFilesCount || 0} file(s)`,
+    `Redactions applied: ${reviewState.redactionCount || 0}`,
     "",
     review,
     "",

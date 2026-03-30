@@ -36,6 +36,8 @@ jobs:
         run: echo "OPENAI_API_KEY is not set. Skipping AI review."
 
       - name: Run AI review
+        # Intent: shallow, non-blocking reviewer support focused on major issues.
+        # This check is informational and expected to be non-required in branch protection.
         if: ${{ env.OPENAI_API_KEY != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
