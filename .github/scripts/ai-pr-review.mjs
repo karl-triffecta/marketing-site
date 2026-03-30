@@ -50,6 +50,23 @@ async function github(path, options = {}) {
   return response.json();
 }
 
+async function githubRequest(path, options = {}) {
+  const response = await fetch(`${GITHUB_API}${path}`, {
+    ...options,
+    headers: {
+      ...githubHeaders,
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`GitHub API error ${response.status}: ${text}`);
+  }
+
+  return response;
+}
+
 function shouldIgnoreFile(filename) {
   const ignoredPatterns = [
     "package-lock.json",
@@ -72,23 +89,22 @@ function shouldExcludeFromLlm(filename) {
   const lower = filename.toLowerCase();
   const pathParts = lower.split("/").filter(Boolean);
   const baseName = pathParts[pathParts.length - 1] || "";
-  if (LLM_EXCLUDE_ALLOWLIST.includes(baseName) || LLM_EXCLUDE_ALLOWLIST.includes(lower)) {
+  const matchesHardSensitivePattern =
+    baseName === ".npmrc" ||
+    baseName === ".yarnrc" ||
+    /^\.env(\..+)?$/i.test(baseName) ||
+    /\.(pem|key|p12|pfx|crt|cer)$/i.test(baseName) ||
+    /^id_(rsa|dsa|ed25519)(\.pub)?$/i.test(baseName) ||
+    pathParts.includes(".ssh");
+  if (matchesHardSensitivePattern) return true;
+
+  if (
+    LLM_EXCLUDE_ALLOWLIST.includes(baseName) ||
+    LLM_EXCLUDE_ALLOWLIST.includes(lower)
+  ) {
     return false;
   }
-
-  if (baseName === ".npmrc" || baseName === ".yarnrc") return true;
-
-  // Exclude dot-env files like .env, .env.local, .env.production.
-  if (/^\.env(\..+)?$/i.test(baseName)) return true;
-
-  // Exclude key/cert-like file extensions.
-  if (/\.(pem|key|p12|pfx|crt|cer)$/i.test(baseName)) return true;
-
-  // Exclude common private key filenames.
-  if (/^id_(rsa|dsa|ed25519)(\.pub)?$/i.test(baseName)) return true;
-
   // Exclude explicitly sensitive path segments.
-  if (pathParts.includes(".ssh")) return true;
   if (pathParts.some((part) => /^(secret|secrets|credential|credentials)$/i.test(part))) {
     return true;
   }
@@ -509,15 +525,9 @@ function extractLastPageFromLinkHeader(linkHeader) {
 }
 
 async function fetchIssueCommentsPage(page) {
-  const response = await fetch(
-    `${GITHUB_API}/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
-    { headers: githubHeaders },
+  const response = await githubRequest(
+    `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
   );
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`GitHub API error ${response.status}: ${text}`);
-  }
 
   return {
     comments: await response.json(),
@@ -577,6 +587,9 @@ async function main() {
   const { pr, files } = await getPrData();
 
   const reviewState = buildReviewInput(pr, files);
+  console.log(
+    `[review] exclusions_enabled=${ENABLE_SENSITIVE_EXCLUSIONS} excluded_files=${reviewState.excludedSensitiveFilesCount || 0} allowlist_size=${LLM_EXCLUDE_ALLOWLIST.length}`,
+  );
   let review = "";
 
   if (reviewState.shouldSkipModel) {
