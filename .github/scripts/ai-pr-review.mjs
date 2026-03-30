@@ -62,28 +62,27 @@ function shouldIgnoreFile(filename) {
 
 function shouldExcludeFromLlm(filename) {
   const lower = filename.toLowerCase();
-  const sensitivePatterns = [
-    ".env",
-    ".pem",
-    ".key",
-    ".p12",
-    ".pfx",
-    ".crt",
-    ".cer",
-    "id_rsa",
-    "id_dsa",
-    "id_ed25519",
-    "credentials",
-    "secret",
-    "secrets",
-    "private",
-    "token",
-    "auth",
-    "ssh/",
-    ".npmrc",
-    ".yarnrc",
-  ];
-  return sensitivePatterns.some((pattern) => lower.includes(pattern));
+  const pathParts = lower.split("/").filter(Boolean);
+  const baseName = pathParts[pathParts.length - 1] || "";
+
+  if (baseName === ".npmrc" || baseName === ".yarnrc") return true;
+
+  // Exclude dot-env files like .env, .env.local, .env.production.
+  if (/^\.env(\..+)?$/i.test(baseName)) return true;
+
+  // Exclude key/cert-like file extensions.
+  if (/\.(pem|key|p12|pfx|crt|cer)$/i.test(baseName)) return true;
+
+  // Exclude common private key filenames.
+  if (/^id_(rsa|dsa|ed25519)(\.pub)?$/i.test(baseName)) return true;
+
+  // Exclude explicitly sensitive path segments.
+  if (pathParts.includes(".ssh")) return true;
+  if (pathParts.some((part) => /^(secret|secrets|credential|credentials)$/i.test(part))) {
+    return true;
+  }
+
+  return false;
 }
 
 function truncate(text, maxChars) {
@@ -490,17 +489,30 @@ function applyTrafficLightFormatting(markdown) {
 
 async function findExistingBotComment() {
   const allComments = [];
+  let scanTruncated = false;
   for (let page = 1; ; page += 1) {
     const comments = await github(
       `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100&page=${page}`,
     );
     allComments.push(...comments);
-    if (comments.length < 100 || allComments.length >= MAX_ISSUE_COMMENTS_SCAN) {
+    if (allComments.length >= MAX_ISSUE_COMMENTS_SCAN) {
+      scanTruncated = true;
+      break;
+    }
+    if (comments.length < 100) {
       break;
     }
   }
 
-  return allComments.find((comment) => {
+  if (scanTruncated) {
+    console.warn(
+      `[github] comment scan truncated at ${MAX_ISSUE_COMMENTS_SCAN} comments; older bot comments may be missed.`,
+    );
+  }
+
+  // Prefer the newest matching marker comment to avoid stale updates.
+  const newestFirst = [...allComments].reverse();
+  return newestFirst.find((comment) => {
     return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
   });
 }
