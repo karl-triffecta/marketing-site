@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
+//node --test .github/scripts/ai-pr-review.test.mjs
+
 import {
   redactSensitivePatchContent,
   shouldExcludeFromLlm,
