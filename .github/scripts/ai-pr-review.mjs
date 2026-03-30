@@ -171,6 +171,10 @@ Rules:
 - include file paths in findings when possible
 - if there are no major concerns, keep Findings to a single "- None." bullet
 - keep the answer concise and actionable
+- recommendation policy:
+  - approve: no findings, or low severity findings only
+  - comment: any medium severity finding and no high severity findings
+  - investigate: any high severity finding
 
 Return markdown in exactly this structure:
 
@@ -269,6 +273,62 @@ function extractOpenAIText(data) {
   return chunks.join("\n").trim();
 }
 
+function normalizeRecommendation(markdown) {
+  const lines = markdown.split("\n");
+  const findingsHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## findings",
+  );
+  const recommendationHeaderIndex = lines.findIndex(
+    (line) => line.trim().toLowerCase() === "## recommendation",
+  );
+
+  if (findingsHeaderIndex === -1 || recommendationHeaderIndex === -1) {
+    return markdown;
+  }
+
+  const findingsLines = lines
+    .slice(findingsHeaderIndex + 1, recommendationHeaderIndex)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("-"));
+
+  let hasHigh = false;
+  let hasMedium = false;
+  let hasLow = false;
+  let hasNone = false;
+
+  for (const finding of findingsLines) {
+    const value = finding.toLowerCase();
+    if (value.includes("none")) hasNone = true;
+    if (value.includes("high:")) hasHigh = true;
+    if (value.includes("medium:")) hasMedium = true;
+    if (value.includes("low:")) hasLow = true;
+  }
+
+  let recommendation = "comment";
+  if (hasHigh) {
+    recommendation = "investigate";
+  } else if (hasMedium) {
+    recommendation = "comment";
+  } else if (hasLow || hasNone || findingsLines.length === 0) {
+    recommendation = "approve";
+  }
+
+  const nextHeaderIndex = lines.findIndex(
+    (line, idx) =>
+      idx > recommendationHeaderIndex && line.trim().toLowerCase().startsWith("## "),
+  );
+  const recommendationEndIndex =
+    nextHeaderIndex === -1 ? lines.length : nextHeaderIndex;
+
+  const result = [
+    ...lines.slice(0, recommendationHeaderIndex + 1),
+    recommendation,
+    ...lines.slice(recommendationEndIndex),
+  ];
+
+  return result.join("\n");
+}
+
 async function findExistingBotComment() {
   const comments = await github(
     `/repos/${REPO}/issues/${PR_NUMBER}/comments?per_page=100`,
@@ -314,6 +374,7 @@ async function main() {
     ].join("\n");
   } else {
     review = await callOpenAI(reviewState.input);
+    review = normalizeRecommendation(review);
   }
 
   const body = [
