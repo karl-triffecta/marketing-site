@@ -2,8 +2,16 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const REPO = process.env.REPO;
 const PR_NUMBER = process.env.PR_NUMBER;
+const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5-mini";
+const MAX_REVIEW_FILES = Number(process.env.MAX_REVIEW_FILES || 40);
+const MAX_DIFF_CHARS = Number(process.env.MAX_DIFF_CHARS || 180000);
+const MAX_TOTAL_CHANGED_LINES = Number(
+  process.env.MAX_TOTAL_CHANGED_LINES || 3500,
+);
+const MAX_TOTAL_FILES = Number(process.env.MAX_TOTAL_FILES || 200);
+const BOT_MARKER = "<!-- ai-pr-review-bot -->";
 
-if (!GITHUB_TOKEN || !OPENAI_API_KEY || !REPO || !PR_NUMBER) {
+if (!GITHUB_TOKEN || !REPO || !PR_NUMBER) {
   throw new Error("Missing required environment variables.");
 }
 
@@ -58,22 +66,75 @@ function truncate(text, maxChars) {
 
 async function getPrData() {
   const pr = await github(`/repos/${REPO}/pulls/${PR_NUMBER}`);
-  const files = await github(
-    `/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100`,
-  );
+  const files = [];
+
+  for (let page = 1; ; page += 1) {
+    const batch = await github(
+      `/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100&page=${page}`,
+    );
+    files.push(...batch);
+    if (batch.length < 100 || files.length >= MAX_TOTAL_FILES) break;
+  }
+
   return { pr, files };
 }
 
-function buildReviewInput(pr, files) {
-  const changedFiles = files
-    .filter((file) => file.patch && !shouldIgnoreFile(file.filename))
-    .slice(0, 20);
+function summarizeScopeForHumans(pr, files, reason) {
+  const totalChangedLines = (pr.additions || 0) + (pr.deletions || 0);
+  return [
+    "## Summary",
+    "PR is too large for a cost-effective AI sanity pass.",
+    "",
+    "## Findings",
+    "- None from automated scan (skipped due to size limits).",
+    "",
+    "## Recommendation",
+    "investigate",
+    "",
+    "## Scope",
+    `- Files in PR: ${files.length}`,
+    `- Added lines: ${pr.additions || 0}`,
+    `- Deleted lines: ${pr.deletions || 0}`,
+    `- Total changed lines: ${totalChangedLines}`,
+    `- Skip reason: ${reason}`,
+  ].join("\n");
+}
 
-  if (changedFiles.length === 0) {
-    return null;
+function buildReviewInput(pr, files) {
+  const reviewableFiles = files
+    .filter((file) => file.patch && !shouldIgnoreFile(file.filename))
+    .slice(0, MAX_REVIEW_FILES);
+
+  const totalChangedLines = (pr.additions || 0) + (pr.deletions || 0);
+  if (files.length > MAX_TOTAL_FILES) {
+    return {
+      shouldSkipModel: true,
+      skipMessage: summarizeScopeForHumans(
+        pr,
+        files,
+        `files exceed MAX_TOTAL_FILES (${MAX_TOTAL_FILES})`,
+      ),
+    };
+  }
+  if (totalChangedLines > MAX_TOTAL_CHANGED_LINES) {
+    return {
+      shouldSkipModel: true,
+      skipMessage: summarizeScopeForHumans(
+        pr,
+        files,
+        `changed lines exceed MAX_TOTAL_CHANGED_LINES (${MAX_TOTAL_CHANGED_LINES})`,
+      ),
+    };
   }
 
-  const diffText = changedFiles
+  if (reviewableFiles.length === 0) {
+    return {
+      shouldSkipModel: false,
+      input: null,
+    };
+  }
+
+  const diffText = reviewableFiles
     .map((file) => {
       return [
         `FILE: ${file.filename}`,
@@ -86,11 +147,16 @@ function buildReviewInput(pr, files) {
     })
     .join("\n\n---\n\n");
 
-  return `
-You are a careful senior engineer reviewing a pull request. Your name is Triffecta Sanity Bot.
+  return {
+    shouldSkipModel: false,
+    input: `
+You are a careful senior engineer reviewing a pull request.
 
-Review this PR shallowly.
-Only focus on:
+Goal:
+- Do a cost-effective sanity check and prioritize high-impact risks only.
+- Keep output short when there are no major concerns.
+
+Focus only on:
 - likely bugs
 - risky logic changes
 - obvious security issues
@@ -102,8 +168,9 @@ Rules:
 - do not nitpick formatting or style
 - do not invent issues
 - only mention problems you can justify from the diff
-- if there are no meaningful concerns, say that clearly
-- keep the answer concise
+- include file paths in findings when possible
+- if there are no major concerns, keep Findings to a single "- None." bullet
+- keep the answer concise and actionable
 
 Return markdown in exactly this structure:
 
@@ -111,8 +178,7 @@ Return markdown in exactly this structure:
 <1-3 sentences>
 
 ## Findings
-- <bullet 1>
-- <bullet 2>
+- <severity: high|medium|low> <issue with file path and rationale>
 
 ## Recommendation
 <approve | comment | investigate>
@@ -124,11 +190,16 @@ PR body:
 ${pr.body || "(none provided)"}
 
 Changed files:
-${truncate(diffText, 100000)}
-`;
+${truncate(diffText, MAX_DIFF_CHARS)}
+`,
+  };
 }
 
 async function callOpenAI(input) {
+  if (!OPENAI_API_KEY) {
+    throw new Error("Missing OPENAI_API_KEY environment variable.");
+  }
+
   const response = await fetch(OPENAI_API, {
     method: "POST",
     headers: {
@@ -136,7 +207,7 @@ async function callOpenAI(input) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "gpt-5-mini",
+      model: OPENAI_MODEL,
       input,
     }),
   });
@@ -159,12 +230,7 @@ async function findExistingBotComment() {
   );
 
   return comments.find((comment) => {
-    return (
-      comment.user &&
-      comment.user.type === "Bot" &&
-      typeof comment.body === "string" &&
-      comment.body.includes("<!-- ai-pr-review-bot -->")
-    );
+    return typeof comment.body === "string" && comment.body.includes(BOT_MARKER);
   });
 }
 
@@ -185,17 +251,28 @@ async function updateComment(commentId, body) {
 async function main() {
   const { pr, files } = await getPrData();
 
-  const reviewInput = buildReviewInput(pr, files);
+  const reviewState = buildReviewInput(pr, files);
+  let review = "";
 
-  if (!reviewInput) {
-    console.log("No relevant diff content found.");
-    return;
+  if (reviewState.shouldSkipModel) {
+    review = reviewState.skipMessage;
+  } else if (!reviewState.input) {
+    review = [
+      "## Summary",
+      "No reviewable diff hunks were found after ignore rules.",
+      "",
+      "## Findings",
+      "- None.",
+      "",
+      "## Recommendation",
+      "approve",
+    ].join("\n");
+  } else {
+    review = await callOpenAI(reviewState.input);
   }
 
-  const review = await callOpenAI(reviewInput);
-
   const body = [
-    "<!-- ai-pr-review-bot -->",
+    BOT_MARKER,
     "## AI PR Review",
     "",
     review,
