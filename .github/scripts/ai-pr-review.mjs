@@ -153,7 +153,7 @@ function buildReviewInput(pr, files) {
 You are a careful senior engineer reviewing a pull request.
 
 Goal:
-- Do a cost-effective sanity check and prioritize high-impact risks only.
+- Do a sanity check and prioritize high-impact risks only.
 - Keep output short when there are no major concerns.
 
 Focus only on:
@@ -218,10 +218,55 @@ async function callOpenAI(input) {
   }
 
   const data = await response.json();
-  return (
-    data.output_text ||
-    "## Summary\nNo review generated.\n\n## Findings\n- None.\n\n## Recommendation\ncomment"
+
+  const text = extractOpenAIText(data);
+  const usage = data.usage
+    ? JSON.stringify({
+        input_tokens: data.usage.input_tokens,
+        output_tokens: data.usage.output_tokens,
+        total_tokens: data.usage.total_tokens,
+      })
+    : "unknown";
+
+  console.log(
+    `[openai] model=${data.model || OPENAI_MODEL} id=${data.id || "unknown"} usage=${usage} output_chars=${text.length}`,
   );
+
+  if (!text.trim()) {
+    throw new Error(
+      `OpenAI returned an empty review payload. Partial response: ${truncate(
+        JSON.stringify(data),
+        1500,
+      )}`,
+    );
+  }
+
+  return text;
+}
+
+function extractOpenAIText(data) {
+  if (typeof data.output_text === "string" && data.output_text.trim()) {
+    return data.output_text;
+  }
+
+  if (!Array.isArray(data.output)) return "";
+
+  const chunks = [];
+  for (const item of data.output) {
+    if (!item || !Array.isArray(item.content)) continue;
+    for (const part of item.content) {
+      if (!part) continue;
+      if (typeof part.text === "string") chunks.push(part.text);
+      if (
+        part.type === "output_text" &&
+        typeof part.output_text === "string"
+      ) {
+        chunks.push(part.output_text);
+      }
+    }
+  }
+
+  return chunks.join("\n").trim();
 }
 
 async function findExistingBotComment() {
