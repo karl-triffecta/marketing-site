@@ -105,5 +105,6 @@ npm install intl-tel-input utils
 
 ### Helpers
 
-eval "$(ssh-agent -s)" && ssh-add --apple-use-keychain ~/.ssh/karl-triffecta
+```bash
 nvm install && npm install && npm run dev
+```
