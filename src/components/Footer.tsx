@@ -42,7 +42,7 @@ export default function Footer({ showNewsletter = true }) {
                 */}
               </div>
             </div>
-            <p>© 2025 Triffecta</p>
+            <p>© {new Date().getFullYear()} Triffecta</p>
             <div>
               <a href="/privacy" class="hover:underline">
                 Privacy Policy
