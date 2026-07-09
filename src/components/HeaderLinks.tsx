@@ -5,7 +5,6 @@ export default function HeaderLinks({ mobileNav = false }) {
       style={mobileNav ? { width: "calc(100% + 40px)", left: "-20px" } : {}}
     >
       <ul className={mobileNav ? "" : "flex justify-center space-x-8"}>
-        {/*
         <li
           className={
             mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
@@ -15,7 +14,6 @@ export default function HeaderLinks({ mobileNav = false }) {
             Latest
           </a>
         </li>
-        */}
         <li
           className={
             mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
