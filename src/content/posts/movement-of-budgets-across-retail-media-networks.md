@@ -34,4 +34,6 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 
 <p>Are you still locking your retail media budgets into static, retailer-specific silos, or are you building the capability to move spend dynamically based on true incrementality?</p>
 
-<p>I'd love to hear how your teams are navigating this tension. Where do you see the biggest friction in moving budgets across RMNs?</p>
+<p>I'd love to hear how your teams are navigating this tension. Where do you see the biggest friction in moving budgets across RMNs?  </p>
+
+<p>Breaking down these silos is exactly what we do. If you're ready to stop treating budget liquidity like an operational nightmare, let's connect. No hard sell. Just an honest conversation about your retail media challenges—and whether Triffecta can help.</p>

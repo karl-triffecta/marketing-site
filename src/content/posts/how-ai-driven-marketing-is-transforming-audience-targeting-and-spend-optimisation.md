@@ -22,7 +22,7 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 
 <p>With generative AI features, Triffecta enables brands to craft highly customised messages for each customer without overwhelming marketing teams.</p>
 
-<h2>and Continuous Improvement</h2>
+<h2>Continuous Improvement</h2>
 
 <p>Built-in analytics and AI-powered reporting monitor campaign performance across channels. This empowers shopper marketeers to A/B test, refine, and iterate in-flight—turning each campaign into a feedback loop that drives better decisions and outcomes over time.</p>
 
@@ -36,4 +36,4 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 
 <p>This isn’t just theoretical—it’s happening now. Brands working with Triffecta are seeing improved ROI, engagement, and agility. Start by piloting one AI‑powered channel, measure the uplift, and scale the success - and all from just one platform.</p>
 
-<p>Ready to make your marketing spend work harder with AI? Let’s connect Let’s connect and reshape the rules of winning.</p>
+<p>Ready to make your marketing spend work harder with AI? Let’s connect and reshape the rules of winning.</p>

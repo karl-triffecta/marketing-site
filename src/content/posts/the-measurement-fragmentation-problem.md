@@ -30,4 +30,4 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 
 <p>The future of retail media depends less on optimising isolated channels, and more on connecting marketing to genuine business outcomes. It is time to move from media metrics to commercial intelligence.</p>
 
-<p>How is your team handling measurement fragmentation across different retail networks? Let me know in the comments below.</p>
+<p>How is your team handling measurement fragmentation across different retail networks?</p>

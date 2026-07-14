@@ -1,12 +1,12 @@
 import TriffectaButton from "./TriffectaButton";
 
 export default function LinkButtonRequestDemo({
+  withRetailMedia = false,
   classes = "px-15 py-2",
-  free = false,
 }) {
   return (
-    <TriffectaButton href="/demo" className={classes}>
-      {free ? `Book a free Demo` : `Book a Demo`}
+    <TriffectaButton href="/lets-talk" className={classes}>
+      {withRetailMedia ? `Lets Talk Retail Media` : `Lets talk`}
     </TriffectaButton>
   );
 }

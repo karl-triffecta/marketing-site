@@ -79,5 +79,5 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 </blockquote>
 
 <p>
-  👉 If you’re exploring your retail media approach or scaling your efforts, let’s connect.
+  If you’re exploring your retail media approach or scaling your efforts, let’s connect.
 </p>

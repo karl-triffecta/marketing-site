@@ -6,6 +6,7 @@ import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
 import FormattedPostDate from "../../components/FormattedPostDate.tsx";
 import ImgHeroTop from "../../assets/hero-top.png";
 import PostImage from "../../components/PostImage.astro";
+import LinkButtonRequestDemo from "../../components/LinkButtonRequestDemo.tsx";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -129,6 +130,10 @@ const seo = {
             )
           }
         </div>
+
+        <p>
+          <LinkButtonRequestDemo withRetailMedia={true} />
+        </p>
 
         <p class="mt-8 text-sm text-gray-500">
           <strong>{post.data.tags}</strong>

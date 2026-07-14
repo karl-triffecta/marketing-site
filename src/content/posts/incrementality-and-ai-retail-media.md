@@ -24,4 +24,4 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 
 <p>At Triffecta, we see these challenges not as barriers, but as the next big opportunities to create a connected and commercially intelligent ecosystem.</p>
 
-<p>Are you still optimising purely for ROAS, or has your focus shifted to incrementality? Share your perspective below.</p>
+<p>Are you still optimising purely for ROAS, or has your focus shifted to incrementality?</p>

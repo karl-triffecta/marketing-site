@@ -62,7 +62,3 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
   <p>
     If you're scaling your retail media investments—and you're tired of flying blind—let's talk.
   </p>
-
-  <p>
-    <a href="/contact" target="_blank" rel="noopener">Contact us</a> or <a href="/demo" target="_blank" rel="noopener">book a walkthrough.</a>
-  </p>
