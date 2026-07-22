@@ -15,7 +15,16 @@ const posts = defineCollection({
           .object({
             name: z.string(),
             avatar: image(),
+            unstyled: z.boolean().optional(),
           })
+          .optional(),
+        source: z
+          .array(
+            z.object({
+              url: z.string().url(),
+              label: z.string(),
+            }),
+          )
           .optional(),
         external: z.boolean().optional(),
         href: z.string().optional(),

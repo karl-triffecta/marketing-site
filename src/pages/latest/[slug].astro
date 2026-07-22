@@ -89,11 +89,15 @@ const seo = {
                     <Image
                       src={post.data.author.avatar}
                       alt={`A picture of ${post.data.author.name}`}
-                      class="h-10 w-10 rounded-full object-cover"
-                      style={{
-                        filter:
-                          "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
-                      }}
+                      class="bg-action-primary h-10 w-10 rounded-full object-cover"
+                      style={
+                        post.data.author.unstyled
+                          ? undefined
+                          : {
+                              filter:
+                                "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
+                            }
+                      }
                     />
                     <div class="text-sm">
                       <p class="font-semibold text-gray-900">
@@ -131,13 +135,35 @@ const seo = {
           }
         </div>
 
-        <p>
+        <p class="my-8">
           <LinkButtonRequestDemo withRetailMedia={true} />
         </p>
 
         <p class="mt-8 text-sm text-gray-500">
           <strong>{post.data.tags}</strong>
         </p>
+
+        {
+          post.data.source && post.data.source.length > 0 && (
+            <div class="mt-4 text-xs text-gray-500">
+              <p class="mb-1 font-semibold">Source</p>
+              <ol class="list-decimal space-y-1 pl-4">
+                {post.data.source.map((item, index) => (
+                  <li id={`fn${index + 1}`}>
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="underline hover:text-gray-700"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
       </article>
     </div>
   </section>
