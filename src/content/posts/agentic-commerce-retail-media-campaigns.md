@@ -23,7 +23,7 @@ source:
 
 <p>What you cannot see is everything that happened before that - the research, the comparison, the recommendation that shaped the decision. That upper-funnel activity has always been partially invisible. But it used to live on Google, on category pages, on comparison sites - places where advertising could still reach it. Now, a growing share of it lives inside AI conversations. And that is a blind spot that no single retailer's dashboard will show you.</p>
 
-<p>Adobe Analytics tracked a 4,700% year-over-year increase in AI-driven traffic to US retail sites in 2025.<sup><a href="#fn1">[1]</a></sup> The volume is there. The attribution is not.</p>
+<p>Adobe Analytics tracked a 4,700% year-over-year increase in AI-driven traffic to US retail sites in 2025.<sup>[1]</sup> The volume is there. The attribution is not.</p>
 
 <h2>Three Things Disappearing From Your Data</h2>
 
