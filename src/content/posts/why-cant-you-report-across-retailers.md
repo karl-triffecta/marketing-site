@@ -1,0 +1,66 @@
+---
+title: "Why Can't You Report Across Retailers?"
+date: "2026-10-25"
+image: ./images/20261025-retail-data-streams-to-unified-dashboard.png
+alt: "Retailer data streams converging into one unified Triffecta dashboard"
+description: "Every retailer defines, labels and delivers data differently. Here is why cross-retailer retail media reporting breaks, and how Triffecta fixes it."
+tags: "#RetailMedia #RetailMediaMeasurement #DataStrategy #CommerceMedia #Ecommerce #Triffecta"
+author: { name: "Lesley Mace", avatar: ./authors/lesley.jpg }
+---
+
+<p>It sounds like the easiest question in retail media: which retailer gave us the best return last month?</p>
+
+<p>Yet for most brands and agencies, answering it takes days of exports, spreadsheets and caveats. And the answer still comes with an asterisk.</p>
+
+<p>So why is cross-retailer reporting so hard?</p>
+
+<h2>Every retailer speaks a different language</h2>
+
+<p>Each retail media network has built its own reporting around its own platform. That creates five problems that compound quickly:</p>
+
+<ul>
+  <li>
+    <strong>Different definitions:</strong> what counts as a sale, an attributed sale or a conversion varies by network
+  </li>
+  <li>
+    <strong>Different attribution windows:</strong> a 7-day click in one portal is not a 14-day view in another
+  </li>
+  <li>
+    <strong>Different product data:</strong> the same SKU can carry different IDs, names and categories at each retailer
+  </li>
+  <li>
+    <strong>Different calendars:</strong> trading weeks, promotional periods and data refresh times rarely line up
+  </li>
+  <li>
+    <strong>Different formats:</strong> exports, column names and levels of detail change from one console to the next
+  </li>
+</ul>
+
+<p>Put those side by side and you are not comparing like with like. You are comparing apples, oranges and a spreadsheet someone built at midnight.</p>
+
+<h2>The cost of disconnected data</h2>
+
+<p>When reporting is manual, it is slow. When it is slow, budget decisions are made on last month's picture. And when the data is non-systematic, the loudest dashboard often wins the budget, rather than the best-performing retailer.</p>
+
+<p>The industry knows this. Standards bodies, including IAB Europe, are working on common commerce media measurement definitions. That is welcome. But brands cannot wait for every network to align before they make better decisions.</p>
+
+<h2>How Triffecta solves it</h2>
+
+<p>Triffecta pulls campaign and performance data from connected networks into one structured data layer. We map products, periods and metrics so they can be compared properly, then let you report the way your business actually trades:</p>
+
+<ul>
+  <li>By retailer and network</li>
+  <li>By category and SKU</li>
+  <li>By trading period</li>
+  <li>By promotion</li>
+</ul>
+
+<p>Where metrics are genuinely comparable, you see them side by side. Where they are not, we make that clear rather than hide it. And we are straight about incrementality: proving true incremental value takes defensible testing, not a vendor ROAS figure. Clean, consistent data is what makes that testing possible.</p>
+
+<p>The result is one view of campaign data, customised reporting in minutes rather than days, and the confidence to move budget towards what is working.</p>
+
+<p>Faster reporting. Better decisions.</p>
+
+<p>How long does your team spend building a cross-retailer report each month?</p>
+
+<p>No obligation chat? <a href="/lets-talk">Let’s talk</a></p>

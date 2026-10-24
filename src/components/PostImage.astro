@@ -2,23 +2,36 @@
 import { Image } from "astro:assets";
 
 const { title, src, caption, url, width, height } = Astro.props;
+const isSvg = typeof src === "string" && /\.svg(?:[?#]|$)/i.test(src);
+const alt = title || caption || "";
 ---
 
 <figure class="my-8 text-center">
   {title && <h3 class="mb-2 font-bold">{title}</h3>}
   {
-    src && (
-      <Image
-        src={src}
-        alt={title || caption}
-        widths={[640, 768, 1024, 1280]}
-        sizes="100vw"
-        class="mx-auto"
-        loading="lazy"
-        width={width}
-        height={height}
-      />
-    )
+    src &&
+      (isSvg ? (
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          class="mx-auto h-auto w-full max-w-full"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          widths={[640, 768, 1024, 1280]}
+          sizes="100vw"
+          class="mx-auto"
+          loading="lazy"
+          width={width}
+          height={height}
+        />
+      ))
   }
   {
     caption && (
