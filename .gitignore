@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# This project uses does not use yarn, so we can ignore the yarn.lock file
+yarn.lock
