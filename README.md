@@ -76,6 +76,12 @@ npm run format
 npm run build
 ```
 
+Preview build locally
+
+```bash
+npm run preview
+```
+
 ### Project setup
 
 Commands used to setup this project for reference (dev only requirements)
