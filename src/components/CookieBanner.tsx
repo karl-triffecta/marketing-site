@@ -54,24 +54,31 @@ export default function CookieBanner({ baseUrl = "" }) {
   if (!visible) return null;
 
   return (
-    <div
-      class="text-accent-dark fixed bottom-0 left-0 z-50 flex w-full flex-row items-center justify-between space-y-0 px-4 py-3 shadow-md"
-      style={{ backgroundColor: "rgba(38, 50, 56, 0.85)" }}
-    >
-      <div class="container mx-auto flex items-center justify-between px-4 sm:px-20">
-        <p class="mr-2">
+    <div class="border-ink-200 bg-surface/95 shadow-elevated fixed bottom-0 left-0 z-50 w-full border-t backdrop-blur-[6px]">
+      <div class="container-content flex flex-col items-start justify-between gap-4 py-3 sm:flex-row sm:items-center">
+        <p class="text-ink-600 text-sm leading-5">
           This website uses cookies to ensure you get the best experience. See
           our{" "}
-          <a href={`${baseUrl}privacy`} class="underline">
+          <a
+            href={`${baseUrl}privacy`}
+            class="text-ink-900 decoration-ink-300 hover:decoration-ink-700 focus-visible:outline-focus-ring font-medium underline underline-offset-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
             Privacy
           </a>{" "}
           and{" "}
-          <a href={`${baseUrl}cookies`} class="underline">
+          <a
+            href={`${baseUrl}cookies`}
+            class="text-ink-900 decoration-ink-300 hover:decoration-ink-700 focus-visible:outline-focus-ring font-medium underline underline-offset-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          >
             Cookie
           </a>{" "}
           Policies for more.
         </p>
-        <TriffectaButton variant="secondary" onClick={acceptCookies}>
+        <TriffectaButton
+          variant="dark"
+          onClick={acceptCookies}
+          className="shrink-0 !px-4 !py-2"
+        >
           Accept
         </TriffectaButton>
       </div>

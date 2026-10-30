@@ -1,0 +1,98 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  accent?: "amber" | "teal" | "emerald";
+}
+
+const { post, accent = "teal" } = Astro.props;
+
+const href = post.data.href ? post.data.href : `/latest/${post.slug}/`;
+const external = Boolean(post.data.href);
+
+function firstTagLabel(tags?: string): string | null {
+  if (!tags) return null;
+  const first = tags.trim().split(/\s+/).find(Boolean);
+  if (!first) return null;
+  const raw = first.replace(/^#/, "");
+  if (!raw) return null;
+  // #RetailMedia → Retail Media; #AI → AI
+  return raw
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .trim();
+}
+
+const pill = firstTagLabel(post.data.tags);
+
+const accentClass =
+  accent === "amber"
+    ? "text-amber-400"
+    : accent === "emerald"
+      ? "text-emerald-400"
+      : "text-teal-500";
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : "_self"}
+  rel={external ? "noopener noreferrer" : undefined}
+  class="border-border-default bg-surface group rounded-design-lg shadow-card hover:border-ink-300 flex flex-col overflow-hidden border transition"
+>
+  <div class="bg-ink-900 relative h-48 w-full overflow-hidden">
+    {
+      post.data.image ? (
+        <Image
+          src={post.data.image}
+          alt={post.data.alt || post.data.title}
+          class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+          widths={[400, 600, 800]}
+          sizes="(min-width: 1024px) 390px, 100vw"
+        />
+      ) : (
+        <div class="bg-ink-800 h-full w-full" />
+      )
+    }
+    {
+      pill && (
+        <span
+          class={`bg-ink-800/90 absolute top-4 left-4 rounded px-2.5 py-1 font-mono text-[10px] leading-[15px] font-bold tracking-wide uppercase ${accentClass}`}
+        >
+          {pill}
+        </span>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col justify-between p-6">
+    <div class="flex flex-col gap-2.5">
+      <p class="text-ink-400 text-xs leading-4 font-medium">
+        {post.data.author?.name ? `${post.data.author.name}` : "Insight"}
+      </p>
+      <h3
+        class="font-display text-ink-900 text-xl leading-[27.5px] font-bold tracking-[-0.5px]"
+      >
+        {post.data.title}
+      </h3>
+      {
+        post.data.description && (
+          <p class="text-ink-600 line-clamp-3 text-sm leading-[22.75px]">
+            {post.data.description}
+          </p>
+        )
+      }
+    </div>
+    <div
+      class="border-ink-100 mt-6 flex items-center justify-between border-t pt-4"
+    >
+      <span class="text-ink-900 text-xs leading-4 font-semibold"
+        >Read article</span
+      >
+      <span
+        class="text-ink-400 transition group-hover:translate-x-0.5"
+        aria-hidden="true">→</span
+      >
+    </div>
+  </div>
+</a>

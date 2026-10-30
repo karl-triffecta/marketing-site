@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { SEO } from "astro-seo";
 import { Schema } from "astro-seo-schema";
+import { getCollection } from "astro:content";
 import Header from "../components/Header.tsx";
 import Footer from "../components/Footer.tsx";
 import CookieBanner from "../components/CookieBanner.tsx";
@@ -16,6 +17,15 @@ const base = "/";
 const { showNewsletter = true } = Astro.props;
 
 const { seo = {} } = Astro.props;
+
+const posts = await getCollection("posts");
+posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const researchLinks = posts.slice(0, 3).map((post) => ({
+  href: post.data.href ? post.data.href : `/latest/${post.slug}/`,
+  label: post.data.title,
+}));
 
 const domain = "https://triffecta.com";
 
@@ -145,7 +155,7 @@ const page = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -175,12 +185,16 @@ const page = {
 
     <slot name="head" />
   </head>
-  <body class="bg-background">
+  <body class="bg-background text-text font-sans antialiased">
     <Header client:load />
     <main>
       <slot />
     </main>
-    <Footer client:load showNewsletter={showNewsletter} />
+    <Footer
+      client:load
+      showNewsletter={showNewsletter}
+      researchLinks={researchLinks}
+    />
     <DevConsole />
     <CookieBanner baseUrl={base} client:load />
   </body>
