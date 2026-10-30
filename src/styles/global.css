@@ -177,7 +177,13 @@
   Homepage hero background:
   - <1100px: soft vertical fade (cool blue → bright) behind transparent banner
   - ≥1100px: desktop illustration with left→right soft mask
+  Full-bleed section fill matches ink-900 (Operating Model) on the right so
+  ultra-wide viewports don't show a hard cutoff past the content container.
 */
+.hero-section {
+  background-color: var(--color-surface-page);
+}
+
 .hero-background {
   background-color: var(--color-surface-page);
   background-image:
@@ -203,6 +209,17 @@
 }
 
 @media (min-width: 1100px) {
+  .hero-section {
+    background-color: var(--color-ink-900);
+    background-image: linear-gradient(
+      90deg,
+      var(--color-surface-page) 0%,
+      var(--color-surface-page) 50%,
+      var(--color-ink-900) 50%,
+      var(--color-ink-900) 100%
+    );
+  }
+
   .hero-background {
     background-color: transparent;
     background-image:
