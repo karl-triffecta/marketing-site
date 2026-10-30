@@ -1,7 +1,7 @@
 /*
 Sizes
   1 = header / footer chrome
-  2 = larger (legacy pages)
+  2 = larger chrome
 */
 
 type Props = {

@@ -2,42 +2,26 @@
 @config "../../tailwind.config.js";
 
 /*
-  https://www.realtimecolors.com/?colors=131a1b-f0f0f0-fad899-009485-272339&fonts=Nunito%20Sans-Nunito%20Sans
-  Remember to validate:
+  Contrast references:
     https://webaim.org/resources/contrastchecker/
     https://www.whocanuse.com/
-    https://coolors.co/contrast-checker
-*/
-/* Yellow Primary
-:root {
-  --color-primary: #fad89a;
-  --color-primary-dark: #f9ce88;
-  --color-secondary: #263238;
-  --color-accent: #009485;
-  --color-background: #f0f0f0;
-  --color-text: #131a1b;
-  --color-text-light: #4f4f4f;
-}
 */
 
-/* Teal Primary — LEGACY (keep for non-migrated pages until Stage 7) */
 :root {
+  /* —— Legacy palette (forms, photo heroes, secondary-page CTAs) —— */
   --color-primary: #009485;
   --color-primary-dark: #009485ba;
   --color-secondary: #263238;
   --color-accent: #fad89a;
   --color-accent-dark: #f9ce88;
-  --color-accent-light: #fce4b8;
-  --color-background: #f0f0f0;
   --color-text: #131a1b;
   --color-text-light: #4f4f4f;
   --color-action-primary: #2f3637;
   --color-error: #e53935;
-  --color-error-light: #fdeded;
   --color-success: #2e7d32;
   --color-success-light: #edf7ed;
 
-  /* —— Redesign 2026 primitives (Figma Colour / Primitives) —— */
+  /* —— Brand / UI primitives —— */
   --color-ink-950: #020617;
   --color-ink-900: #0f172a;
   --color-ink-800: #1e293b;
@@ -51,10 +35,7 @@
   --color-ink-on-dark: #ffffff;
 
   --color-surface: #ffffff;
-  --color-surface-muted: #f8fafc;
   --color-surface-page: #f8fafc;
-  --color-surface-card: #ffffff;
-  --color-surface-dark: #020617;
   --color-surface-dark-elevated: #0f172a;
 
   --color-amber-600: #d97706;
@@ -70,14 +51,9 @@
   --color-rose-600: #e11d48;
   --color-header-glass: #ffffffe5;
 
-  /* —— Redesign semantic aliases (small set) —— */
-  --color-text-primary: var(--color-ink-900);
-  --color-text-muted: var(--color-ink-600);
-  --color-text-subtle: var(--color-ink-400);
+  /* —— Semantic aliases —— */
   --color-border-default: var(--color-ink-200);
-  --color-border-dark: var(--color-ink-800);
   --color-action-dark: var(--color-ink-900);
-  --color-action-emphasis: var(--color-amber-400);
   --color-focus-ring: var(--color-teal-600);
 
   --gradient-action-emphasis: linear-gradient(
@@ -86,7 +62,7 @@
     var(--color-amber-300) 100%
   );
 
-  /* —— Layout (Figma Layout floats; selective) —— */
+  /* —— Layout —— */
   --container-content-max: 1280px;
   --gutter-desktop: 24px;
   --space-section: 128px;
@@ -105,7 +81,7 @@
   --shadow-cta: var(--shadow-elevated);
 }
 
-/* Stage 7 — progressive section rhythm */
+/* Progressive section rhythm */
 @media (max-width: 1023px) {
   :root {
     --space-section: 96px;
@@ -123,28 +99,12 @@
   }
 }
 
-/* Dark mode theme (optional)
-[data-theme="dark"] {
-  --color-primary: #f59e0b;
-  --color-secondary: #111827;
-  --color-accent: #ff4500;
-  --color-background: #1f2937;
-  --color-text: #f9fafb;
-}
-*/
-
-/* Redesign content rail — do not replace Tailwind `container` (legacy padding). */
+/* Content rail — keep Tailwind `container` for secondary pages that still use it */
 .container-content {
   width: 100%;
   max-width: var(--container-content-max);
   margin-inline: auto;
   padding-inline: var(--gutter-desktop);
-}
-
-/* Shared focus-visible for redesign interactive controls */
-.focus-ring:focus-visible {
-  outline: 2px solid var(--color-focus-ring);
-  outline-offset: 2px;
 }
 
 /* Phone number overrides */
@@ -249,12 +209,12 @@
   }
 }
 
-/* Stage 7 — prevent decorative overflow */
+/* Prevent decorative overflow */
 html {
   overflow-x: clip;
 }
 
-/* Secondary-page hero title alignment with redesign display font */
+/* Secondary-page hero title */
 .page-hero-title {
   font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;

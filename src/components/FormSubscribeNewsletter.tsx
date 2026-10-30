@@ -2,16 +2,7 @@ import { useState } from "preact/hooks";
 import TriffectaButton from "./TriffectaButton";
 import IconTick from "./icon/IconTick";
 
-type NewsletterLayout = "legacy" | "footer";
-
-type FormSubscribeNewsletterProps = {
-  /** `footer` matches redesigned Footer newsletter chrome */
-  layout?: NewsletterLayout;
-};
-
-export default function FormSubscribeNewsletter({
-  layout = "footer",
-}: FormSubscribeNewsletterProps) {
+export default function FormSubscribeNewsletter() {
   const [email, setEmail] = useState("");
   const [isOptedIn, setIsOptedIn] = useState(false);
   const [error, setError] = useState("");
@@ -77,21 +68,13 @@ export default function FormSubscribeNewsletter({
     );
   }
 
-  const isFooter = layout === "footer";
-
   return (
     <form class="w-full" onSubmit={handleSubmit}>
       <fieldset
         class={loading ? "pointer-events-none opacity-50" : ""}
         disabled={loading}
       >
-        <div
-          class={
-            isFooter
-              ? "flex flex-col gap-3 sm:flex-row sm:items-center"
-              : "flex flex-col space-y-4"
-          }
-        >
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
           <label class="sr-only" for="newsletter-email">
             Your work email
           </label>
@@ -112,11 +95,7 @@ export default function FormSubscribeNewsletter({
             type="submit"
             variant="dark"
             disabled={loading}
-            className={
-              isFooter
-                ? "!rounded-design-md !px-6 !py-3 text-sm font-semibold"
-                : ""
-            }
+            className="!rounded-design-md !px-6 !py-3 text-sm font-semibold"
           >
             {loading ? "Submitting..." : "Trust us."}
           </TriffectaButton>

@@ -78,23 +78,17 @@ const team: TeamMember[] = [
 
 export default function TeamMembers() {
   return (
-    <section class="page-shell relative overflow-hidden py-section">
+    <section class="page-shell py-section relative overflow-hidden">
       <div class="container-content">
         <div class="gap-card-gap grid sm:grid-cols-2 lg:grid-cols-3">
           {team.map((member, index) => (
             <FadeIn key={index} delay={300 * index} duration={3000}>
-              <article class="border-border-default bg-surface group flex h-full flex-col overflow-hidden rounded-design-lg border shadow-card transition hover:border-ink-300">
+              <article class="border-border-default bg-surface group rounded-design-lg shadow-card hover:border-ink-300 flex h-full flex-col overflow-hidden border transition">
                 <div class="bg-ink-100 relative aspect-square w-full overflow-hidden">
                   {member.image ? (
                     <picture>
-                      <source
-                        srcSet={member.image.avif}
-                        type="image/avif"
-                      />
-                      <source
-                        srcSet={member.image.webp}
-                        type="image/webp"
-                      />
+                      <source srcSet={member.image.avif} type="image/avif" />
+                      <source srcSet={member.image.webp} type="image/webp" />
                       <img
                         src={member.image.jpg}
                         alt={`A picture of ${member.name}`}
@@ -137,7 +131,7 @@ export default function TeamMembers() {
                       href={member.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="border-ink-100 text-ink-900 focus-visible:outline-focus-ring mt-6 flex items-center justify-between border-t pt-4 text-xs leading-4 font-semibold transition hover:text-ink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      class="border-ink-100 text-ink-900 focus-visible:outline-focus-ring hover:text-ink-700 mt-6 flex items-center justify-between border-t pt-4 text-xs leading-4 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                     >
                       <span class="inline-flex items-center gap-2">
                         <IconLinkedIn size="16px" />

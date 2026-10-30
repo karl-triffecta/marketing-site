@@ -4,9 +4,6 @@ export default {
   theme: {
     extend: {
       spacing: {
-        80: "80px", // Custom margin
-        32: "32px", // Custom gutter
-        16: "16px", // Mobile gutter
         section: "var(--space-section)",
         "section-stack": "var(--space-section-stack)",
         "card-gap": "var(--space-card-gap)",
@@ -27,31 +24,20 @@ export default {
           "2xl": "6rem", // 96px for very large screens
         },
       },
-      screens: {
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        xl: "1280px",
-        "2xl": "1536px",
-      },
       colors: {
-        // Legacy (unchanged values via CSS vars)
+        // Legacy (forms, photo heroes, secondary-page CTAs)
         primary: "var(--color-primary)",
         primaryDark: "var(--color-primary-dark)",
         secondary: "var(--color-secondary)",
         accent: "var(--color-accent)",
         accentDark: "var(--color-accent-dark)",
-        accentLight: "var(--color-accent-dark)",
-        background: "var(--color-background)",
         text: "var(--color-text)",
         textLight: "var(--color-text-light)",
         actionPrimary: "var(--color-action-primary)",
-        gradient: "var(--color-gradient)",
         error: "var(--color-error)",
-        errorLight: "var(--color-error-light)",
         success: "var(--color-success)",
         successLight: "var(--color-success-light)",
-        // Redesign 2026
+        // Brand / UI
         ink: {
           950: "var(--color-ink-950)",
           900: "var(--color-ink-900)",
@@ -67,10 +53,7 @@ export default {
         },
         surface: {
           DEFAULT: "var(--color-surface)",
-          muted: "var(--color-surface-muted)",
           page: "var(--color-surface-page)",
-          card: "var(--color-surface-card)",
-          dark: "var(--color-surface-dark)",
           "dark-elevated": "var(--color-surface-dark-elevated)",
         },
         amber: {
@@ -89,17 +72,11 @@ export default {
           600: "var(--color-rose-600)",
         },
         "header-glass": "var(--color-header-glass)",
-        "text-primary": "var(--color-text-primary)",
-        "text-muted": "var(--color-text-muted)",
-        "text-subtle": "var(--color-text-subtle)",
         "border-default": "var(--color-border-default)",
-        "border-dark": "var(--color-border-dark)",
         "action-dark": "var(--color-action-dark)",
-        "action-emphasis": "var(--color-action-emphasis)",
         "focus-ring": "var(--color-focus-ring)",
       },
       backgroundImage: {
-        "triffecta-gradient": "linear-gradient(90deg, #fad89a 25%, #4db6ac)",
         "action-emphasis-gradient": "var(--gradient-action-emphasis)",
       },
       borderRadius: {

@@ -6,7 +6,7 @@ import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
 import FormattedPostDate from "../../components/FormattedPostDate.tsx";
 import ImgHeroTop from "../../assets/hero-top.png";
 import PostImage from "../../components/PostImage.astro";
-import LinkButtonRequestDemo from "../../components/LinkButtonRequestDemo.tsx";
+import TriffectaButton from "../../components/TriffectaButton.tsx";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -136,7 +136,13 @@ const seo = {
         </div>
 
         <p class="my-8">
-          <LinkButtonRequestDemo withRetailMedia={true} />
+          <TriffectaButton
+            href="/lets-talk"
+            variant="dark"
+            className="!rounded-design-md !px-7 !py-3.5 !text-base !leading-6"
+          >
+            Let's talk retail media →
+          </TriffectaButton>
         </p>
 
         <p class="mt-8 text-sm text-gray-500">

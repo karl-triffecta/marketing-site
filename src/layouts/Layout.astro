@@ -8,8 +8,8 @@ import Footer from "../components/Footer.tsx";
 import CookieBanner from "../components/CookieBanner.tsx";
 import DevConsole from "../components/DevConsole.astro";
 
-// SEO
-import ImgHeroTop from "../assets/hero-top.png";
+// SEO default Open Graph image
+import ImgOgDefault from "../assets/platform/dashboard.png";
 
 // When using Prod switch
 //const base = "/marketing-site/";
@@ -42,7 +42,7 @@ const page = {
   keywords:
     seo.keywords ||
     "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
-  image: seo.image || ImgHeroTop.src,
+  image: seo.image || ImgOgDefault.src,
   author: seo.author || "",
   publishedTime: seo.publishedTime
     ? `${seo.publishedTime}T09:00:00Z`
@@ -101,8 +101,8 @@ const page = {
           url: page.image,
           alt: page.altText,
           type: "image/png",
-          width: 1200,
-          height: 630,
+          width: 1196,
+          height: 668,
         },
         ...(page.type === "article" && {
           article: {

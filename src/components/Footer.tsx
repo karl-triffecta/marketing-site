@@ -103,7 +103,7 @@ export default function Footer({
               </p>
             </div>
             <div class="mx-auto w-full max-w-md lg:mx-0">
-              <FormSubscribeNewsletter layout="footer" />
+              <FormSubscribeNewsletter />
             </div>
           </div>
         )}
