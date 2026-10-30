@@ -8,8 +8,8 @@ import Footer from "../components/Footer.tsx";
 import CookieBanner from "../components/CookieBanner.tsx";
 import DevConsole from "../components/DevConsole.astro";
 
-// SEO default Open Graph image
-import ImgOgDefault from "../assets/platform/dashboard.png";
+// SEO default social / Open Graph image (1200×630)
+import ImgOgDefault from "../assets/brand-banner.png";
 
 // When using Prod switch
 //const base = "/marketing-site/";
@@ -29,20 +29,28 @@ const researchLinks = posts.slice(0, 3).map((post) => ({
 
 const domain = "https://triffecta.com";
 
+function absoluteUrl(path: string) {
+  if (!path) return domain;
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${domain}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+const imagePath = seo.image || ImgOgDefault.src;
 const page = {
-  canonicalUrl: `${domain}${seo.path || Astro.url.pathname}`,
+  canonicalUrl: absoluteUrl(seo.path || Astro.url.pathname),
   name: seo.name || "Triffecta",
-  title: seo.title || "Revolutionizing Retail Media at Scale",
+  title: seo.title || "Retail Media, Simplified Across Retailers",
   titleTemplate: seo.titleTemplate || "%s | Triffecta",
   description:
     seo.description ||
-    "Triffecta simplifies retail media with AI-powered campaign automation, standardized reporting, and single-campaign execution across top retailers",
+    "Triffecta simplifies retail media across retailers with AI-powered campaign automation, standardized reporting, and single-campaign execution.",
   robots: seo.robots || "index, follow",
-  altText: seo.altText || "Triffecta Revolutionizing Retail Media at Scale",
+  altText:
+    seo.altText || "Triffecta — Retail media, simplified across retailers",
   keywords:
     seo.keywords ||
     "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
-  image: seo.image || ImgOgDefault.src,
+  image: absoluteUrl(imagePath),
   author: seo.author || "",
   publishedTime: seo.publishedTime
     ? `${seo.publishedTime}T09:00:00Z`
@@ -77,7 +85,6 @@ const page = {
         description: page.title,
       }}
     />
-    <!-- TODO: Twitter -->
     <SEO
       title={page.title}
       titleTemplate={page.titleTemplate}
@@ -101,8 +108,8 @@ const page = {
           url: page.image,
           alt: page.altText,
           type: "image/png",
-          width: 1196,
-          height: 668,
+          width: 1200,
+          height: 630,
         },
         ...(page.type === "article" && {
           article: {
@@ -128,12 +135,13 @@ const page = {
             content: page.keywords,
           },
           { property: "og:url", content: page.canonicalUrl },
-          { property: "og:type", content: "website" },
           {
             property: "og:image:alt",
             content: page.altText,
           },
+          { name: "twitter:card", content: "summary_large_image" },
           { name: "twitter:image", content: page.image },
+          { name: "twitter:image:alt", content: page.altText },
           {
             name: "twitter:title",
             content: page.title,
@@ -142,12 +150,6 @@ const page = {
             name: "twitter:description",
             content: page.description,
           },
-          ...(page.type === "article"
-            ? [
-                { name: "twitter:card", content: "summary_large_image" },
-                { name: "twitter:image:alt", content: page.altText },
-              ]
-            : []),
         ],
       }}
     />

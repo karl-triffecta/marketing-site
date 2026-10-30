@@ -3,9 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import TriffectaButton from "../components/TriffectaButton.tsx";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
-import { getImage, Picture } from "astro:assets";
+import { getImage, Picture, Image } from "astro:assets";
 
 import ImgHeroIllustration from "../assets/hero/illustration.png";
+import ImgHeroBanner from "../assets/hero/banner.png";
 import ImgPlatformDashboard from "../assets/platform/dashboard.png";
 import IconTrustVml from "../assets/trust/vml.svg?url";
 import IconTrustWppMedia from "../assets/trust/wpp-media.svg?url";
@@ -36,8 +37,12 @@ const optimizedHeroIllustration = await getImage({
 });
 
 const seo = {
-  title: "Triffecta | Revolutionizing Retail Media at Scale",
+  title: "Triffecta | Retail Media, Simplified Across Retailers",
   titleTemplate: "%s",
+  description:
+    "Triffecta simplifies retail media across retailers with AI-powered campaign automation, standardized reporting, and single-campaign execution.",
+  altText: "Triffecta — Retail media, simplified across retailers",
+  path: "/",
 };
 
 const posts = await getCollection("posts");
@@ -192,11 +197,26 @@ const differentiationItems = [
   {/* —— Hero —— */}
   <section class="bg-surface-page relative overflow-hidden">
     <div
-      class="hero-background container-content relative grid min-h-[420px] items-center py-16 lg:min-h-[548px] lg:py-[85px]"
+      class="hero-background container-content relative flex min-h-[420px] flex-col justify-center py-10 min-[1100px]:grid min-[1100px]:min-h-[548px] min-[1100px]:items-center min-[1100px]:justify-start min-[1100px]:py-[85px]"
       style={`--hero-illustration: url(${optimizedHeroIllustration.src});`}
     >
+      {/* Transparent network banner — mobile/tablet; sits above vertical CSS fade */}
       <div
-        class="relative z-10 mx-auto max-w-xl text-center lg:mx-0 lg:max-w-[605px] lg:text-left"
+        class="relative z-[1] -mx-[var(--gutter-desktop)] mb-6 min-[1100px]:hidden"
+        aria-hidden="true"
+      >
+        <Image
+          src={ImgHeroBanner}
+          alt=""
+          class="h-auto w-full object-contain object-top"
+          widths={[640, 960, 1024]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <div
+        class="relative z-10 mx-auto max-w-xl text-center min-[1100px]:mx-0 min-[1100px]:max-w-[605px] min-[1100px]:text-left"
       >
         <h1
           class="font-display text-ink-950 text-4xl leading-tight font-bold tracking-[-0.04em] sm:text-5xl lg:text-[68px] lg:leading-[68px] lg:tracking-[-1.7px]"

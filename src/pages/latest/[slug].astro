@@ -31,7 +31,7 @@ const optimizedImgBanner = await getImage({
 const seo = {
   title: post.data.title,
   description: post.data.description,
-  path: `/latest/${slug}`,
+  path: `/latest/${slug}/`,
   altText: post.data.alt,
   keywords: post.data.tags,
   image: optimizedImgBanner.src,
