@@ -8,5 +8,5 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 external: true
 href: "https://www.linkedin.com/feed/update/urn:li:activity:7348688717999423488/"
 platform: "linkedin"
-tags: "#adtech #monetisation #retailmedia #fmcg #shoppermarketing"
+tags: "#Monetisation #AdTech #RetailMedia #FMCG #ShopperMarketing"
 ---

@@ -8,5 +8,5 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 external: true
 href: "https://www.linkedin.com/posts/triffecta-com_shoptalk2025-retailmedia-cpg-activity-7335535133246021634-zEUZ?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeAzbYB3ONnGcwvza5pwYI1AkftnqyQqyY"
 platform: "linkedin"
-tags: "#Shoptalk2025 #RetailMedia #CPG #RetailInnovation #Triffecta "
+tags: "#Shoptalk2025 #RetailMedia #CPG #RetailInnovation #Triffecta"
 ---

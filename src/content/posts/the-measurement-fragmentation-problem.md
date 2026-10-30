@@ -4,7 +4,7 @@ date: "2026-07-06"
 image: ./images/20260706-checking-graphs.jpg
 alt: "Man checking graphs"
 description: "Struggling with fragmented retail media data across multiple dashboards? Learn why standardisation and unified execution are the future of RMN growth."
-tags: "#RetailMedia #B2BMarketing #EcommerceStrategy #ContentStrategy #MarketingMeasurement #Triffecta"
+tags: "#MarketingMeasurement #RetailMedia #B2BMarketing #EcommerceStrategy #ContentStrategy #Triffecta"
 author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 ---
 

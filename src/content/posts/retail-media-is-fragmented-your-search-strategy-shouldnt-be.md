@@ -4,7 +4,7 @@ date: "2025-07-11"
 alt: ""
 image: ./images/20250711-man-on-phone.jpg
 description: "In the new era of retail media, where digital shelves are as competitive as physical ones, managing sponsored search effectively can be the difference between being discovered—or disappearing."
-tags: "#RetailMedia #SponsoredSearch #CPGMarketing #OmnichannelCommerce #InstacartAds #WalmartConnect #KrogerPrecisionMarketing #DigitalShelf #MediaExecution #GroceryMarketing"
+tags: "#SponsoredSearch #RetailMedia #CPGMarketing #OmnichannelCommerce #InstacartAds #WalmartConnect #KrogerPrecisionMarketing #DigitalShelf #MediaExecution #GroceryMarketing"
 author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 ---
 

@@ -4,7 +4,7 @@ date: "2026-07-08"
 image: ./images/20260708-chance-or-change.jpg
 alt: "Dice with chance written on it"
 description: "Why ROAS is no longer enough. Discover how the rise of AI shopping agents is forcing brands to shift their retail media focus to true incremental growth."
-tags: "#RetailMedia #DigitalMarketing #AI #DataStrategy #RetailInnovation #Triffecta"
+tags: "#AI #RetailMedia #DigitalMarketing #DataStrategy #RetailInnovation #Triffecta"
 author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 ---
 
