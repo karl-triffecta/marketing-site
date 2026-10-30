@@ -2,14 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import TriffectaButton from "../components/TriffectaButton.tsx";
 import PostCard from "../components/PostCard.astro";
-import IconTriffecta from "../components/icon/IconTriffecta.tsx";
-
 import { getCollection } from "astro:content";
 import { getImage, Picture } from "astro:assets";
 
 import ImgHeroIllustration from "../assets/redesign/hero-illustration.png";
 import ImgPlatformDashboard from "../assets/redesign/platform-dashboard.png";
-import ImgWppMedia from "../assets/redesign/trust/wpp-media.png";
+import IconTrustVml from "../assets/redesign/trust/vml.svg?url";
+import IconTrustWppMedia from "../assets/redesign/trust/wpp-media.svg?url";
+import IconTrustPublicis from "../assets/redesign/trust/publicis.svg?url";
+import IconTrustHaatch from "../assets/redesign/trust/haatch.svg?url";
 import ImgLogoCriteo from "../assets/redesign/integrations/criteo.png";
 import ImgLogoCitrusAd from "../assets/redesign/integrations/citrusad.png";
 import ImgLogoAmazonAds from "../assets/redesign/integrations/amazon-ads.png";
@@ -22,16 +23,11 @@ import IconPillarAutomation from "../assets/redesign/icons/pillar-automation.svg
 import IconDiffCreate from "../assets/redesign/icons/diff-create.svg?url";
 import IconDiffStandardize from "../assets/redesign/icons/diff-standardize.svg?url";
 import IconDiffControl from "../assets/redesign/icons/diff-control.svg?url";
-import IconQuote from "../assets/redesign/icons/quote.svg?url";
 import IconJourneyAutomation from "../assets/redesign/icons/journey-automation.svg?url";
 import IconCommercialCampaigns from "../assets/redesign/icons/commercial-campaigns.svg?url";
 import IconCommercialRetailers from "../assets/redesign/icons/commercial-retailers.svg?url";
 import IconCommercialGrowth from "../assets/redesign/icons/commercial-growth.svg?url";
 import IconCheck from "../assets/redesign/icons/check.svg?url";
-import IconTrustVmlA from "../assets/redesign/trust/vml-a.svg?url";
-import IconTrustVmlB from "../assets/redesign/trust/vml-b.svg?url";
-import IconTrustPublicis from "../assets/redesign/trust/publicis.svg?url";
-import IconTrustHaatch from "../assets/redesign/trust/haatch.svg?url";
 
 const optimizedHeroIllustration = await getImage({
   src: ImgHeroIllustration,
@@ -181,29 +177,6 @@ const differentiationItems = [
     iconBg: "bg-[#ecfdf5]",
   },
 ];
-
-const proofMetrics = [
-  {
-    value: "60%",
-    valueClass:
-      "bg-gradient-to-r from-amber-500 to-[#b45309] bg-clip-text text-transparent",
-    label: "Less time spent on campaign setup",
-    detail: "Eliminating redundant form entries across retail portals.",
-  },
-  {
-    value: "3.2×",
-    valueClass:
-      "bg-gradient-to-r from-teal-600 to-[#115e59] bg-clip-text text-transparent",
-    label: "Faster cross-retailer reporting",
-    detail: "Instant normalized client analytics without manual CSV merging.",
-  },
-  {
-    value: "8 → 1",
-    valueClass: "text-ink-900",
-    label: "Retailer dashboards consolidated",
-    detail: "A single operational surface for agency media practitioners.",
-  },
-];
 ---
 
 <Layout seo={seo}>
@@ -213,13 +186,14 @@ const proofMetrics = [
       href={optimizedHeroIllustration.src}
       as="image"
       type="image/webp"
+      media="(min-width: 1100px)"
     />
   </Fragment>
   {/* —— Hero —— */}
   <section class="bg-surface-page relative overflow-hidden">
     <div
-      class="container-content relative grid min-h-[420px] items-center py-16 lg:min-h-[548px] lg:py-[85px]"
-      style={`background-image: linear-gradient(90deg, var(--color-surface-page) 0%, rgba(248,250,252,0.55) 22%, rgba(248,250,252,0.12) 34%, transparent 42%), url(${optimizedHeroIllustration.src}); background-size: cover; background-position: right center; background-repeat: no-repeat;`}
+      class="hero-background container-content relative grid min-h-[420px] items-center py-16 lg:min-h-[548px] lg:py-[85px]"
+      style={`--hero-illustration: url(${optimizedHeroIllustration.src});`}
     >
       <div class="relative z-10 max-w-xl lg:max-w-[605px]">
         <h1
@@ -265,7 +239,7 @@ const proofMetrics = [
         >
           Built for teams managing retail media at scale
         </p>
-        <p class="text-ink-400 mt-1 text-[11px] leading-[16.5px] italic">
+        <p class="text-ink-500 mt-1 text-xs leading-4 italic">
           Trusted by performance agencies &amp; high-volume brand networks
         </p>
       </div>
@@ -273,33 +247,28 @@ const proofMetrics = [
         class="flex flex-wrap items-center justify-start gap-8 opacity-80 grayscale lg:justify-center lg:gap-[62px]"
         aria-label="Trusted organisations"
       >
-        <div class="relative h-9 w-[125px]" aria-label="VML">
-          <img
-            src={IconTrustVmlA}
-            alt=""
-            class="absolute top-0 left-0 h-9 w-auto"
-            aria-hidden="true"
-          />
-          <img
-            src={IconTrustVmlB}
-            alt=""
-            class="absolute inset-0 h-9 w-full object-contain"
-            aria-hidden="true"
-          />
-          <span class="sr-only">VML</span>
-        </div>
         <img
-          src={ImgWppMedia.src}
+          src={IconTrustVml}
+          alt="VML"
+          class="h-9 w-auto max-w-[125px] object-contain"
+          width="125"
+          height="36"
+          loading="lazy"
+        />
+        <img
+          src={IconTrustWppMedia}
           alt="WPP Media"
           class="h-8 w-auto max-w-[180px] object-contain sm:h-10 sm:max-w-[230px]"
-          width={ImgWppMedia.width}
-          height={ImgWppMedia.height}
+          width="230"
+          height="40"
           loading="lazy"
         />
         <img
           src={IconTrustPublicis}
           alt="Publicis Groupe"
           class="h-14 w-auto max-w-[90px] object-contain"
+          width="90"
+          height="79"
           loading="lazy"
         />
       </div>
@@ -312,6 +281,8 @@ const proofMetrics = [
           src={IconTrustHaatch}
           alt="Haatch"
           class="ml-2 h-6 w-auto max-w-[80px] object-contain grayscale"
+          width="80"
+          height="24"
           loading="lazy"
         />
       </div>
@@ -321,7 +292,7 @@ const proofMetrics = [
   {/* —— Problem —— */}
   <section class="bg-surface-page py-section">
     <div class="container-content gap-section-stack flex flex-col">
-      <header class="max-w-3xl">
+      <header class="max-w-3xl lg:max-w-[70%]">
         <p
           class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-600 uppercase"
         >
@@ -392,7 +363,7 @@ const proofMetrics = [
     >
     </div>
     <div class="container-content gap-section-stack relative flex flex-col">
-      <header class="max-w-3xl">
+      <header class="max-w-3xl lg:max-w-[70%]">
         <p
           class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-500 uppercase"
         >
@@ -401,7 +372,7 @@ const proofMetrics = [
         <h2
           class="font-display mt-6 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
         >
-          One campaign.{" "}
+          One campaign.<br />
           <span
             class="bg-gradient-to-r from-amber-500 via-emerald-500 to-teal-600 bg-clip-text text-transparent"
           >
@@ -415,14 +386,15 @@ const proofMetrics = [
       </header>
 
       <div class="relative grid gap-8 pt-4 lg:grid-cols-3 lg:gap-12">
+        {/* Connector through left-aligned number-badge centres (desktop) */}
         <div
-          class="pointer-events-none absolute top-16 right-[16%] left-[16%] hidden h-0.5 bg-gradient-to-r from-amber-500 via-emerald-500 to-teal-600 lg:block"
+          class="pointer-events-none absolute top-[4.5rem] right-[calc((100%-6rem)/3-3.5rem)] left-[3.5rem] z-0 hidden h-0.5 bg-gradient-to-r from-amber-500 via-emerald-500 to-teal-600 lg:block"
           aria-hidden="true"
         >
         </div>
         {
           journeyStations.map((station) => (
-            <article class="rounded-design-md border-ink-800 bg-ink-950/80 relative flex flex-col justify-between border p-8">
+            <article class="rounded-design-md border-ink-800 bg-ink-950/80 relative z-10 flex flex-col justify-between border p-8">
               <div>
                 <div
                   class={`rounded-design-md bg-ink-900 mb-4 flex size-12 items-center justify-center border font-mono text-lg leading-7 font-bold ${station.numClass}`}
@@ -499,7 +471,7 @@ const proofMetrics = [
     >
     </div>
     <div class="container-content gap-section-stack relative flex flex-col">
-      <header class="max-w-3xl">
+      <header class="max-w-3xl lg:max-w-[70%]">
         <p
           class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-500 uppercase"
         >
@@ -580,7 +552,7 @@ const proofMetrics = [
   {/* —— Integrations —— */}
   <section class="border-border-default bg-surface py-section border-b">
     <div class="container-content flex flex-col gap-12">
-      <header class="max-w-3xl">
+      <header class="max-w-3xl lg:max-w-[70%]">
         <p
           class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-700 uppercase"
         >
@@ -606,7 +578,7 @@ const proofMetrics = [
                   alt=""
                   width={item.logo.width}
                   height={item.logo.height}
-                  class="h-10 w-auto max-w-[160px] rounded-design-sm object-contain"
+                  class="rounded-design-sm h-10 w-auto max-w-[160px] object-contain"
                   loading="lazy"
                   aria-hidden="true"
                 />
@@ -634,7 +606,7 @@ const proofMetrics = [
     >
     </div>
     <div class="container-content relative">
-      <header class="mb-14 max-w-3xl">
+      <header class="mb-14 max-w-3xl lg:max-w-[70%]">
         <p
           class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-500 uppercase"
         >
@@ -643,7 +615,7 @@ const proofMetrics = [
         <h2
           class="font-display mt-6 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
         >
-          Grow your retail media.{" "}
+          Grow your retail media.<br />
           <span
             class="bg-gradient-to-r from-amber-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent"
           >
@@ -657,9 +629,90 @@ const proofMetrics = [
         </p>
       </header>
 
-      <div class="grid gap-8 lg:grid-cols-3">
+      {
+        /* Figma order L→R: Growth → Campaigns → Retailers + connector through icon badges */
+      }
+      <div class="relative grid gap-8 lg:grid-cols-3">
+        <div
+          class="pointer-events-none absolute top-[3.5rem] right-[calc((100%-4rem)/3-3.5rem)] left-[3.5rem] z-0 hidden h-0.5 bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 lg:block"
+          aria-hidden="true"
+        >
+          <span
+            class="absolute top-1/2 left-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"
+          ></span>
+          <span
+            class="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"
+          ></span>
+          <span
+            class="absolute top-1/2 right-0 size-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+          ></span>
+        </div>
+
         <article
-          class="rounded-design-lg shadow-elevated relative flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+        >
+          <div
+            class="pointer-events-none absolute top-0 right-0 size-28"
+            style="background: linear-gradient(225deg, rgba(6,182,212,0.15), transparent 50%);"
+            aria-hidden="true"
+          >
+          </div>
+          <div>
+            <div
+              class="rounded-design-md bg-ink-900/90 mb-3 flex size-12 items-center justify-center border border-cyan-500/30"
+            >
+              <img
+                src={IconCommercialGrowth}
+                alt=""
+                class="size-6"
+                aria-hidden="true"
+              />
+            </div>
+            <h3
+              class="font-display mt-3 text-2xl leading-8 font-bold tracking-[-0.84px] text-white"
+            >
+              More growth.
+            </h3>
+            <p class="text-ink-400 mt-3 text-sm leading-[22.75px]">
+              Scale spend, team seats, product catalogs, and international
+              markets without turning every step forward into another platform
+              surcharge.
+            </p>
+          </div>
+          <div
+            class="rounded-design-md bg-ink-950/60 mt-6 border border-white/5 p-4"
+          >
+            <div
+              class="border-ink-800/80 mb-2 flex items-center justify-between border-b pb-2"
+            >
+              <span
+                class="text-ink-500 font-mono text-[11px] tracking-[0.55px] uppercase"
+                >Retail media spend</span
+              >
+              <span class="font-mono text-xs font-bold text-cyan-400"
+                >$10M+ Scaled</span
+              >
+            </div>
+            <div class="mb-2 flex items-center justify-between py-1">
+              <span class="text-ink-300 font-mono text-[11px]"
+                >Software Take-Rate</span
+              >
+              <span
+                class="rounded border border-emerald-800/50 bg-emerald-950/60 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-400"
+                >0.00% (Flat)</span
+              >
+            </div>
+            <div class="bg-ink-900 h-1.5 overflow-hidden rounded-full">
+              <div
+                class="h-full w-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
+              >
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
         >
           <div
             class="pointer-events-none absolute top-0 right-0 size-24"
@@ -727,7 +780,7 @@ const proofMetrics = [
         </article>
 
         <article
-          class="rounded-design-lg shadow-elevated relative flex flex-col justify-between overflow-hidden border border-emerald-500/30 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-emerald-500/30 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
         >
           <div
             class="pointer-events-none absolute top-0 right-0 size-32"
@@ -790,69 +843,6 @@ const proofMetrics = [
             </div>
           </div>
         </article>
-
-        <article
-          class="rounded-design-lg shadow-elevated relative flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
-        >
-          <div
-            class="pointer-events-none absolute top-0 right-0 size-28"
-            style="background: linear-gradient(225deg, rgba(6,182,212,0.15), transparent 50%);"
-            aria-hidden="true"
-          >
-          </div>
-          <div>
-            <div
-              class="rounded-design-md bg-ink-900/90 mb-3 flex size-12 items-center justify-center border border-cyan-500/30"
-            >
-              <img
-                src={IconCommercialGrowth}
-                alt=""
-                class="size-6"
-                aria-hidden="true"
-              />
-            </div>
-            <h3
-              class="font-display mt-3 text-2xl leading-8 font-bold tracking-[-0.84px] text-white"
-            >
-              More growth.
-            </h3>
-            <p class="text-ink-400 mt-3 text-sm leading-[22.75px]">
-              Scale spend, team seats, product catalogs, and international
-              markets without turning every step forward into another platform
-              surcharge.
-            </p>
-          </div>
-          <div
-            class="rounded-design-md bg-ink-950/60 mt-6 border border-white/5 p-4"
-          >
-            <div
-              class="border-ink-800/80 mb-2 flex items-center justify-between border-b pb-2"
-            >
-              <span
-                class="text-ink-500 font-mono text-[11px] tracking-[0.55px] uppercase"
-                >Retail media spend</span
-              >
-              <span class="font-mono text-xs font-bold text-cyan-400"
-                >$10M+ Scaled</span
-              >
-            </div>
-            <div class="mb-2 flex items-center justify-between py-1">
-              <span class="text-ink-300 font-mono text-[11px]"
-                >Software Take-Rate</span
-              >
-              <span
-                class="rounded border border-emerald-800/50 bg-emerald-950/60 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-400"
-                >0.00% (Flat)</span
-              >
-            </div>
-            <div class="bg-ink-900 h-1.5 overflow-hidden rounded-full">
-              <div
-                class="h-full w-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
-              >
-              </div>
-            </div>
-          </div>
-        </article>
       </div>
 
       <aside
@@ -905,8 +895,13 @@ const proofMetrics = [
     </div>
   </section>
 
-  {/* —— Differentiation —— */}
-  <section class="border-border-default/80 bg-surface-page py-section border-t">
+  {
+    /* —— Differentiation ——
+       INTENTIONAL IMPLEMENTATION OVERRIDE: white `bg-surface` (not
+       surface-page) after Proof/Measured Impact was hidden, so this
+       section remains a distinct light panel before Perspectives. */
+  }
+  <section class="border-border-default/80 bg-surface py-section border-t">
     <div
       class="container-content grid items-center gap-10 lg:grid-cols-12 lg:gap-14"
     >
@@ -949,92 +944,16 @@ const proofMetrics = [
     </div>
   </section>
 
-  {/* —— Proof
-  <section class="bg-surface py-section">
-    <div class="container-content flex flex-col gap-6">
-      <header class="max-w-3xl">
-        <p
-          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-600 uppercase"
-        >
-          Measured impact
-        </p>
-        <h2
-          class="font-display text-ink-950 mt-4 text-3xl leading-tight font-bold tracking-[-0.025em] sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
-        >
-          Less admin. More time for strategy.
-        </h2>
-        <p class="text-ink-600 mt-4 text-lg leading-7">
-          Real efficiency unlocks measurable capacity for strategic client
-          advisory.
-        </p>
-      </header>
-
-      <div class="gap-card-gap grid pt-10 pb-10 md:grid-cols-2 lg:grid-cols-3">
-        {
-          proofMetrics.map((metric) => (
-            <div class="border-border-default rounded-design-lg bg-surface-page flex flex-col items-center gap-2 border px-8 py-8 text-center">
-              <p
-                class={`font-display text-[60px] leading-[60px] font-bold tracking-[-1.5px] tabular-nums ${metric.valueClass}`}
-              >
-                {metric.value}
-              </p>
-              <p class="text-ink-900 text-base leading-6 font-bold">
-                {metric.label}
-              </p>
-              <p class="text-ink-500 text-xs leading-4">{metric.detail}</p>
-            </div>
-          ))
-        }
-      </div>
-
-      <blockquote
-        class="bg-ink-950 rounded-design-lg relative overflow-hidden p-10 sm:p-14"
-      >
-        <div
-          class="pointer-events-none absolute -right-8 -bottom-40 size-64 rounded-full bg-teal-500/10 blur-[32px]"
-          aria-hidden="true"
-        >
-        </div>
-        <img
-          src={IconQuote}
-          alt=""
-          class="relative mb-5 size-10"
-          aria-hidden="true"
-        />
-        <p
-          class="font-display text-ink-100 relative text-xl leading-8 tracking-[-0.6px] sm:text-2xl sm:leading-8"
-        >
-          “Triffecta gave our team the control to bring retail media in-house
-          without recreating the complexity we were trying to leave behind.”
-        </p>
-        <footer class="relative mt-7 flex items-center gap-4">
-          <div
-            class="text-ink-900 flex size-12 items-center justify-center rounded-full text-base font-bold"
-            style="background: linear-gradient(45deg, #f59e0b, #2dd4bf);"
-            aria-hidden="true"
-          >
-            MC
-          </div>
-          <div>
-            <cite class="text-base leading-6 font-bold text-white not-italic"
-              >Maya Chen</cite
-            >
-            <p class="text-xs leading-4 text-teal-500">
-              Head of Retail Media · Northstar Commerce
-            </p>
-          </div>
-        </footer>
-      </blockquote>
-      <p
-        class="text-ink-400 text-center font-mono text-[11px] leading-[16.5px] tracking-[0.275px]"
-      >
-        * Representative metrics and practitioner testimonials simulated for
-        platform demonstration.
-      </p>
-    </div>
-  </section>
-
-  —— */}
+  {
+    /* —— Proof / Measured Impact ——
+       INTENTIONAL IMPLEMENTATION OVERRIDE: section intentionally hidden
+       until real customer quotes and metrics are available. Markup retained
+       below (commented) for restore; do not re-enable from Figma alone.
+  {false && (
+  <section class="bg-surface py-section">…Proof metrics + testimonial…</section>
+  )}
+  —— */
+  }
 
   {/* —— Perspectives & Research —— */}
   <section class="border-border-default/80 bg-surface-page py-section border-t">
@@ -1090,26 +1009,38 @@ const proofMetrics = [
       class="relative mx-auto flex max-w-4xl flex-col items-center gap-6 text-center"
     >
       <div
-        class="rounded-design-lg flex size-24 items-center justify-center p-0.5 shadow-[0_10px_15px_-3px_rgba(20,184,166,0.2)]"
-        style="background: linear-gradient(135deg, #f59e0b, #0d9488);"
+        class="rounded-design-lg flex size-24 items-center justify-center border-2 border-transparent shadow-[0_10px_15px_-3px_rgba(20,184,166,0.2)]"
+        style="background: linear-gradient(var(--color-ink-900), var(--color-ink-900)) padding-box, linear-gradient(135deg, #f59e0b, #0d9488) border-box;"
         aria-hidden="true"
       >
-        <div
-          class="bg-ink-900 flex size-full items-center justify-center rounded-[20px]"
+        {/* Triangle + T as one SVG so the letter sits in the mark */}
+        <svg
+          width="76"
+          height="76"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="block"
         >
-          <div class="relative flex h-[52px] w-[48px] items-center justify-center">
-            <div class="pointer-events-none absolute top-[-2px] left-[-14px]">
-              <IconTriffecta
-                size="52px"
-                strokeColor="var(--color-amber-500)"
-              />
-            </div>
-            <span
-              class="font-sans relative text-[28px] leading-none font-medium tracking-tight text-white"
-              >T</span
-            >
-          </div>
-        </div>
+          <polygon
+            points="28 50 5 8 51 8"
+            stroke="var(--color-amber-500)"
+            stroke-width="3.25"
+            stroke-linejoin="round"
+          ></polygon>
+          {/* T stays upright; centered in the flipped triangle body */}
+          <text
+            x="28"
+            y="24"
+            text-anchor="middle"
+            dominant-baseline="central"
+            fill="white"
+            font-size="26"
+            font-weight="500"
+            font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+            >T</text
+          >
+        </svg>
       </div>
       <h2
         class="font-display pt-2 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[60px] sm:tracking-[-1.5px] lg:text-[60px]"

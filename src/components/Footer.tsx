@@ -32,7 +32,7 @@ export default function Footer({
   researchLinks = [],
 }: FooterProps) {
   return (
-    <footer class="border-ink-200 bg-surface border-t pt-16 pb-12">
+    <footer class="border-ink-200 bg-surface border-t pt-20 pb-12">
       <div class="container-content flex flex-col">
         {/* Brand + link columns */}
         <div class="border-ink-100 grid grid-cols-1 gap-12 border-b pb-16 md:grid-cols-12 md:gap-12">
@@ -44,7 +44,7 @@ export default function Footer({
             >
               <LogoTriffecta size={2} strokeColor="var(--color-amber-500)" />
             </a>
-            <p class="text-ink-500 mt-4 max-w-sm text-sm leading-[22.75px]">
+            <p class="text-ink-500 mt-5 max-w-sm text-sm leading-[22.75px]">
               The single operating layer for retail media execution,
               cross-network synchronization and normalized analytics.
             </p>
