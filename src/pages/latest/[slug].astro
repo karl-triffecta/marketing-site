@@ -23,8 +23,21 @@ if (!post) throw new Error(`Post not found: ${slug}`);
 
 const { Content } = await post.render();
 
+const sourceImage = post.data.image || ImgHeroTop;
+
+// Social/OG: JPEG ≤1200×630 so WhatsApp can unfurl (no WebP; keep under ~600KB)
+const socialImg = await getImage({
+  src: sourceImage,
+  format: "jpg",
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  quality: 80,
+});
+
+// On-page hero: optimised WebP
 const optimizedImgBanner = await getImage({
-  src: post.data.image || ImgHeroTop,
+  src: sourceImage,
   format: "webp",
 });
 
@@ -34,7 +47,10 @@ const seo = {
   path: `/latest/${slug}/`,
   altText: post.data.alt,
   keywords: post.data.tags,
-  image: optimizedImgBanner.src,
+  image: socialImg.src,
+  imageWidth: socialImg.attributes.width ?? 1200,
+  imageHeight: socialImg.attributes.height ?? 630,
+  imageType: "jpeg",
   author: post.data.author?.name || "Triffecta Team",
   publishedTime: post.data.date,
   articleTags: post.data.tags?.split(" ") || [],
@@ -42,10 +58,10 @@ const seo = {
 };
 ---
 
-<Fragment slot="head">
-  <link rel="preload" href={optimizedImgBanner.src} as="image" />
-</Fragment>
 <Layout seo={seo}>
+  <Fragment slot="head">
+    <link rel="preload" href={optimizedImgBanner.src} as="image" />
+  </Fragment>
   <section class="bg-secondary relative overflow-hidden py-18 text-white">
     <div class="relative z-10 container mx-auto">
       <div class="relative z-20">

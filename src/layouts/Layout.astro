@@ -35,7 +35,15 @@ function absoluteUrl(path: string) {
   return `${domain}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+function ogImageMimeType(format: string) {
+  if (format === "jpg" || format === "jpeg") return "image/jpeg";
+  if (format === "svg") return "image/svg+xml";
+  if (format.startsWith("image/")) return format;
+  return `image/${format}`;
+}
+
 const imagePath = seo.image || ImgOgDefault.src;
+const imageFormat = seo.imageType || ImgOgDefault.format || "png";
 const page = {
   canonicalUrl: absoluteUrl(seo.path || Astro.url.pathname),
   name: seo.name || "Triffecta",
@@ -51,6 +59,9 @@ const page = {
     seo.keywords ||
     "retail media platform, AI-powered advertising, campaign automation, media buying, multi-retailer campaigns, retail ad tech, ecommerce marketing, Triffecta",
   image: absoluteUrl(imagePath),
+  imageType: ogImageMimeType(imageFormat),
+  imageWidth: seo.imageWidth || ImgOgDefault.width || 1200,
+  imageHeight: seo.imageHeight || ImgOgDefault.height || 630,
   author: seo.author || "",
   publishedTime: seo.publishedTime
     ? `${seo.publishedTime}T09:00:00Z`
@@ -107,9 +118,9 @@ const page = {
         image: {
           url: page.image,
           alt: page.altText,
-          type: "image/png",
-          width: 1200,
-          height: 630,
+          type: page.imageType,
+          width: page.imageWidth,
+          height: page.imageHeight,
         },
         ...(page.type === "article" && {
           article: {
