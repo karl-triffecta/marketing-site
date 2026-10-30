@@ -97,7 +97,9 @@ const dateLabel =
         class="text-ink-400 flex items-center justify-between gap-3 text-xs leading-4 font-medium"
       >
         <span
-          >{post.data.author?.name ? `${post.data.author.name}` : "Insight"}</span
+          >{
+            post.data.author?.name ? `${post.data.author.name}` : "Insight"
+          }</span
         >
         <time class="shrink-0" datetime={post.data.date}>{dateLabel}</time>
       </p>

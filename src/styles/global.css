@@ -173,21 +173,32 @@
   will-change: transform;
 }
 
-/* Homepage hero — soft CSS placeholder below 1100px; illustration at desktop */
+/*
+  Homepage hero background:
+  - <1100px: soft vertical fade (cool blue → bright) behind transparent banner
+  - ≥1100px: desktop illustration with left→right soft mask
+*/
 .hero-background {
-  background-color: #f7fcfb;
+  background-color: var(--color-surface-page);
   background-image:
     radial-gradient(
-      ellipse at 28% 30%,
-      rgba(255, 232, 175, 0.55) 0%,
-      transparent 48%
+      ellipse at 18% 12%,
+      rgba(255, 232, 175, 0.35) 0%,
+      transparent 45%
     ),
     radial-gradient(
-      ellipse at 5% 95%,
-      rgba(180, 239, 250, 0.75) 0%,
-      transparent 65%
+      ellipse at 85% 8%,
+      rgba(125, 211, 252, 0.35) 0%,
+      transparent 50%
     ),
-    linear-gradient(115deg, #fffdfa 0%, #f7fcfb 55%, #eafafd 100%);
+    linear-gradient(
+      180deg,
+      #c5e4ef 0%,
+      #d9eef5 28%,
+      #eaf6fa 55%,
+      #f4fafc 78%,
+      var(--color-surface-page) 100%
+    );
   background-repeat: no-repeat;
 }
 
