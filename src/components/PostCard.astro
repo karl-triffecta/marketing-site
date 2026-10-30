@@ -33,6 +33,32 @@ const accentClass =
     : accent === "emerald"
       ? "text-emerald-400"
       : "text-teal-500";
+
+function ordinalSuffix(day: number) {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+const postDate = new Date(post.data.date);
+const day = postDate.getUTCDate();
+const year = postDate.getUTCFullYear();
+const monthShort = postDate.toLocaleString("en-GB", {
+  month: "short",
+  timeZone: "UTC",
+});
+const dateLabel =
+  year === new Date().getFullYear()
+    ? `${day}${ordinalSuffix(day)} ${monthShort}`
+    : `${day}${ordinalSuffix(day)} ${monthShort} ${year}`;
 ---
 
 <a
@@ -67,8 +93,13 @@ const accentClass =
   </div>
   <div class="flex flex-1 flex-col justify-between p-6">
     <div class="flex flex-col gap-2.5">
-      <p class="text-ink-400 text-xs leading-4 font-medium">
-        {post.data.author?.name ? `${post.data.author.name}` : "Insight"}
+      <p
+        class="text-ink-400 flex items-center justify-between gap-3 text-xs leading-4 font-medium"
+      >
+        <span
+          >{post.data.author?.name ? `${post.data.author.name}` : "Insight"}</span
+        >
+        <time class="shrink-0" datetime={post.data.date}>{dateLabel}</time>
       </p>
       <h3
         class="font-display text-ink-900 text-xl leading-[27.5px] font-bold tracking-[-0.5px]"
