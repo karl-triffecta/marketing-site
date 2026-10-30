@@ -7,11 +7,25 @@ import ImgTeamMarkWebp from "../assets/team/mark.webp";
 import ImgTeamLesleyJpg from "../assets/team/lesley.jpg";
 import ImgTeamLesleyAvif from "../assets/team/lesley.avif";
 import ImgTeamLesleyWebp from "../assets/team/lesley.webp";
-import IconLinkedIn from "./icon/IconLinkedIn";
 import IconIncognito from "./icon/IconIncognito";
+import IconLinkedIn from "./icon/IconLinkedIn";
 import FadeIn from "./FadeIn";
 
-const team = [
+type TeamImage = {
+  jpg: string;
+  avif: string;
+  webp: string;
+};
+
+type TeamMember = {
+  name: string;
+  title: string;
+  description: string;
+  image?: TeamImage;
+  link?: string;
+};
+
+const team: TeamMember[] = [
   {
     image: {
       jpg: ImgTeamKenJpg.src,
@@ -60,85 +74,88 @@ const team = [
     description:
       "15+ years of web dev & engineering across eCommerce & ad tech",
   },
-  /*
-  {
-    name: "Incognito",
-    title: "",
-    description: "",
-  },
-  */
 ];
 
 export default function TeamMembers() {
   return (
-    <section class="container mx-auto my-15">
-      <div class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8">
-        {team.map((member, index) => {
-          return (
-            <div
-              key={index}
-              class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6"
-            >
-              <FadeIn delay={300 * index} duration={3000}>
-                <div class="relative">
-                  <div class="relative rounded-2xl bg-white">
-                    <div class="relative flex h-84 items-center justify-center md:h-74">
-                      {member.image ? (
-                        <picture>
-                          <source
-                            srcSet={`${member.image.avif}`}
-                            type="image/avif"
-                          />
-                          <source
-                            srcSet={`${member.image.webp}`}
-                            type="image/webp"
-                          />
-                          <img
-                            src={`${member.image.jpg}`}
-                            alt={`A picture of ${member.name}`}
-                            width={600}
-                            height={600}
-                            loading="lazy"
-                            decoding="async"
-                            className="absolute top-0 left-0 z-0 h-full w-full rounded-2xl object-cover object-top"
-                            style={{
-                              filter:
-                                "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
-                            }}
-                          />
-                        </picture>
-                      ) : (
-                        <div class="relative top-[-1%]">
-                          <IconIncognito
-                            size="200px"
-                            stroke="var(--color-primary-dark)"
-                          />
-                        </div>
-                      )}
+    <section class="page-shell relative overflow-hidden py-section">
+      <div class="container-content">
+        <div class="gap-card-gap grid sm:grid-cols-2 lg:grid-cols-3">
+          {team.map((member, index) => (
+            <FadeIn key={index} delay={300 * index} duration={3000}>
+              <article class="border-border-default bg-surface group flex h-full flex-col overflow-hidden rounded-design-lg border shadow-card transition hover:border-ink-300">
+                <div class="bg-ink-100 relative aspect-square w-full overflow-hidden">
+                  {member.image ? (
+                    <picture>
+                      <source
+                        srcSet={member.image.avif}
+                        type="image/avif"
+                      />
+                      <source
+                        srcSet={member.image.webp}
+                        type="image/webp"
+                      />
+                      <img
+                        src={member.image.jpg}
+                        alt={`A picture of ${member.name}`}
+                        width={600}
+                        height={600}
+                        loading="lazy"
+                        decoding="async"
+                        class="absolute inset-0 h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.02]"
+                        style={{
+                          filter:
+                            "sepia(0.7) hue-rotate(-10deg) saturate(0.8) brightness(1)",
+                        }}
+                      />
+                    </picture>
+                  ) : (
+                    <div class="bg-ink-100 flex h-full w-full items-center justify-center">
+                      <IconIncognito
+                        size="160px"
+                        stroke="var(--color-primary-dark)"
+                      />
                     </div>
-                  </div>
-                  <div class="mt-4 flex items-center justify-between">
-                    <div>
-                      <h2 class="text-xl font-bold">{member.name}</h2>
-                      <h3 class="text-l text-text-light font-bold">
-                        {member.title}
-                      </h3>
-                    </div>
-                    {member.link && (
-                      <a href={member.link} target="_blank" class="">
-                        <IconLinkedIn size="30px" />
-                      </a>
-                    )}
+                  )}
+                </div>
+
+                <div class="flex flex-1 flex-col justify-between p-6">
+                  <div class="flex flex-col gap-2.5">
+                    <h2 class="font-display text-ink-900 text-xl leading-[27.5px] font-bold tracking-[-0.5px]">
+                      {member.name}
+                    </h2>
+                    <p class="text-ink-400 text-xs leading-4 font-medium">
+                      {member.title}
+                    </p>
+                    <p class="text-ink-600 text-sm leading-[22.75px]">
+                      {member.description}
+                    </p>
                   </div>
 
-                  <p class="text-text-light mt-2 text-lg">
-                    {member.description}
-                  </p>
+                  {member.link && (
+                    <a
+                      href={member.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="border-ink-100 text-ink-900 focus-visible:outline-focus-ring mt-6 flex items-center justify-between border-t pt-4 text-xs leading-4 font-semibold transition hover:text-ink-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                      <span class="inline-flex items-center gap-2">
+                        <IconLinkedIn size="16px" />
+                        View LinkedIn
+                      </span>
+                      <span
+                        class="text-ink-400 transition group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      >
+                        →
+                      </span>
+                    </a>
+                  )}
                 </div>
-              </FadeIn>
-            </div>
-          );
-        })}
+              </article>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );

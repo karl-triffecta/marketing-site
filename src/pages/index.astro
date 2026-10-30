@@ -246,25 +246,27 @@ const differentiationItems = [
         </p>
       </div>
       <div
-        class="flex flex-wrap items-center justify-start gap-8 opacity-80 grayscale lg:justify-center lg:gap-[62px]"
+        class="flex flex-col items-center gap-6 opacity-80 grayscale lg:flex-row lg:justify-center lg:gap-[62px]"
         aria-label="Trusted organisations"
       >
-        <img
-          src={IconTrustVml}
-          alt="VML"
-          class="h-9 w-auto max-w-[125px] object-contain"
-          width="125"
-          height="36"
-          loading="lazy"
-        />
-        <img
-          src={IconTrustWppMedia}
-          alt="WPP Media"
-          class="h-8 w-auto max-w-[180px] object-contain sm:h-10 sm:max-w-[230px]"
-          width="230"
-          height="40"
-          loading="lazy"
-        />
+        <div class="flex items-center justify-center gap-8 lg:gap-[62px]">
+          <img
+            src={IconTrustVml}
+            alt="VML"
+            class="h-9 w-auto max-w-[125px] object-contain"
+            width="125"
+            height="36"
+            loading="lazy"
+          />
+          <img
+            src={IconTrustWppMedia}
+            alt="WPP Media"
+            class="h-8 w-auto max-w-[180px] object-contain sm:h-10 sm:max-w-[230px]"
+            width="230"
+            height="40"
+            loading="lazy"
+          />
+        </div>
         <img
           src={IconTrustPublicis}
           alt="Publicis Groupe"
@@ -275,7 +277,7 @@ const differentiationItems = [
         />
       </div>
       <div
-        class="border-border-default bg-surface rounded-pill shadow-card inline-flex shrink-0 items-center border px-4 py-2"
+        class="border-border-default bg-surface rounded-pill shadow-card inline-flex shrink-0 items-center self-center border px-4 py-2"
       >
         <span class="text-ink-400 text-xs leading-4 font-medium">Backed by</span
         >

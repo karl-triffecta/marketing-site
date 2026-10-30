@@ -92,8 +92,8 @@ export default function Footer({
 
         {/* Newsletter */}
         {showNewsletter && (
-          <div class="border-ink-100 flex flex-col gap-8 border-b py-12 lg:flex-row lg:items-center lg:justify-between">
-            <div class="max-w-md">
+          <div class="border-ink-100 flex flex-col items-center gap-8 border-b py-12 lg:flex-row lg:items-center lg:justify-between">
+            <div class="mx-auto max-w-md text-center lg:mx-0 lg:text-left">
               <h2 class="font-display text-ink-900 text-2xl leading-8 font-bold tracking-[-0.6px]">
                 You'll Want to Say You Were Here First
               </h2>
@@ -102,7 +102,7 @@ export default function Footer({
                 changes, and strategic playbooks.
               </p>
             </div>
-            <div class="w-full max-w-md">
+            <div class="mx-auto w-full max-w-md lg:mx-0">
               <FormSubscribeNewsletter layout="footer" />
             </div>
           </div>
