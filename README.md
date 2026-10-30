@@ -64,10 +64,9 @@ npm install
 npm run dev
 ```
 
-Access on http://localhost:4321/marketing-site/ until moved to domain
-After domain is setup, reset base
+Access on http://localhost:4321/
 
-Production accessible on: https://karl-triffecta.github.io/marketing-site/
+Production: https://triffecta.com/
 
 ### Build site for release
 

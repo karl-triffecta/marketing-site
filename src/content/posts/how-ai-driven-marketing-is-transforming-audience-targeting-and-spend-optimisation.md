@@ -4,7 +4,7 @@ date: "2025-10-07"
 image: ./images/20251007-store-shelves.jpg
 alt: "Grocery Store Shelves"
 description: "Discover how Triffecta’s AI-powered AdTech platform helps FMCG brands target, optimise, and personalise campaigns across channels—efficiently and at scale."
-tags: "#RetailMedia #AI #AdTech #FMCG #Triffecta"
+tags: "#AI #RetailMedia #AdTech #FMCG #Triffecta"
 author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 ---
 

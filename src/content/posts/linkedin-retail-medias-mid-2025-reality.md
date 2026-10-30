@@ -8,5 +8,5 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 external: true
 href: "https://www.linkedin.com/feed/update/urn:li:activity:7349337971499708417/"
 platform: "linkedin"
-tags: "#triffecta #adtech #fmcg #cpg #retailmedia #shoppermarketing"
+tags: "#RetailMedia #Triffecta #AdTech #FMCG #CPG #ShopperMarketing"
 ---

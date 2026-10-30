@@ -6,7 +6,8 @@ export default function IconLinkedIn({ size = "25px" }) {
       height={size}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      class="text-text-light hover:text-primary-dark transition"
+      class="transition"
+      aria-hidden="true"
     >
       <path
         fill="currentColor"

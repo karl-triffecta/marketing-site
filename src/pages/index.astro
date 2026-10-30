@@ -1,249 +1,1079 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import FormCalendlyDemo from "../components/FormCalendlyDemo.astro";
-
-import FadeIn from "../components/FadeIn.tsx";
-import FeatureScroller from "../components/FeatureScroller.tsx";
-import IconTriffecta from "../components/icon/IconTriffecta.tsx";
-import LinkButtonRequestDemo from "../components/LinkButtonRequestDemo.tsx";
-
-import PostList from "../components/PostList.astro";
-
+import TriffectaButton from "../components/TriffectaButton.tsx";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 import { getImage, Picture } from "astro:assets";
-import ImgHeroTop from "../assets/hero-top.png";
-const optimizedImgHeroTop = await getImage({
-  src: ImgHeroTop,
-  format: "webp",
-});
-import ImgHeroBottom from "../assets/hero-bottom.png";
-import ImgMacbook from "../assets/mackbook.png";
 
-import HeroBackgroundVideo from "../components/HeroBackgroundVideo.tsx";
-import heroWebm from "../assets/hero-bg.webm";
-import heroMp4 from "../assets/hero-bg.mp4";
+import ImgHeroIllustration from "../assets/hero/illustration.png";
+import ImgPlatformDashboard from "../assets/platform/dashboard.png";
+import IconTrustVml from "../assets/trust/vml.svg?url";
+import IconTrustWppMedia from "../assets/trust/wpp-media.svg?url";
+import IconTrustPublicis from "../assets/trust/publicis.svg?url";
+import IconTrustHaatch from "../assets/trust/haatch.svg?url";
+import ImgLogoCriteo from "../assets/integrations/criteo.png";
+import ImgLogoCitrusAd from "../assets/integrations/citrusad.png";
+import ImgLogoAmazonAds from "../assets/integrations/amazon-ads.png";
+import ImgLogoKevel from "../assets/integrations/kevel.png";
+
+import IconProblemCost from "../assets/icons/problem-cost.svg?url";
+import IconPillarExecution from "../assets/icons/pillar-execution.svg?url";
+import IconPillarAnalytics from "../assets/icons/pillar-analytics.svg?url";
+import IconPillarAutomation from "../assets/icons/pillar-automation.svg?url";
+import IconDiffCreate from "../assets/icons/diff-create.svg?url";
+import IconDiffStandardize from "../assets/icons/diff-standardize.svg?url";
+import IconDiffControl from "../assets/icons/diff-control.svg?url";
+import IconJourneyAutomation from "../assets/icons/journey-automation.svg?url";
+import IconCommercialCampaigns from "../assets/icons/commercial-campaigns.svg?url";
+import IconCommercialRetailers from "../assets/icons/commercial-retailers.svg?url";
+import IconCommercialGrowth from "../assets/icons/commercial-growth.svg?url";
+import IconCheck from "../assets/icons/check.svg?url";
+
+const optimizedHeroIllustration = await getImage({
+  src: ImgHeroIllustration,
+  format: "webp",
+  width: 1672,
+});
 
 const seo = {
   title: "Triffecta | Revolutionizing Retail Media at Scale",
   titleTemplate: "%s",
 };
+
+const posts = await getCollection("posts");
+posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const latestPosts = posts.slice(0, 3);
+const postAccents = ["amber", "teal", "emerald"] as const;
+
+const problemCards = [
+  {
+    label: "SETUP FRICTION",
+    labelClass: "text-amber-600",
+    blobClass: "bg-[#fffbeb]",
+    title: "Repeated Campaign Setup",
+    body: "Rebuilding the same campaign across every retailer / retail media network is a huge drain on time and resources. Every launch means repeating the same work, slowing your team down and creating room for error.",
+    cost: "More setup. Less leverage.",
+  },
+  {
+    label: "KPI MISMATCH",
+    labelClass: "text-teal-700",
+    blobClass: "bg-[#f0fdfa]",
+    title: "Fragmented Reporting",
+    body: "Different dashboards and definitions make cross-retailer performance harder to compare.",
+    cost: "Disconnected metrics. Slower decisions.",
+  },
+  {
+    label: "INERTIA",
+    labelClass: "text-ink-500",
+    blobClass: "bg-ink-100",
+    title: "Complexity at scale",
+    body: "Multiple reporting spreadsheets take time to build, reconcile and review. The more networks you add, the more resource is tied up in reporting rather than acting.",
+    cost: "Growth shouldn’t mean more admin.",
+  },
+];
+
+const journeyStations = [
+  {
+    num: "01",
+    numClass: "border-amber-500/50 text-amber-400",
+    title: "Create once",
+    body: "Set products, target keywords, wallet budgets, and campaign parameters in one unified creation workflow.",
+    bulletClass: "text-amber-400",
+    bullets: [
+      "Multi-product portfolio selector",
+      "Unified budget & wallet caps",
+      "Centralized keyword libraries",
+    ],
+  },
+  {
+    num: "02",
+    numClass: "border-emerald-500/50 text-emerald-500",
+    title: "Activate across networks",
+    body: "Duplicate and deploy campaigns across the connected networks you select, without rebuilding the same setup in each retailer portal.",
+    bulletClass: "text-emerald-500",
+    bullets: [
+      "Direct API execution to networks",
+      "Automatic format mapping",
+      "Zero redundant login overhead",
+    ],
+  },
+  {
+    num: "03",
+    numClass: "border-teal-500/50 text-teal-500",
+    title: "Understand performance together",
+    body: "Every retailer reports differently and every retail media network provides fragmented data in its own format. Triffecta brings it together and aligns it, so you can create reports once and review performance by retailer, category or SKU.",
+    bulletClass: "text-teal-500",
+    bullets: [
+      "Cross-retailer metric alignment",
+      "True attribution normalization",
+      "Consolidated executive exports",
+    ],
+  },
+];
+
+const platformPillars = [
+  {
+    title: "Campaign Execution",
+    body: "Create, schedule and pace sponsored brand and sponsored product campaigns in one universal interface.",
+    icon: IconPillarExecution,
+    iconWrap: "border-teal-500/40 bg-[rgba(19,78,74,0.5)]",
+  },
+  {
+    title: "Cross-Retailer Analytics",
+    body: "Compare performance across connected retailers side-by-side with true attribution and currency alignment.",
+    icon: IconPillarAnalytics,
+    iconWrap: "border-amber-500/40 bg-[rgba(120,53,15,0.5)]",
+  },
+  {
+    title: "Controlled Automation",
+    body: "Eliminate repetitive keyword generation and budget pacing while human agency experts keep ultimate strategic control.",
+    icon: IconPillarAutomation,
+    iconWrap: "border-emerald-500/40 bg-[rgba(6,78,59,0.5)]",
+  },
+];
+
+const integrations = [
+  {
+    name: "Criteo Retail Media",
+    body: "Full support for sponsored product activations, dynamic catalog syndication, and European retailer network sync.",
+    logo: ImgLogoCriteo,
+  },
+  {
+    name: "CitrusAd",
+    body: "Native execution for tier-1 grocery, supermarket and FMCG networks across the UK, Europe and North America.",
+    logo: ImgLogoCitrusAd,
+  },
+  {
+    name: "Amazon Ads",
+    body: "Sponsored Products and Sponsored Brands automation. Sync campaign structures, budgets and positive/negative keywords.",
+    logo: ImgLogoAmazonAds,
+  },
+  {
+    name: "Kevel",
+    body: "Retail media ad serving and campaign automation. Sync campaign structures, budgets, targeting rules and sponsored ad placements.",
+    logo: ImgLogoKevel,
+  },
+];
+
+const differentiationItems = [
+  {
+    title: "Create once, activate across networks",
+    body: "Move from retailer-by-retailer setup to one streamlined campaign workflow that reaches your connected networks from a single starting point.",
+    icon: IconDiffCreate,
+    iconBg: "bg-[#fffbeb]",
+  },
+  {
+    title: "Standardize the view",
+    body: "Normalize conflicting retailer metrics into an apples-to-apples reporting layer. Give clients transparent cross-network clarity without spreadsheet gymnastics.",
+    icon: IconDiffStandardize,
+    iconBg: "bg-[#f0fdfa]",
+  },
+  {
+    title: "Stay in control",
+    body: "Use automation to remove repetitive work while keeping strategy and decisions with your team.",
+    icon: IconDiffControl,
+    iconBg: "bg-[#ecfdf5]",
+  },
+];
 ---
 
-<Fragment slot="head">
-  <link rel="preload" href={optimizedImgHeroTop.src} as="image" />
-</Fragment>
 <Layout seo={seo}>
-  <section class="bg-secondary relative overflow-hidden py-18 text-white">
-    <div class="relative z-10 container mx-auto">
-      <FadeIn client:load delay={300} duration={3000}>
-        <div class="relative z-20">
-          <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
-            <h1
-              class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
-            >
-              Revolutionising Retail Media
-            </h1>
-            <p
-              class="text-accent-dark mt-4 inline-block text-4xl font-bold sm:text-5xl"
-            >
-              Simplified, Scalable, Smarter
-            </p>
-          </div>
-
-          <div
-            class="mt-6 mb-6 inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4"
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      href={optimizedHeroIllustration.src}
+      as="image"
+      type="image/webp"
+      media="(min-width: 1100px)"
+    />
+  </Fragment>
+  {/* —— Hero —— */}
+  <section class="bg-surface-page relative overflow-hidden">
+    <div
+      class="hero-background container-content relative grid min-h-[420px] items-center py-16 lg:min-h-[548px] lg:py-[85px]"
+      style={`--hero-illustration: url(${optimizedHeroIllustration.src});`}
+    >
+      <div
+        class="relative z-10 mx-auto max-w-xl text-center lg:mx-0 lg:max-w-[605px] lg:text-left"
+      >
+        <h1
+          class="font-display text-ink-950 text-4xl leading-tight font-bold tracking-[-0.04em] sm:text-5xl lg:text-[68px] lg:leading-[68px] lg:tracking-[-1.7px]"
+        >
+          The simpler way{" "}
+          <span
+            class="bg-gradient-to-r from-amber-600 via-teal-700 to-[#115e59] bg-clip-text text-transparent"
           >
-            <p class="text-lg">
-              Unlock the full potential of retail media with the only aggregator
-              designed specifically for retailers.
-            </p>
-          </div>
+            to run Retail Media.
+          </span>
+        </h1>
+        <p
+          class="text-ink-600 mt-6 max-w-xl text-lg leading-8 sm:text-2xl sm:leading-8"
+        >
+          More retailers. More campaigns. Shouldn’t mean more admin. Triffecta
+          brings campaigns and performance together, so retail media teams can
+          move faster and stay in control
+        </p>
+        <div class="mt-9">
+          <TriffectaButton
+            href="/lets-talk"
+            variant="dark"
+            className="!rounded-design-md !px-7 !py-3.5 !text-base !leading-6"
+          >
+            Let's talk retail media →
+          </TriffectaButton>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="block">
-            <LinkButtonRequestDemo withRetailMedia={true} />
+  {/* —— Trust —— */}
+  <section
+    class="border-border-default/80 bg-surface-page/50 border-y py-10 lg:py-12"
+  >
+    <div
+      class="container-content flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between"
+    >
+      <div class="mx-auto max-w-xs shrink-0 text-center lg:mx-0 lg:text-left">
+        <p
+          class="font-display text-ink-500 text-xs leading-4 font-bold tracking-[0.6px] uppercase"
+        >
+          Built for teams managing retail media at scale
+        </p>
+        <p class="text-ink-500 mt-1 text-xs leading-4 italic">
+          Trusted by performance agencies &amp; high-volume brand networks
+        </p>
+      </div>
+      <div
+        class="flex flex-col items-center gap-6 opacity-80 grayscale lg:flex-row lg:justify-center lg:gap-[62px]"
+        aria-label="Trusted organisations"
+      >
+        <div class="flex items-center justify-center gap-8 lg:gap-[62px]">
+          <img
+            src={IconTrustVml}
+            alt="VML"
+            class="h-9 w-auto max-w-[125px] object-contain"
+            width="125"
+            height="36"
+            loading="lazy"
+          />
+          <img
+            src={IconTrustWppMedia}
+            alt="WPP Media"
+            class="h-8 w-auto max-w-[180px] object-contain sm:h-10 sm:max-w-[230px]"
+            width="230"
+            height="40"
+            loading="lazy"
+          />
+        </div>
+        <img
+          src={IconTrustPublicis}
+          alt="Publicis Groupe"
+          class="h-14 w-auto max-w-[90px] object-contain"
+          width="90"
+          height="79"
+          loading="lazy"
+        />
+      </div>
+      <div
+        class="border-border-default bg-surface rounded-pill shadow-card inline-flex shrink-0 items-center self-center border px-4 py-2"
+      >
+        <span class="text-ink-400 text-xs leading-4 font-medium">Backed by</span
+        >
+        <img
+          src={IconTrustHaatch}
+          alt="Haatch"
+          class="ml-2 h-6 w-auto max-w-[80px] object-contain grayscale"
+          width="80"
+          height="24"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* —— Problem —— */}
+  <section class="bg-surface-page py-section">
+    <div class="container-content gap-section-stack flex flex-col">
+      <header
+        class="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-[70%] lg:text-left"
+      >
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-600 uppercase"
+        >
+          The cost of fragmentation
+        </p>
+        <h2
+          class="font-display text-ink-900 mt-3.5 text-3xl leading-tight font-bold tracking-[-0.025em] sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          More networks shouldn’t mean more resources.
+        </h2>
+        <p class="text-ink-600 mt-5 text-lg leading-[29.25px]">
+          Every new retail media network can introduce another setup flow,
+          reporting view, ROAS definition and way of working. The result is a
+          growing operational burden at exactly the point your team needs more
+          pace, clarity and control.
+        </p>
+      </header>
+      <div class="gap-card-gap grid md:grid-cols-2 lg:grid-cols-3">
+        {
+          problemCards.map((card) => (
+            <article class="border-border-default bg-surface rounded-design-lg shadow-card relative flex flex-col justify-between overflow-hidden border p-8">
+              <div
+                class={`pointer-events-none absolute top-0 right-0 size-24 rounded-bl-full opacity-60 ${card.blobClass}`}
+                aria-hidden="true"
+              />
+              <div class="relative">
+                <p
+                  class={`font-display text-xs leading-4 font-bold tracking-[0.6px] uppercase ${card.labelClass}`}
+                >
+                  {card.label}
+                </p>
+                <h3 class="font-display text-ink-900 mt-3 text-xl leading-7 font-bold tracking-[-0.5px]">
+                  {card.title}
+                </h3>
+                <p class="text-ink-600 mt-3 text-sm leading-[22.75px]">
+                  {card.body}
+                </p>
+              </div>
+              <div class="border-ink-100 relative mt-8 border-t pt-6">
+                <div class="flex items-center gap-2">
+                  <img
+                    src={IconProblemCost}
+                    alt=""
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <p class="text-xs leading-4 font-medium text-rose-600">
+                    {card.cost}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* —— Journey —— */}
+  <section class="bg-ink-900 py-section relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      aria-hidden="true"
+      style="background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1.7857%, rgba(255,255,255,0) 1.7857%),
+        linear-gradient(180deg, rgba(255,255,255,0.04) 1.7857%, rgba(255,255,255,0) 1.7857%);
+        background-size: 56px 56px;"
+    >
+    </div>
+    <div class="container-content gap-section-stack relative flex flex-col">
+      <header
+        class="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-[70%] lg:text-left"
+      >
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-500 uppercase"
+        >
+          Operating model
+        </p>
+        <h2
+          class="font-display mt-6 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          One campaign.<br />
+          <span
+            class="bg-gradient-to-r from-amber-500 via-emerald-500 to-teal-600 bg-clip-text text-transparent"
+          >
+            Connected execution.
+          </span>
+        </h2>
+        <p class="text-ink-300 mt-6 text-xl leading-7">
+          Build campaigns once, activate them across connected retail media
+          networks, and bring performance back to one consistent view.
+        </p>
+      </header>
+
+      <div class="relative grid gap-8 pt-4 lg:grid-cols-3 lg:gap-12">
+        {/* Connector through left-aligned number-badge centres (desktop) */}
+        <div
+          class="pointer-events-none absolute top-[4.5rem] right-[calc((100%-6rem)/3-3.5rem)] left-[3.5rem] z-0 hidden h-0.5 bg-gradient-to-r from-amber-500 via-emerald-500 to-teal-600 lg:block"
+          aria-hidden="true"
+        >
+        </div>
+        {
+          journeyStations.map((station) => (
+            <article class="rounded-design-md border-ink-800 bg-ink-950/80 relative z-10 flex flex-col justify-between border p-8">
+              <div>
+                <div
+                  class={`rounded-design-md bg-ink-900 mb-4 flex size-12 items-center justify-center border font-mono text-lg leading-7 font-bold ${station.numClass}`}
+                >
+                  {station.num}
+                </div>
+                <h3 class="font-display mt-4 text-2xl leading-8 font-bold tracking-[-0.84px] text-white">
+                  {station.title}
+                </h3>
+                <p class="text-ink-400 mt-3.5 text-sm leading-[22.75px]">
+                  {station.body}
+                </p>
+              </div>
+              <ul class="border-ink-800/80 mt-8 space-y-3 border-t pt-6">
+                {station.bullets.map((item) => (
+                  <li class="text-ink-300 flex items-center gap-2 text-sm leading-4">
+                    <span class={station.bulletClass} aria-hidden="true">
+                      ▸
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+
+      <div
+        class="rounded-design-lg from-ink-950/90 flex flex-col gap-4 border border-teal-300/60 bg-gradient-to-r via-[#080f23]/85 to-[#050c1e]/90 p-6 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="flex items-start gap-4 sm:items-center">
+          <div
+            class="rounded-design-md bg-ink-900 flex size-10 shrink-0 items-center justify-center"
+          >
+            <img
+              src={IconJourneyAutomation}
+              alt=""
+              class="size-6"
+              aria-hidden="true"
+            />
+          </div>
+          <div>
+            <p
+              class="font-display text-base leading-6 font-bold tracking-[-0.4px] text-white"
+            >
+              Intelligent Automation Layer Active
+            </p>
+            <p class="text-ink-400 mt-0.5 text-xs leading-4">
+              Handling manual pacing, keyword discovery and catalog updates
+              without relinquishing strategic control.
+            </p>
           </div>
         </div>
         <div
-          class="absolute top-[-50%] right-[-40%] z-10 lg:top-[-80%] lg:right-[-10%]"
+          class="rounded-design-sm border-ink-800 bg-ink-900/70 inline-flex items-center gap-2 border px-4 py-2"
         >
-          <IconTriffecta size="1000px" strokeWidth="0.7" rotate={212} />
+          <span class="text-xs leading-4 font-semibold text-emerald-500"
+            >Continuous Health Checks</span
+          >
+          <span class="size-2 rounded-full bg-emerald-500" aria-hidden="true"
+          ></span>
         </div>
-      </FadeIn>
+      </div>
     </div>
-
-    <Picture
-      id="hero"
-      src={ImgHeroTop}
-      formats={["webp", "avif", "png"]}
-      widths={[480, 768, 1280, 1920]}
-      sizes="100vw"
-      alt="A picture of a woman shopping for groceries"
-      fetchpriority="high"
-      loading="eager"
-      class="absolute top-0 left-0 z-0 h-full w-full object-cover object-[70%_center] sm:object-center"
-    />
-    <HeroBackgroundVideo
-      webmSrc={heroWebm}
-      mp4Src={heroMp4}
-      poster={optimizedImgHeroTop.src}
-      className="absolute top-0 left-0 z-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-1200"
-      delay={1100}
-      client:load
-    />
   </section>
 
-  <section class="bg-triffecta-gradient p-1.25"></section>
+  {/* —— Platform Proof —— */}
+  <section class="bg-ink-950 py-section relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute inset-0"
+      aria-hidden="true"
+      style="background: radial-gradient(ellipse 50% 40% at 80% 20%, rgba(13,148,136,0.18), transparent 60%);"
+    >
+    </div>
+    <div class="container-content gap-section-stack relative flex flex-col">
+      <header
+        class="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-[70%] lg:text-left"
+      >
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-500 uppercase"
+        >
+          The platform
+        </p>
+        <h2
+          class="font-display mt-3.5 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          Built for teams executing Retail Media.
+        </h2>
+        <p class="text-ink-300 mt-5 text-xl leading-7">
+          Run campaigns, compare retailer performance and manage your
+          retail-media operation from one environment - without giving up the
+          visibility or control your team needs.
+        </p>
+      </header>
 
-  <FeatureScroller client:visible />
-
-  <section class="overflow-hidden bg-white py-10">
-    <div class="relative container mx-auto">
-      <FadeIn client:load delay={300} duration={3000}>
-        <div class="relative z-20">
-          <section
-            class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
+      <div
+        class="rounded-design-lg border-ink-800 bg-ink-900/90 shadow-elevated overflow-hidden border p-4 backdrop-blur-[12px]"
+      >
+        <div
+          class="border-ink-800 mb-3 flex items-center gap-2 border-b px-3 pt-2 pb-2.5"
+        >
+          <span class="size-3 rounded-full bg-rose-500/80" aria-hidden="true"
+          ></span>
+          <span class="size-3 rounded-full bg-amber-500/80" aria-hidden="true"
+          ></span>
+          <span class="size-3 rounded-full bg-emerald-500/80" aria-hidden="true"
+          ></span>
+          <span
+            class="text-ink-500 ml-2 truncate font-mono text-[11px] leading-4"
           >
-            <div class="col-span-6 sm:col-span-3 lg:col-span-4 lg:p-6">
-              <div class="relative flex h-full items-center justify-center">
-                <Picture
-                  id="macbook"
-                  src={ImgMacbook}
-                  formats={["webp", "avif", "png"]}
-                  widths={[380, 760]}
-                  sizes="(min-width: 1024px) 379px, 100vw"
-                  alt="A picture of a laptop using the Triffeca platform"
-                  loading="lazy"
-                  class="relative lg:top-[2%] lg:scale-160"
+            portal.triffecta.com/organizations/northstar-media-group/dashboard
+          </span>
+        </div>
+        <div class="rounded-design-md border-ink-800/60 overflow-hidden border">
+          <Picture
+            src={ImgPlatformDashboard}
+            formats={["avif", "webp", "png"]}
+            widths={[800, 1200, 1600, 1955]}
+            sizes="(min-width: 1280px) 1232px, 100vw"
+            alt="Triffecta multi-retailer analytics dashboard"
+            loading="lazy"
+            class="h-auto w-full object-cover object-top"
+          />
+        </div>
+      </div>
+
+      <div
+        class="gap-card-gap border-ink-800/80 grid border-t pt-16 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {
+          platformPillars.map((pillar) => (
+            <article class="rounded-design-md border-ink-800 bg-ink-900/60 border p-6">
+              <div
+                class={`rounded-design-sm mb-2 flex size-10 items-center justify-center border ${pillar.iconWrap}`}
+              >
+                <img
+                  src={pillar.icon}
+                  alt=""
+                  class="size-5"
+                  aria-hidden="true"
                 />
               </div>
-            </div>
-            <div class="col-span-6 sm:col-span-3 lg:col-span-8 lg:p-6">
-              <h2 class="text-4xl font-bold">Why Triffecta?</h2>
-              <ul class="mt-6 space-y-8">
-                <li class="flex">
-                  <span class="text-accent-dark mt-1 text-xl sm:mt-2.5">▼</span>
-                  <p class="ml-2 text-lg">
-                    <span class="font-bold">Built for Retail:</span> We understand
-                    the nuances of retail media and have designed every feature with
-                    your needs in mind.
-                  </p>
-                </li>
-                <li class="flex">
-                  <span class="text-accent-dark mt-1 text-xl sm:mt-2.5">▼</span>
-                  <p class="ml-2 text-lg">
-                    <span class="font-bold">Scalable Solutions:</span> Whether you’re
-                    managing a single store or multiple brands, our platform adapts
-                    to your growth.
-                  </p>
-                </li>
-                <li class="flex">
-                  <span class="text-accent-dark mt-1 text-xl sm:mt-2.5">▼</span>
-                  <p class="ml-2 text-lg">
-                    <span class="font-bold"
-                      >Seamless Onboarding & Support:
-                    </span>
-                    Our dedicated customer success team is here to ensure you’re
-                    up and running in no time.
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </div>
-        <div
-          class="absolute top-[-60%] left-[-40%] z-10 lg:top-[-80%] lg:left-[5%]"
-        >
-          <IconTriffecta size="1400px" strokeWidth="0.4" rotate={164} />
-        </div>
-      </FadeIn>
-    </div>
-  </section>
-
-  <section class="container mx-auto p-5">
-    <!--Empty space character -->
-    &nbsp;
-  </section>
-  <!--
-  <section class="bg-triffecta-gradient p-1.25"></section>
-  <section class="container mx-auto my-15">
-    <div class="rounded-2xl bg-white p-6 py-8">
-      <p class="text-lg">
-        “Since partnering with Triffecta, we’ve seen a 40% increase in campaign
-        efficiency across all our retail media channels.”
-      </p>
-      <div class="mt-12 flex items-center">
-        <div class="bg-primary mr-5 h-11 w-11 rounded-full p-5"></div>
-        <div class="flex flex-col">
-          <span class="font-semibold">Retail Media Manager</span>
-          <span class="text-text-light">National Grocery Chain</span>
-        </div>
+              <h3 class="font-display mt-3 text-lg leading-7 font-bold tracking-[-0.45px] text-white">
+                {pillar.title}
+              </h3>
+              <p class="text-ink-400 mt-1.5 text-sm leading-[22.75px]">
+                {pillar.body}
+              </p>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
-   -->
 
-  <section class="relative overflow-hidden bg-white py-18 text-white">
-    <div class="relative z-10 container mx-auto">
-      <FadeIn client:load delay={300} duration={3000}>
-        <div class="relative z-20">
-          <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
-            <h2 class="text-6xl font-bold">
-              Ready to <span class="text-accent-dark">Simplify</span>, <span
-                class="text-accent-dark">Scale</span
-              >, and <span class="text-accent-dark">Succeed</span>?
-            </h2>
-          </div>
+  {/* —— Integrations —— */}
+  <section class="border-border-default bg-surface py-section border-b">
+    <div class="container-content flex flex-col gap-12">
+      <header
+        class="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-[70%] lg:text-left"
+      >
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-700 uppercase"
+        >
+          Connected ecosystem
+        </p>
+        <h2
+          class="font-display text-ink-950 mt-4 text-3xl leading-tight font-bold tracking-[-0.025em] sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          Connect the retail media platforms you already use.
+        </h2>
+        <p class="text-ink-600 mt-4 text-lg leading-7">
+          Triffecta sits within your existing retail media stack - not beside it
+          or above it.
+        </p>
+      </header>
+      <div class="gap-card-gap grid sm:grid-cols-2">
+        {
+          integrations.map((item) => (
+            <article class="rounded-design-lg border-border-default bg-surface-page/50 flex flex-col gap-2 border p-8">
+              <div class="flex items-center justify-between gap-4">
+                <img
+                  src={item.logo.src}
+                  alt=""
+                  width={item.logo.width}
+                  height={item.logo.height}
+                  class="rounded-design-sm h-10 w-auto max-w-[160px] object-contain"
+                  loading="lazy"
+                  aria-hidden="true"
+                />
+                <span class="rounded-pill bg-emerald-100 px-2.5 py-1 text-xs leading-4 font-semibold text-emerald-800">
+                  Direct API
+                </span>
+              </div>
+              <h3 class="font-display text-ink-900 mt-4 text-xl leading-7 font-bold tracking-[-0.5px]">
+                {item.name}
+              </h3>
+              <p class="text-ink-600 text-sm leading-[22.75px]">{item.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-          <div
-            class="mt-6 mb-6 inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4"
+  {/* —— Commercial —— */}
+  <section class="bg-ink-900 py-section relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute top-[10%] left-1/2 h-[50%] w-[700px] -translate-x-1/2 rounded-full blur-[60px]"
+      aria-hidden="true"
+      style="background: linear-gradient(24deg, rgba(20,184,166,0.1), rgba(16,185,129,0.1), rgba(245,158,11,0.05));"
+    >
+    </div>
+    <div class="container-content relative">
+      <header
+        class="mx-auto mb-14 max-w-3xl text-center lg:mx-0 lg:max-w-[70%] lg:text-left"
+      >
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-amber-500 uppercase"
+        >
+          No growth tax
+        </p>
+        <h2
+          class="font-display mt-6 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          Grow your retail media.<br />
+          <span
+            class="bg-gradient-to-r from-amber-400 via-emerald-300 to-teal-300 bg-clip-text text-transparent"
           >
-            <p class="text-lg">
-              Discover how Triffecta can revolutionize your retail media
-              campaigns.
+            Not your software bill.
+          </span>
+        </h2>
+        <p
+          class="text-ink-300 mx-auto mt-6 max-w-2xl text-xl leading-7 lg:mx-0"
+        >
+          As your retail media operation scales, Triffecta accelerates
+          cross-channel execution and continuous data visibility - without
+          growth turning into another platform tax or compounding spend fee.
+        </p>
+      </header>
+
+      {
+        /* Figma order L→R: Growth → Campaigns → Retailers + connector through icon badges */
+      }
+      <div class="relative grid gap-8 lg:grid-cols-3">
+        <div
+          class="pointer-events-none absolute top-[3.5rem] right-[calc((100%-4rem)/3-3.5rem)] left-[3.5rem] z-0 hidden h-0.5 bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 lg:block"
+          aria-hidden="true"
+        >
+          <span
+            class="absolute top-1/2 left-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"
+          ></span>
+          <span
+            class="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"
+          ></span>
+          <span
+            class="absolute top-1/2 right-0 size-2 translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+          ></span>
+        </div>
+
+        <article
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+        >
+          <div
+            class="pointer-events-none absolute top-0 right-0 size-28"
+            style="background: linear-gradient(225deg, rgba(6,182,212,0.15), transparent 50%);"
+            aria-hidden="true"
+          >
+          </div>
+          <div>
+            <div
+              class="rounded-design-md bg-ink-900/90 mb-3 flex size-12 items-center justify-center border border-cyan-500/30"
+            >
+              <img
+                src={IconCommercialGrowth}
+                alt=""
+                class="size-6"
+                aria-hidden="true"
+              />
+            </div>
+            <h3
+              class="font-display mt-3 text-2xl leading-8 font-bold tracking-[-0.84px] text-white"
+            >
+              More growth.
+            </h3>
+            <p class="text-ink-400 mt-3 text-sm leading-[22.75px]">
+              Scale spend, team seats, product catalogs, and international
+              markets without turning every step forward into another platform
+              surcharge.
             </p>
           </div>
+          <div
+            class="rounded-design-md bg-ink-950/60 mt-6 border border-white/5 p-4"
+          >
+            <div
+              class="border-ink-800/80 mb-2 flex items-center justify-between border-b pb-2"
+            >
+              <span
+                class="text-ink-500 font-mono text-[11px] tracking-[0.55px] uppercase"
+                >Retail media spend</span
+              >
+              <span class="font-mono text-xs font-bold text-cyan-400"
+                >$10M+ Scaled</span
+              >
+            </div>
+            <div class="mb-2 flex items-center justify-between py-1">
+              <span class="text-ink-300 font-mono text-[11px]"
+                >Software Take-Rate</span
+              >
+              <span
+                class="rounded border border-emerald-800/50 bg-emerald-950/60 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-400"
+                >0.00% (Flat)</span
+              >
+            </div>
+            <div class="bg-ink-900 h-1.5 overflow-hidden rounded-full">
+              <div
+                class="h-full w-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
+              >
+              </div>
+            </div>
+          </div>
+        </article>
 
-          <div class="block">
-            <LinkButtonRequestDemo withRetailMedia={true} />
+        <article
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-white/10 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+        >
+          <div
+            class="pointer-events-none absolute top-0 right-0 size-24"
+            style="background: linear-gradient(225deg, rgba(245,158,11,0.1), transparent 50%);"
+            aria-hidden="true"
+          >
+          </div>
+          <div>
+            <div
+              class="rounded-design-md bg-ink-900/90 mb-3 flex size-12 items-center justify-center border border-amber-500/30"
+            >
+              <img
+                src={IconCommercialCampaigns}
+                alt=""
+                class="size-6"
+                aria-hidden="true"
+              />
+            </div>
+            <h3
+              class="font-display mt-3 text-2xl leading-8 font-bold tracking-[-0.84px] text-white"
+            >
+              More campaigns.
+            </h3>
+            <p class="text-ink-400 mt-3 text-sm leading-[22.75px]">
+              Launch, duplicate, and orchestrate high-velocity activity across
+              product tiers without requiring new platform setup or complex
+              operating changes.
+            </p>
+          </div>
+          <div
+            class="rounded-design-md bg-ink-950/60 mt-6 border border-white/5 p-4"
+          >
+            <div
+              class="border-ink-800/80 mb-2 flex items-center justify-between border-b pb-2"
+            >
+              <span
+                class="text-ink-500 font-mono text-[11px] tracking-[0.55px] uppercase"
+                >Execution velocity</span
+              >
+              <span class="font-mono text-xs font-bold text-amber-400"
+                >+140% parallel</span
+              >
+            </div>
+            <div
+              class="border-ink-800 bg-ink-900/80 mb-2 flex items-center justify-between rounded border px-3 py-1.5"
+            >
+              <span class="text-ink-300 font-mono text-[11px]"
+                >Q3 Prime Day Auto-Bidding</span
+              >
+              <span class="font-mono text-[10px] font-bold text-emerald-400"
+                >LIVE</span
+              >
+            </div>
+            <div
+              class="border-ink-800 bg-ink-900/80 flex items-center justify-between rounded border px-3 py-1.5"
+            >
+              <span class="text-ink-300 font-mono text-[11px]"
+                >Back-to-School SKU Blitz</span
+              >
+              <span class="font-mono text-[10px] font-bold text-amber-400"
+                >SCHEDULED</span
+              >
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="rounded-design-lg shadow-elevated relative z-10 flex flex-col justify-between overflow-hidden border border-emerald-500/30 bg-gradient-to-b from-[rgba(17,24,39,0.72)] to-[rgba(11,16,29,0.88)] p-8 backdrop-blur-[8px]"
+        >
+          <div
+            class="pointer-events-none absolute top-0 right-0 size-32"
+            style="background: linear-gradient(225deg, rgba(16,185,129,0.15), transparent 50%);"
+            aria-hidden="true"
+          >
+          </div>
+          <div>
+            <div
+              class="rounded-design-md bg-ink-900/90 mb-3 flex size-12 items-center justify-center border border-emerald-500/40"
+            >
+              <img
+                src={IconCommercialRetailers}
+                alt=""
+                class="size-6"
+                aria-hidden="true"
+              />
+            </div>
+            <h3
+              class="font-display mt-3 text-2xl leading-8 font-bold tracking-[-0.84px] text-white"
+            >
+              More retailers.
+            </h3>
+            <p class="text-ink-400 mt-3 text-sm leading-[22.75px]">
+              Add new retail media networks into your unified operational
+              fabric. Zero fragmented logins, zero friction, and consistent
+              reporting workflows.
+            </p>
+          </div>
+          <div
+            class="rounded-design-md bg-ink-950/70 mt-6 border border-emerald-500/20 p-4"
+          >
+            <div
+              class="border-ink-800/80 mb-2.5 flex items-center justify-between border-b pb-2"
+            >
+              <span
+                class="text-ink-500 font-mono text-[11px] tracking-[0.55px] uppercase"
+                >Connected ecosystem</span
+              >
+              <span class="font-mono text-xs font-bold text-emerald-400"
+                >Unified API Hub</span
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              {
+                ["Amazon Ads", "Walmart Connect", "Criteo RMN", "CitrusAd"].map(
+                  (name) => (
+                    <div class="border-ink-800 bg-ink-900/90 flex items-center gap-1.5 rounded border px-2.5 py-1.5">
+                      <span
+                        class="size-1.5 rounded-full bg-emerald-400"
+                        aria-hidden="true"
+                      />
+                      <span class="text-ink-300 font-mono text-[11px]">
+                        {name}
+                      </span>
+                    </div>
+                  ),
+                )
+              }
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <aside
+        class="rounded-design-lg border-ink-700/70 via-ink-900 shadow-elevated relative mt-8 overflow-hidden border bg-gradient-to-r from-[#0b101d] to-[#0b101d] p-8 sm:p-10"
+      >
+        <div
+          class="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-amber-500 via-emerald-400 to-teal-500"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+          <div class="lg:col-span-7">
+            <h3
+              class="font-display text-2xl leading-9 font-bold tracking-[-0.75px] text-white sm:text-3xl sm:leading-9"
+            >
+              One simple SaaS fee.
+            </h3>
+            <p class="text-ink-400 mt-3 max-w-xl text-base leading-6">
+              Legacy ad-tech penalizes higher performance by skimming a % of
+              your gross ad investment. Triffecta delivers institutional
+              predictability: expand activity without increasing unit cost.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:col-span-5">
+            {
+              [
+                "0% Take-rate on ad spend",
+                "Unlimited retail networks",
+                "Unlimited seats & workspaces",
+                "No surprise tier cliffs",
+              ].map((label) => (
+                <div class="rounded-design-md bg-ink-950/70 flex items-center gap-3 border border-white/5 p-3">
+                  <div class="rounded-design-sm flex size-7 shrink-0 items-center justify-center border border-emerald-500/30 bg-emerald-500/10">
+                    <img
+                      src={IconCheck}
+                      alt=""
+                      class="size-4"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <span class="text-ink-200 text-xs leading-4 font-medium">
+                    {label}
+                  </span>
+                </div>
+              ))
+            }
           </div>
         </div>
-        <div
-          class="absolute top-[-150%] left-[-130%] z-10 lg:top-[-350%] lg:left-[-8%]"
-        >
-          <IconTriffecta size="1400px" strokeWidth="0.4" rotate={99} />
-        </div>
-      </FadeIn>
+      </aside>
     </div>
-
-    <Picture
-      id="hero"
-      src={ImgHeroBottom}
-      formats={["webp", "avif", "png"]}
-      widths={[480, 768, 1280, 1920]}
-      sizes="100vw"
-      loading="lazy"
-      alt="A picture of woman looking at products on shelves"
-      class="absolute top-0 left-0 z-0 h-full w-full object-cover"
-    />
   </section>
 
-  <section class="bg-triffecta-gradient p-1.25"></section>
-
-  <FormCalendlyDemo />
-
-  <section class="relative overflow-hidden bg-white py-18">
-    <div class="relative z-10 container mx-auto">
-      <div
-        class="grid grid-cols-6 gap-4 sm:grid-cols-6 sm:gap-4 lg:grid-cols-12 lg:gap-8"
-      >
-        <div class="col-span-4 p-0 sm:col-span-3 lg:col-span-4 lg:px-6">
-          <h2 class="text-6xl leading-[3rem] font-bold">Latest</h2>
-        </div>
-        <ul
-          class="col-span-8 mt-6 p-0 sm:col-span-3 lg:col-span-8 lg:mt-0 lg:px-6"
+  {
+    /* —— Differentiation ——
+       INTENTIONAL IMPLEMENTATION OVERRIDE: white `bg-surface` (not
+       surface-page) after Proof/Measured Impact was hidden, so this
+       section remains a distinct light panel before Perspectives. */
+  }
+  <section class="border-border-default/80 bg-surface py-section border-t">
+    <div
+      class="container-content grid items-center gap-10 lg:grid-cols-12 lg:gap-14"
+    >
+      <header class="text-center lg:col-span-5 lg:text-left">
+        <p
+          class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-700 uppercase"
         >
-          <PostList short={true} />
-        </ul>
+          Why Triffecta
+        </p>
+        <h2
+          class="font-display text-ink-900 mt-3.5 text-3xl leading-tight font-bold tracking-[-0.025em] sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+        >
+          One operating layer. Not another silo.
+        </h2>
+        <p class="text-ink-600 mt-6 text-lg leading-[29.25px]">
+          Triffecta connects the work that is usually fragmented across retailer
+          portals. Your team gains a consistent workflow while the
+          retailer-specific detail remains visible and under control.
+        </p>
+      </header>
+      <div class="flex flex-col gap-6 lg:col-span-7">
+        {
+          differentiationItems.map((item) => (
+            <article class="border-border-default bg-surface rounded-design-lg shadow-card flex items-start gap-5 border p-6">
+              <div class={`rounded-design-md shrink-0 p-3 ${item.iconBg}`}>
+                <img src={item.icon} alt="" class="size-6" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 class="font-display text-ink-900 text-xl leading-7 font-bold tracking-[-0.5px]">
+                  {item.title}
+                </h3>
+                <p class="text-ink-600 mt-1.5 text-sm leading-[22.75px]">
+                  {item.body}
+                </p>
+              </div>
+            </article>
+          ))
+        }
       </div>
+    </div>
+  </section>
+
+  {
+    /* —— Proof / Measured Impact ——
+       INTENTIONAL IMPLEMENTATION OVERRIDE: section intentionally hidden
+       until real customer quotes and metrics are available. Markup retained
+       below (commented) for restore; do not re-enable from Figma alone.
+  {false && (
+  <section class="bg-surface py-section">…Proof metrics + testimonial…</section>
+  )}
+  —— */
+  }
+
+  {/* —— Perspectives & Research —— */}
+  <section class="border-border-default/80 bg-surface-page py-section border-t">
+    <div class="container-content gap-section-stack flex flex-col">
+      <div
+        class="flex flex-col gap-6 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left"
+      >
+        <header class="mx-auto max-w-2xl sm:mx-0">
+          <p
+            class="font-display text-xs leading-4 font-bold tracking-[1.2px] text-teal-700 uppercase"
+          >
+            Perspectives &amp; Research
+          </p>
+          <h2
+            class="font-display text-ink-900 mt-3.5 text-3xl leading-tight font-bold tracking-[-0.025em] sm:text-5xl sm:leading-[48px] sm:tracking-[-1.2px]"
+          >
+            Retail media is changing fast. We’re focused on what happens next.
+          </h2>
+        </header>
+        <a
+          href="/latest"
+          class="focus-visible:outline-focus-ring mx-auto inline-flex shrink-0 items-center gap-1.5 text-sm leading-5 font-semibold text-teal-700 transition hover:text-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:mx-0"
+        >
+          Browse all insights
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="gap-card-gap grid md:grid-cols-2 lg:grid-cols-3">
+        {
+          latestPosts.map((post, i) => (
+            <PostCard post={post} accent={postAccents[i] ?? "teal"} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* —— Final CTA —— */}
+  <section
+    class="bg-surface-dark-elevated py-section relative overflow-hidden px-6"
+  >
+    <div
+      class="pointer-events-none absolute -top-40 -left-40 size-96 rounded-full bg-amber-500/20 blur-[32px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -right-40 -bottom-40 size-96 rounded-full bg-teal-500/20 blur-[32px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="relative mx-auto flex max-w-4xl flex-col items-center gap-6 text-center"
+    >
+      <div
+        class="rounded-design-lg flex size-24 items-center justify-center border-2 border-transparent shadow-[0_10px_15px_-3px_rgba(20,184,166,0.2)]"
+        style="background: linear-gradient(var(--color-ink-900), var(--color-ink-900)) padding-box, linear-gradient(135deg, #f59e0b, #0d9488) border-box;"
+        aria-hidden="true"
+      >
+        {/* Triangle + T as one SVG so the letter sits in the mark */}
+        <svg
+          width="76"
+          height="76"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="block"
+        >
+          <polygon
+            points="28 50 5 8 51 8"
+            stroke="var(--color-amber-500)"
+            stroke-width="3.25"
+            stroke-linejoin="round"></polygon>
+          {/* T stays upright; centered in the flipped triangle body */}
+          <text
+            x="28"
+            y="24"
+            text-anchor="middle"
+            dominant-baseline="central"
+            fill="white"
+            font-size="26"
+            font-weight="500"
+            font-family="Inter, ui-sans-serif, system-ui, sans-serif">T</text
+          >
+        </svg>
+      </div>
+      <h2
+        class="font-display pt-2 text-3xl leading-tight font-bold tracking-[-0.025em] text-white sm:text-5xl sm:leading-[60px] sm:tracking-[-1.5px] lg:text-[60px]"
+      >
+        Make retail media easier to run.
+      </h2>
+      <p class="text-ink-300 max-w-xl text-xl leading-7">
+        See how Triffecta can give your team the execution, visibility and
+        control to run retail media in-house.
+      </p>
+      <div class="pt-4">
+        <TriffectaButton href="/lets-talk" variant="emphasis">
+          Let's talk retail media →
+        </TriffectaButton>
+      </div>
+      <p class="text-ink-400 text-xs leading-4 font-medium">
+        A practical conversation about your retail-media challenges and whether
+        Triffecta can help. No high-pressure sales.
+      </p>
     </div>
   </section>
 </Layout>

@@ -1,39 +1,56 @@
-export default function HeaderLinks({ mobileNav = false }) {
-  return (
-    <nav
-      className={`relative ${mobileNav ? "w-full space-y-4 bg-white text-center" : ""}`}
-      style={mobileNav ? { width: "calc(100% + 40px)", left: "-20px" } : {}}
-    >
-      <ul className={mobileNav ? "" : "flex justify-center space-x-8"}>
-        <li
-          className={
-            mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
-          }
-        >
-          <a href="/latest" class="hover:underline">
-            Latest
-          </a>
-        </li>
-        <li
-          className={
-            mobileNav ? "border-t-1 border-b-1 border-[#CCCCCC] py-4" : ""
-          }
-        >
-          <a href="/team" class="hover:underline">
-            Meet the Team
-          </a>
-        </li>
-        <li className={mobileNav ? "border-b-1 border-[#CCCCCC] py-4" : ""}>
-          <a href="/contact" class="hover:underline">
-            Contact Us
-          </a>
-        </li>
-        <li className={mobileNav ? "border-b-1 border-[#CCCCCC] py-4" : ""}>
-          <a href="https://portal.triffecta.com/" class="hover:underline">
-            Sign In
+const navLinkClass =
+  "text-sm font-medium leading-5 text-ink-600 transition hover:text-ink-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring";
+
+const mobileLinkClass =
+  "block border-b border-ink-100 py-4 text-base font-medium text-ink-700 transition hover:text-ink-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring";
+
+export const primaryNav = [
+  { href: "/team", label: "Meet the Team" },
+  { href: "/contact", label: "Contact Us" },
+  { href: "/latest", label: "Insights" },
+] as const;
+
+type HeaderLinksProps = {
+  mobileNav?: boolean;
+  onNavigate?: () => void;
+};
+
+export default function HeaderLinks({
+  mobileNav = false,
+  onNavigate,
+}: HeaderLinksProps) {
+  if (mobileNav) {
+    return (
+      <ul class="w-full">
+        {primaryNav.map((item) => (
+          <li key={item.href}>
+            <a href={item.href} class={mobileLinkClass} onClick={onNavigate}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="https://portal.triffecta.com/"
+            class={mobileLinkClass}
+            onClick={onNavigate}
+          >
+            Sign in
           </a>
         </li>
       </ul>
-    </nav>
+    );
+  }
+
+  return (
+    <ul class="flex items-center gap-8">
+      {primaryNav.map((item) => (
+        <li key={item.href}>
+          <a href={item.href} class={navLinkClass}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -8,5 +8,5 @@ author: { name: "Ken Platt", avatar: ./authors/ken.jpg }
 external: true
 href: "https://www.linkedin.com/posts/haatch_triffecta-activity-7344364337668472833-yC7o/"
 platform: "linkedin"
-tags: "#Haatch #Investment #Triffecta"
+tags: "#Investment #Haatch #Triffecta"
 ---
