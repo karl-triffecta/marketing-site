@@ -48,7 +48,7 @@ export default function Header() {
           <TriffectaButton
             href="/lets-talk"
             variant="dark"
-            className="!px-3 !py-2 text-xs"
+            className="hidden !px-3 !py-2 text-xs min-[380px]:inline-flex"
           >
             Let's talk
           </TriffectaButton>

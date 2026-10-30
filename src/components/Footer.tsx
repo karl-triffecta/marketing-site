@@ -32,7 +32,7 @@ export default function Footer({
   researchLinks = [],
 }: FooterProps) {
   return (
-    <footer class="border-ink-200 bg-surface border-t pt-20 pb-12">
+    <footer class="border-ink-200 bg-surface border-t pt-12 pb-10 sm:pt-16 lg:pt-20 lg:pb-12">
       <div class="container-content flex flex-col">
         {/* Brand + link columns */}
         <div class="border-ink-100 grid grid-cols-1 gap-12 border-b pb-16 md:grid-cols-12 md:gap-12">

@@ -105,6 +105,24 @@
   --shadow-cta: var(--shadow-elevated);
 }
 
+/* Stage 7 — progressive section rhythm */
+@media (max-width: 1023px) {
+  :root {
+    --space-section: 96px;
+    --space-section-stack: 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --space-section: 64px;
+    --space-section-stack: 40px;
+    --space-card-gap: 24px;
+    --gutter-desktop: 16px;
+    --header-height: 72px;
+  }
+}
+
 /* Dark mode theme (optional)
 [data-theme="dark"] {
   --color-primary: #f59e0b;
@@ -229,4 +247,49 @@
     background-position: right center;
     background-repeat: no-repeat;
   }
+}
+
+/* Stage 7 — prevent decorative overflow */
+html {
+  overflow-x: clip;
+}
+
+/* Secondary-page hero title alignment with redesign display font */
+.page-hero-title {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Marketing content shell after photo heroes */
+.page-shell {
+  background-color: var(--color-surface-page);
+  color: var(--color-ink-900);
+}
+
+.page-shell a:not([class]) {
+  color: var(--color-teal-700);
+}
+
+.page-shell a:not([class]):hover {
+  color: var(--color-teal-800);
+}
+
+.page-shell .preflight-undo h1 {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-ink-900);
+}
+
+.page-shell .preflight-undo h2,
+.page-shell .preflight-undo h3 {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-ink-900);
+}
+
+.page-shell .preflight-undo p,
+.page-shell .preflight-undo li {
+  color: var(--color-ink-700);
+  line-height: 1.65;
 }

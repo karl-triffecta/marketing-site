@@ -1,7 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import PostList from "../../components/PostList.astro";
+import PostCard from "../../components/PostCard.astro";
 import IconTriffecta from "../../components/icon/IconTriffecta.tsx";
+import { getCollection } from "astro:content";
 import { getImage, Picture } from "astro:assets";
 import ImgHeroLights from "../../assets/hero-lights.png";
 
@@ -9,6 +10,12 @@ const optimizedImgHeroLights = await getImage({
   src: ImgHeroLights,
   format: "webp",
 });
+
+const posts = await getCollection("posts");
+posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const accents = ["amber", "teal", "emerald"] as const;
 
 const seo = {
   title: "Latest Updates",
@@ -26,7 +33,7 @@ const seo = {
       <div class="relative z-20">
         <div class="inline-block rounded-lg bg-[rgba(38,50,56,0.75)] p-4">
           <h1
-            class="text-4xl font-bold text-wrap text-clip sm:text-5xl md:text-6xl"
+            class="page-hero-title text-4xl text-wrap text-clip sm:text-5xl md:text-6xl"
           >
             Latest
           </h1>
@@ -52,11 +59,15 @@ const seo = {
     />
   </section>
 
-  <section class="relative overflow-hidden bg-white py-10 lg:py-18">
-    <div class="relative z-10 container mx-auto">
-      <ul class="col-span-6 sm:col-span-3 lg:col-span-6">
-        <PostList short={false} />
-      </ul>
+  <section class="page-shell relative overflow-hidden py-section">
+    <div class="container-content">
+      <div class="gap-card-gap grid sm:grid-cols-2 lg:grid-cols-3">
+        {
+          posts.map((post, i) => (
+            <PostCard post={post} accent={accents[i % accents.length]} />
+          ))
+        }
+      </div>
     </div>
   </section>
 </Layout>

@@ -55,7 +55,7 @@ export default function CookieBanner({ baseUrl = "" }) {
 
   return (
     <div class="border-ink-200 bg-surface/95 shadow-elevated fixed bottom-0 left-0 z-50 w-full border-t backdrop-blur-[6px]">
-      <div class="container-content flex flex-col items-start justify-between gap-4 py-3 sm:flex-row sm:items-center">
+      <div class="container-content flex flex-col items-stretch justify-between gap-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:gap-4">
         <p class="text-ink-600 text-sm leading-5">
           This website uses cookies to ensure you get the best experience. See
           our{" "}
@@ -77,7 +77,7 @@ export default function CookieBanner({ baseUrl = "" }) {
         <TriffectaButton
           variant="dark"
           onClick={acceptCookies}
-          className="shrink-0 !px-4 !py-2"
+          className="w-full shrink-0 !px-4 !py-2 sm:w-auto"
         >
           Accept
         </TriffectaButton>
