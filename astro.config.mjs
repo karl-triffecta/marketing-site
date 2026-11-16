@@ -24,6 +24,10 @@ export default defineConfig({
     ##########################################
     ##########################################
   */
+  redirects: {
+    "/start": "/lets-talk",
+    "/start/": "/lets-talk/",
+  },
   integrations: [
     preact(),
     mdx(),
@@ -32,6 +36,7 @@ export default defineConfig({
         ![
           "https://triffecta.com/event-connections/",
           "https://triffecta.com/data-room/",
+          "https://triffecta.com/start/",
         ].includes(page),
     }),
   ],

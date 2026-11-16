@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import IconTriffecta from "../components/icon/IconTriffecta.tsx";
-import FormDataRoom from "../components/FormDataRoom.tsx";
+import TriffectaButton from "../components/TriffectaButton.tsx";
+// import FormDataRoom from "../components/FormDataRoom.tsx";
 
 import { getImage, Picture } from "astro:assets";
 import ImgHeroData from "../assets/hero-data.png";
@@ -92,5 +93,24 @@ const seo = {
     </div>
   </section>
 
-  <FormDataRoom client:load />
+  <section class="mx-auto pt-6 pb-16">
+    <div class="relative container">
+      <div class="lg:p-6">
+        <h2 class="mb-4 text-3xl font-bold">Investor materials</h2>
+        <p class="mb-6 text-lg">
+          Pitch deck, financials, and due diligence documents are available on
+          request. Get in touch with the team to arrange access.
+        </p>
+        <TriffectaButton
+          href="/lets-talk"
+          variant="dark"
+          className="!rounded-design-md !px-7 !py-3.5 !text-base !leading-6"
+        >
+          Let's talk retail media →
+        </TriffectaButton>
+      </div>
+    </div>
+  </section>
+
+  {/* <FormDataRoom client:load /> */}
 </Layout>
