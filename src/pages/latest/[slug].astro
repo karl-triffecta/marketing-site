@@ -42,7 +42,7 @@ const optimizedImgBanner = await getImage({
 });
 
 const seo = {
-  title: post.data.title,
+  title: post.data.seoTitle || post.data.title,
   description: post.data.description,
   path: `/latest/${slug}/`,
   altText: post.data.alt,
